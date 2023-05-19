@@ -25,7 +25,9 @@ export default function App() {
 			withGlobalStyles
 			withNormalizeCSS
 			theme={{
-				fontFamily: "Inter, san-serif",
+				colorScheme: "dark",
+				fontFamily: "DM Sans, san-serif",
+				fontFamilyMonospace: "DM Mono, monospace"
 			}}
 		>
 			<RouterProvider router={router} />

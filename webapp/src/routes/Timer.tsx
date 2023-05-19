@@ -1,4 +1,9 @@
-import {IconPlayerPlay, IconPlayerPause, IconPlayerStop} from "@tabler/icons-react";
+import {
+    IconPlayerPlay,
+    IconPlayerPause,
+    IconPlayerStop,
+    IconArrowRight,
+} from "@tabler/icons-react";
 import {
     Center,
     Group,
@@ -6,24 +11,20 @@ import {
     Text,
     ActionIcon,
     useMantineTheme,
-    TextInput,
-    NumberInput,
-    Select,
-    Button,
     Badge
 } from "@mantine/core";
 import {ActionFunction, LoaderFunction, useFetcher, useLoaderData} from "react-router-dom"
 import {
     apiGetAllCategory,
-    apiGetCurrentTask,
+    apiGetCurrentTask, apiPostCreateCategory,
     apiPostCreateTask,
     apiPostEndTask,
     apiPostPauseTask,
     apiPostResumeTask
 } from "../api.ts";
-import {forwardRef, useEffect, useState} from "react";
-import {differenceInSeconds} from "date-fns";
 import {modals} from "@mantine/modals";
+import CreateTaskModal from "../components/timer/CreateTaskModal.tsx";
+import TimerClock from "../components/timer/TimerClock.tsx";
 
 interface LoaderData {
     currentTask: {
@@ -62,15 +63,15 @@ export const timerLoader: LoaderFunction = async (): Promise<LoaderData> => {
 
 export const timerAction: ActionFunction = async ({request}) => {
     const formData = await request.formData();
-    const timerAction = formData.get("timerAction")?.toString();
+    const action = formData.get("action")?.toString() ?? "";
 
-    if (timerAction === "pause") {
+    if (action === "taskPause") {
         await apiPostPauseTask();
-    } else if (timerAction === "resume") {
+    } else if (action === "taskResume") {
         await apiPostResumeTask();
-    } else if (timerAction === "end") {
+    } else if (action === "taskEnd") {
         await apiPostEndTask();
-    } else if (timerAction === "create") {
+    } else if (action === "taskCreate") {
         const name = formData.get("name")?.toString() ?? "";
         const categoryId = formData.get("categoryId")?.toString() ?? "";
         const duration = parseInt(formData.get("duration")?.toString() ?? "0");
@@ -80,168 +81,17 @@ export const timerAction: ActionFunction = async ({request}) => {
             categoryId: categoryId,
             duration: duration
         });
+    } else if (action === "categoryCreate") {
+        const name = formData.get("name")?.toString() ?? "";
+        const color = formData.get("color")?.toString() ?? "";
+
+        await apiPostCreateCategory({
+            name: name,
+            color: color
+        });
     }
 
     return null;
-}
-
-interface CategorySelectItemProps extends React.ComponentPropsWithoutRef<'div'> {
-    label: string;
-    color: string;
-}
-
-const CategorySelectItem = forwardRef<HTMLDivElement, CategorySelectItemProps>(
-    ({label, color, ...others}: CategorySelectItemProps, ref) => (
-        <div ref={ref} {...others}>
-            <Group>
-                <Badge color={color}></Badge>
-                <Text>{label}</Text>
-            </Group>
-        </div>
-    )
-);
-
-interface CreateTaskModalProps {
-    categories: { id: string, name: string, color: string }[];
-}
-
-function CreateTaskModal({categories}: CreateTaskModalProps) {
-    const fetcher = useFetcher();
-
-    const [name, setName] = useState<string | null>(null);
-    const [hours, setHours] = useState<number | "">(1);
-    const [minutes, setMinutes] = useState<number | "">(0);
-    const [seconds, setSeconds] = useState<number | "">(0);
-    const [categoryId, setCategoryId] = useState<string | null>(null);
-
-    return (
-        <>
-            <TextInput label={"Task Name"} withAsterisk mb={"sm"}
-                       onChange={event => setName(event.currentTarget.value)}/>
-            <Group grow mb={"sm"}>
-                <NumberInput label={"Hours"} defaultValue={1} withAsterisk hideControls
-                             onChange={value => setHours(value)}/>
-                <NumberInput label={"Minutes"} defaultValue={0} withAsterisk hideControls
-                             onChange={value => setMinutes(value)}/>
-                <NumberInput label={"Seconds"} defaultValue={0} withAsterisk hideControls
-                             onChange={value => setSeconds(value)}/>
-            </Group>
-            <Select
-                label="Category"
-                placeholder="Pick category"
-                itemComponent={CategorySelectItem}
-                data={categories.map(c => ({value: c.id, label: c.name, color: c.color}))}
-                withAsterisk
-                mb={"xl"}
-                onChange={value => setCategoryId(value)}
-            />
-            <Button color={"teal"} fullWidth onClick={() => {
-                if (name === null) {
-                    return;
-                }
-                if (categoryId === null) {
-                    return;
-                }
-                if (hours === "") {
-                    return;
-                }
-                if (minutes === "") {
-                    return;
-                }
-                if (seconds === "") {
-                    return;
-                }
-
-                fetcher.submit({
-                    timerAction: "create",
-                    name: name,
-                    categoryId: categoryId,
-                    duration: ((hours * 3600) + (minutes * 60) + seconds).toString(),
-                }, {
-                    method: "post",
-                    action: "/timer"
-                });
-
-                modals.closeAll();
-            }}>
-                Start
-            </Button>
-        </>
-    );
-}
-
-interface TimerTextProps {
-    remainingDuration: number;
-    lastStartTime: Date;
-    isPaused: boolean;
-    hasTask: boolean;
-}
-
-function TimerText({remainingDuration, lastStartTime, isPaused, hasTask}: TimerTextProps) {
-    const [leftDuration, setLeftDuration] = useState(remainingDuration);
-    const [hours, setHours] = useState(0);
-    const [minutes, setMinutes] = useState(0);
-    const [seconds, setSeconds] = useState(0);
-
-    useEffect(() => {
-        if (hasTask && !isPaused) {
-            const timer = setInterval(() => {
-                setLeftDuration(remainingDuration - differenceInSeconds(new Date(), lastStartTime));
-            }, 1000);
-
-            return () => clearInterval(timer);
-        }
-    }, [remainingDuration, lastStartTime, hasTask, isPaused]);
-
-    useEffect(() => {
-        setLeftDuration(remainingDuration);
-    }, [remainingDuration]);
-
-    useEffect(() => {
-        const hours = Math.max(Math.floor(Math.abs(leftDuration) / 3600), 0);
-        const minutes = Math.max(Math.floor((Math.abs(leftDuration) - (hours * 3600)) / 60), 0);
-        const seconds = Math.max(Math.floor(Math.abs(leftDuration) - (hours * 3600) - (minutes * 60)), 0);
-
-        setHours(hours);
-        setMinutes(minutes);
-        setSeconds(seconds);
-    }, [leftDuration]);
-
-    const theme = useMantineTheme();
-    const pausedColor = theme.colors.yellow[8];
-    const neutralColor = theme.colors.gray[8];
-    const ongoingColor = theme.colors.green[8];
-    const doneColor = theme.colors.blue[8];
-    const [timerColor, setTimerColor] = useState(neutralColor);
-    useEffect(() => {
-        if (hasTask) {
-            if (isPaused)  {
-                setTimerColor(pausedColor)
-            } else {
-                if (leftDuration > 0) {
-                    setTimerColor(ongoingColor);
-                } else {
-                    setTimerColor(doneColor)
-                }
-            }
-        } else {
-            setTimerColor(neutralColor);
-        }
-    }, [hasTask, isPaused, leftDuration])
-
-    return (
-        <Group spacing={"xl"}>
-            <Text size={"5rem"} weight={"bold"} color={timerColor} ff={"monospace"}>
-                {String(hours).padStart(2, "0")}
-            </Text>
-            <Text size={"5rem"} weight={"bold"} color={timerColor} ff={"monospace"}>
-                {String(minutes).padStart(2, "0")}
-            </Text>
-            <Text size={"5rem"} weight={"bold"} color={timerColor} ff={"monospace"}>
-                {String(seconds).padStart(2, "0")}
-            </Text>
-        </Group>
-    );
 }
 
 export default function Timer() {
@@ -254,13 +104,23 @@ export default function Timer() {
     return (
         <Center w={"100%"} h={"100%"}>
             <Stack>
+
                 <Center>
-                    <Text color={theme.colors.gray[6]} italic>
-                        {loaderData.currentTask ? loaderData.currentTask.name : "No current task"}
-                    </Text>
+                    <Group align={"center"}>
+                        {loaderData.currentTask &&
+                            <>
+                                <Badge>
+                                    {loaderData.categories.find(value => value.id == loaderData.currentTask?.categoryId)?.name}
+                                </Badge>
+                                <IconArrowRight size={18}></IconArrowRight>
+                            </>}
+                        <Text color={theme.colors.gray[6]} size={"sm"}>
+                            {loaderData.currentTask ? loaderData.currentTask.name : "No current task"}
+                        </Text>
+                    </Group>
                 </Center>
 
-                <TimerText remainingDuration={loaderData.currentTask?.remainingDuration ?? 0}
+                <TimerClock remainingDuration={loaderData.currentTask?.remainingDuration ?? 0}
                            lastStartTime={loaderData.currentTask?.lastStartTime ?? new Date()}
                            hasTask={loaderData.currentTask != null}
                            isPaused={loaderData.currentTask?.isPaused ?? false}/>
@@ -269,7 +129,7 @@ export default function Timer() {
                     <ActionIcon size={"xl"} variant={"default"} radius={"xl"}
                                 disabled={loaderData.currentTask == null || loaderData.currentTask.isPaused}
                                 onClick={() => fetcher.submit({
-                                    timerAction: "pause"
+                                    action: "taskPause"
                                 }, {
                                     method: "post",
                                     action: "/timer"
@@ -282,11 +142,12 @@ export default function Timer() {
                                     if (loaderData.currentTask == null) {
                                         modals.open({
                                             title: "Create new task",
+                                            centered: true,
                                             children: <CreateTaskModal categories={loaderData.categories}/>
                                         })
                                     } else {
                                         fetcher.submit({
-                                            timerAction: "resume",
+                                            action: "taskResume",
                                         }, {
                                             method: "post",
                                             action: "/timer"
@@ -298,7 +159,7 @@ export default function Timer() {
                     <ActionIcon size={"xl"} variant={"default"} radius={"xl"}
                                 disabled={loaderData.currentTask == null}
                                 onClick={() => fetcher.submit({
-                                    timerAction: "end"
+                                    action: "taskEnd"
                                 }, {
                                     method: "post",
                                     action: "/timer"
