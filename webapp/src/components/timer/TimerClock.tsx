@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {differenceInSeconds} from "date-fns";
 import {Group, Text, useMantineTheme} from "@mantine/core";
+import useMobile from "../../hooks/useMobile.ts";
 
 interface TimerClockProps {
     remainingDuration: number;
@@ -61,15 +62,17 @@ export default function TimerClock({remainingDuration, lastStartTime, isPaused, 
         }
     }, [hasTask, isPaused, leftDuration]);
 
+    const isMobile = useMobile();
+
     return (
         <Group spacing={"xl"}>
-            <Text size={"8rem"} weight={"bold"} color={timerColor} ff={"DM Mono"}>
+            <Text size={isMobile ? "5rem" : "8rem"} weight={"bold"} color={timerColor} ff={"DM Mono"}>
                 {String(hours).padStart(2, "0")}
             </Text>
-            <Text size={"8rem"} weight={"bold"} color={timerColor} ff={"DM Mono"}>
+            <Text size={isMobile ? "5rem" : "8rem"} weight={"bold"} color={timerColor} ff={"DM Mono"}>
                 {String(minutes).padStart(2, "0")}
             </Text>
-            <Text size={"8rem"} weight={"bold"} color={timerColor} ff={"DM Mono"}>
+            <Text size={isMobile ? "5rem" : "8rem"} weight={"bold"} color={timerColor} ff={"DM Mono"}>
                 {String(seconds).padStart(2, "0")}
             </Text>
         </Group>
