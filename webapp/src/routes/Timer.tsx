@@ -16,8 +16,8 @@ import TimerClock from "../components/timer/TimerClock.tsx";
 import TimerButtons from "../components/timer/TimerButtons.tsx";
 import TimerLabel from "../components/timer/TimerLabel.tsx";
 import {useDisclosure} from "@mantine/hooks";
-import CreateCategoryForm from "../components/timer/CreateCategoryForm.tsx";
-import CreateTaskForm from "../components/timer/CreateTaskForm.tsx";
+import CreateCategoryForm from "../components/category/CreateCategoryForm.tsx";
+import CreateTaskForm from "../components/task/CreateTaskForm.tsx";
 
 interface LoaderData {
     currentTask: {
