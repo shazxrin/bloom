@@ -1,18 +1,18 @@
 import {isNotEmpty, useForm} from "@mantine/form";
-import {useFetcher} from "react-router-dom";
 import {Button, ColorInput, TextInput} from "@mantine/core";
 import {IconSparkles} from "@tabler/icons-react";
-import {modals} from "@mantine/modals";
 
-interface CreateCategoryForm {
+interface CreateCategoryFormValues {
     name: string;
     color: string;
 }
 
-export default function CreateCategoryModal() {
-    const fetcher = useFetcher();
+interface CreateCategoryFormProps {
+    onSubmit: (formValues: CreateCategoryFormValues) => void;
+}
 
-    const form = useForm<CreateCategoryForm>({
+export default function CreateCategoryForm({onSubmit}: CreateCategoryFormProps) {
+    const form = useForm<CreateCategoryFormValues>({
         initialValues: {
             name: "",
             color: ""
@@ -24,16 +24,7 @@ export default function CreateCategoryModal() {
     });
 
     return (
-        <form onSubmit={form.onSubmit((formValues) => {
-            fetcher.submit({
-                action: "categoryCreate",
-                name: formValues.name,
-                color: formValues.color
-            }, {
-                method: "post",
-                action: "/timer"
-            });
-        })}>
+        <form onSubmit={form.onSubmit(onSubmit)}>
             <TextInput {...form.getInputProps("name")}
                        label={"Category Name"}
                        placeholder={"Enter name of categoty"}

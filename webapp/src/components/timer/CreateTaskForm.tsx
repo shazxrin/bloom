@@ -1,10 +1,7 @@
 import React, {forwardRef} from "react";
 import {Button, ColorSwatch, Group, NumberInput, Select, Stack, Text, TextInput} from "@mantine/core";
-import {useFetcher} from "react-router-dom";
 import {isNotEmpty, useForm} from "@mantine/form";
-import {modals} from "@mantine/modals";
 import {IconPlayerPlay, IconSparkles} from "@tabler/icons-react";
-import CreateCategoryModal from "./CreateCategoryModal.tsx";
 
 interface CategorySelectItemProps extends React.ComponentPropsWithoutRef<'div'> {
     label: string;
@@ -22,11 +19,7 @@ const CategorySelectItem = forwardRef<HTMLDivElement, CategorySelectItemProps>(
     )
 );
 
-interface CreateTaskModalProps {
-    categories: { id: string, name: string, color: string }[];
-}
-
-interface CreateTaskForm {
+interface CreateTaskFormValues {
     name: string;
     hours: number;
     minutes: number;
@@ -34,10 +27,14 @@ interface CreateTaskForm {
     categoryId: string;
 }
 
-export default function CreateTaskModal({categories}: CreateTaskModalProps) {
-    const fetcher = useFetcher();
+interface CreateTaskFormProps {
+    categories: { id: string, name: string, color: string }[];
+    onSubmit: (formValues: CreateTaskFormValues) => void;
+    onCreateCategoryClick: () => void;
+}
 
-    const form = useForm<CreateTaskForm>({
+export default function CreateTaskForm({categories, onSubmit, onCreateCategoryClick}: CreateTaskFormProps) {
+    const form = useForm<CreateTaskFormValues>({
         initialValues: {
             name: "",
             hours: 0,
@@ -52,19 +49,7 @@ export default function CreateTaskModal({categories}: CreateTaskModalProps) {
     });
 
     return (
-        <form onSubmit={form.onSubmit((formValues) => {
-            fetcher.submit({
-                action: "taskCreate",
-                name: formValues.name,
-                categoryId: formValues.categoryId,
-                duration: ((formValues.hours * 3600) + (formValues.minutes * 60) + formValues.seconds).toString(),
-            }, {
-                method: "post",
-                action: "/timer"
-            });
-
-            modals.closeAll();
-        })}>
+        <form onSubmit={form.onSubmit(onSubmit)}>
             <TextInput {...form.getInputProps("name")}
                        label={"Task Name"}
                        placeholder={"Enter name of task"}
@@ -93,11 +78,7 @@ export default function CreateTaskModal({categories}: CreateTaskModalProps) {
                     withAsterisk
                     onChange={value => form.setFieldValue("categoryId", value ?? "")}
                 />
-                <Button leftIcon={<IconSparkles size={18}/>} variant={"light"} onClick={() => modals.open({
-                    title: "Create new category",
-                    centered: true,
-                    children: <CreateCategoryModal />
-                })}>
+                <Button leftIcon={<IconSparkles size={18}/>} variant={"light"} onClick={onCreateCategoryClick}>
                     Create new category
                 </Button>
             </Stack>

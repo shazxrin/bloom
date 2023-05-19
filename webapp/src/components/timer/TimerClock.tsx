@@ -63,13 +63,13 @@ export default function TimerClock({remainingDuration, lastStartTime, isPaused, 
 
     return (
         <Group spacing={"xl"}>
-            <Text size={"5rem"} weight={"bold"} color={timerColor} ff={"DM Mono"}>
+            <Text size={"8rem"} weight={"bold"} color={timerColor} ff={"DM Mono"}>
                 {String(hours).padStart(2, "0")}
             </Text>
-            <Text size={"5rem"} weight={"bold"} color={timerColor} ff={"DM Mono"}>
+            <Text size={"8rem"} weight={"bold"} color={timerColor} ff={"DM Mono"}>
                 {String(minutes).padStart(2, "0")}
             </Text>
-            <Text size={"5rem"} weight={"bold"} color={timerColor} ff={"DM Mono"}>
+            <Text size={"8rem"} weight={"bold"} color={timerColor} ff={"DM Mono"}>
                 {String(seconds).padStart(2, "0")}
             </Text>
         </Group>

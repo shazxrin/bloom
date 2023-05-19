@@ -1,17 +1,7 @@
 import {
-    IconPlayerPlay,
-    IconPlayerPause,
-    IconPlayerStop,
-    IconArrowRight,
-} from "@tabler/icons-react";
-import {
     Center,
-    Group,
+    Modal, Overlay,
     Stack,
-    Text,
-    ActionIcon,
-    useMantineTheme,
-    Badge
 } from "@mantine/core";
 import {ActionFunction, LoaderFunction, useFetcher, useLoaderData} from "react-router-dom"
 import {
@@ -22,9 +12,12 @@ import {
     apiPostPauseTask,
     apiPostResumeTask
 } from "../api.ts";
-import {modals} from "@mantine/modals";
-import CreateTaskModal from "../components/timer/CreateTaskModal.tsx";
 import TimerClock from "../components/timer/TimerClock.tsx";
+import TimerButtons from "../components/timer/TimerButtons.tsx";
+import TimerLabel from "../components/timer/TimerLabel.tsx";
+import {useDisclosure} from "@mantine/hooks";
+import CreateCategoryForm from "../components/timer/CreateCategoryForm.tsx";
+import CreateTaskForm from "../components/timer/CreateTaskForm.tsx";
 
 interface LoaderData {
     currentTask: {
@@ -95,78 +88,78 @@ export const timerAction: ActionFunction = async ({request}) => {
 }
 
 export default function Timer() {
-    const theme = useMantineTheme();
-
     const loaderData = useLoaderData() as LoaderData;
 
     const fetcher = useFetcher();
 
+    const [createTaskModalOpened, {
+        open: openCreateTaskModal,
+        close: closeCreateTaskModal
+    }] = useDisclosure(false);
+    const [createCategoryModalOpened, {
+        open: openCreateCategoryModal,
+        close: closeCategoryTaskModal
+    }] = useDisclosure(false);
+
     return (
         <Center w={"100%"} h={"100%"}>
-            <Stack>
+            <Overlay hidden={!createTaskModalOpened} />
 
-                <Center>
-                    <Group align={"center"}>
-                        {loaderData.currentTask &&
-                            <>
-                                <Badge>
-                                    {loaderData.categories.find(value => value.id == loaderData.currentTask?.categoryId)?.name}
-                                </Badge>
-                                <IconArrowRight size={18}></IconArrowRight>
-                            </>}
-                        <Text color={theme.colors.gray[6]} size={"sm"}>
-                            {loaderData.currentTask ? loaderData.currentTask.name : "No current task"}
-                        </Text>
-                    </Group>
-                </Center>
+            <Modal title={"Create new task"}
+                   centered
+                   overlayProps={{opacity: 0}}
+                   opened={createTaskModalOpened}
+                   onClose={closeCreateTaskModal}
+                   hidden={createCategoryModalOpened}>
+                <CreateTaskForm categories={loaderData.categories}
+                                onCreateCategoryClick={() => {
+                                    openCreateCategoryModal();
+                                }}
+                                onSubmit={(formValues) => {
+                                    fetcher.submit({
+                                        action: "taskCreate",
+                                        name: formValues.name,
+                                        categoryId: formValues.categoryId,
+                                        duration: ((formValues.hours * 3600) + (formValues.minutes * 60) + formValues.seconds).toString()
+                                    }, {method: "post"});
+
+                                    closeCreateTaskModal();
+                                }}/>
+            </Modal>
+
+            <Modal title={"Create new category"}
+                   centered
+                   overlayProps={{opacity: 0}}
+                   opened={createCategoryModalOpened}
+                   onClose={closeCategoryTaskModal}>
+                <CreateCategoryForm onSubmit={(formValues) => {
+                    fetcher.submit({
+                        action: "categoryCreate",
+                        name: formValues.name,
+                        color: formValues.color
+                    }, {method: "post"});
+                    closeCategoryTaskModal();
+
+                    openCreateTaskModal();
+                }}/>
+            </Modal>
+
+            <Stack>
+                <TimerLabel hasTask={loaderData.currentTask != null}
+                            taskName={loaderData.currentTask?.name ?? ""}
+                            categoryName={loaderData.categories.find(value => value.id === (loaderData.currentTask?.categoryId ?? ""))?.name ?? ""}
+                            categoryColor={loaderData.categories.find(value => value.id === (loaderData.currentTask?.categoryId ?? ""))?.color ?? ""}/>
 
                 <TimerClock remainingDuration={loaderData.currentTask?.remainingDuration ?? 0}
-                           lastStartTime={loaderData.currentTask?.lastStartTime ?? new Date()}
-                           hasTask={loaderData.currentTask != null}
-                           isPaused={loaderData.currentTask?.isPaused ?? false}/>
+                            lastStartTime={loaderData.currentTask?.lastStartTime ?? new Date()}
+                            hasTask={loaderData.currentTask != null}
+                            isPaused={loaderData.currentTask?.isPaused ?? false}/>
 
-                <Group position={"center"}>
-                    <ActionIcon size={"xl"} variant={"default"} radius={"xl"}
-                                disabled={loaderData.currentTask == null || loaderData.currentTask.isPaused}
-                                onClick={() => fetcher.submit({
-                                    action: "taskPause"
-                                }, {
-                                    method: "post",
-                                    action: "/timer"
-                                })}>
-                        <IconPlayerPause color={theme.colors.yellow[7]}/>
-                    </ActionIcon>
-                    <ActionIcon size={"xl"} variant={"default"} radius={"xl"}
-                                disabled={loaderData.currentTask == null ? false : !loaderData.currentTask.isPaused}
-                                onClick={() => {
-                                    if (loaderData.currentTask == null) {
-                                        modals.open({
-                                            title: "Create new task",
-                                            centered: true,
-                                            children: <CreateTaskModal categories={loaderData.categories}/>
-                                        })
-                                    } else {
-                                        fetcher.submit({
-                                            action: "taskResume",
-                                        }, {
-                                            method: "post",
-                                            action: "/timer"
-                                        });
-                                    }
-                                }}>
-                        <IconPlayerPlay color={theme.colors.green[7]}/>
-                    </ActionIcon>
-                    <ActionIcon size={"xl"} variant={"default"} radius={"xl"}
-                                disabled={loaderData.currentTask == null}
-                                onClick={() => fetcher.submit({
-                                    action: "taskEnd"
-                                }, {
-                                    method: "post",
-                                    action: "/timer"
-                                })}>
-                        <IconPlayerStop color={theme.colors.red[7]}/>
-                    </ActionIcon>
-                </Group>
+                <TimerButtons hasTask={loaderData.currentTask != null}
+                              isPaused={loaderData.currentTask?.isPaused ?? false}
+                              onPauseButtonClick={() => fetcher.submit({action: "taskPause"}, {method: "post"})}
+                              onPlayButtonClick={() => loaderData.currentTask == null ? openCreateTaskModal() : fetcher.submit({action: "taskResume"}, {method: "post"})}
+                              onStopButtonClick={() => fetcher.submit({action: "taskEnd"}, {method: "post"})}/>
             </Stack>
         </Center>
     );
