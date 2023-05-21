@@ -3,9 +3,9 @@ spring:
     mongodb:
       host: localhost
       port: 27017
-      database: bloom-testing
+      database: bloom
 server:
-  disable-cors: true
+  disable-cors: false
   error:
     include-stacktrace: never
     include-message: always

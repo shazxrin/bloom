@@ -17,14 +17,14 @@ import org.springframework.web.server.ResponseStatusException
 class CategoryController @Autowired constructor(private val categoryService: CategoryService) {
 
     @PostMapping
-    suspend fun postCreatesCategory(@RequestBody createCategoryDto: CreateCategoryDto): ResponseEntity<Unit> {
+    suspend fun postCreateCategory(@RequestBody createCategoryDto: CreateCategoryDto): ResponseEntity<Unit> {
         categoryService.createCategory(createCategoryDto)
 
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 
     @PatchMapping("/{id}")
-    suspend fun patchUpdatesCategory(@PathVariable id: String, @RequestBody updateCategoryDto: UpdateCategoryDto): ResponseEntity<Unit> {
+    suspend fun patchUpdateCategory(@PathVariable id: String, @RequestBody updateCategoryDto: UpdateCategoryDto): ResponseEntity<Unit> {
         try {
             categoryService.updateCategory(id, updateCategoryDto)
         } catch (e: NotFoundException) {
@@ -35,7 +35,7 @@ class CategoryController @Autowired constructor(private val categoryService: Cat
     }
 
     @DeleteMapping("/{id}")
-    suspend fun deleteDeletesCategory(@PathVariable id: String): ResponseEntity<Unit> {
+    suspend fun deleteCategory(@PathVariable id: String): ResponseEntity<Unit> {
         try {
             categoryService.deleteCategory(id)
         } catch (e: NotFoundException) {
@@ -46,7 +46,7 @@ class CategoryController @Autowired constructor(private val categoryService: Cat
     }
 
     @GetMapping("/all")
-    suspend fun getGetsAllCategories(): Flow<ListCategoryDto> {
+    suspend fun getAllCategories(): Flow<ListCategoryDto> {
         return categoryService.getAllCategories()
     }
 }

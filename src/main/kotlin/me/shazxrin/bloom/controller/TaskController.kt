@@ -21,7 +21,7 @@ import org.springframework.web.server.ResponseStatusException
 class TaskController @Autowired constructor(private val taskService: TaskService) {
 
     @PostMapping("/current/create")
-    suspend fun postCreatesCurrentTask(@RequestBody createCurrentTaskDto: CreateCurrentTaskDto): ResponseEntity<Unit> {
+    suspend fun postCreateCurrentTask(@RequestBody createCurrentTaskDto: CreateCurrentTaskDto): ResponseEntity<Unit> {
         try {
             taskService.createCurrentTask(createCurrentTaskDto)
         } catch (ex: Exception) {
@@ -39,7 +39,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
     }
 
     @PostMapping("/current/pause")
-    suspend fun postPausesCurrentTask(): ResponseEntity<Unit> {
+    suspend fun postPauseCurrentTask(): ResponseEntity<Unit> {
         try {
             taskService.pauseCurrentTask()
         } catch (ex: Exception) {
@@ -57,7 +57,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
     }
 
     @PostMapping("/current/resume")
-    suspend fun postResumesCurrentTask(): ResponseEntity<Unit> {
+    suspend fun postResumeCurrentTask(): ResponseEntity<Unit> {
         try {
             taskService.resumeCurrentTask()
         } catch (ex: Exception) {
@@ -75,7 +75,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
     }
 
     @PostMapping("/current/end")
-    suspend fun postEndsCurrentTask(): ResponseEntity<Unit> {
+    suspend fun postEndCurrentTask(): ResponseEntity<Unit> {
         try {
             taskService.endCurrentTask()
         } catch (ex: NotFoundException) {
@@ -86,7 +86,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
     }
 
     @GetMapping("/current")
-    suspend fun getGetsCurrentTask(): ResponseEntity<CurrentTaskDto?> {
+    suspend fun getCurrentTask(): ResponseEntity<CurrentTaskDto?> {
         val currentTaskDto = taskService.getCurrentTask()
 
         return if (currentTaskDto == null) {
@@ -102,7 +102,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
     }
 
     @GetMapping("/all")
-    suspend fun getGetsAllTasks(): Flow<ListTaskDto> {
+    suspend fun getAllTasks(): Flow<ListTaskDto> {
         return taskService.getAllTasks()
     }
 }

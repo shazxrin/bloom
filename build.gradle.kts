@@ -1,4 +1,3 @@
-import com.github.gradle.node.npm.task.NpmInstallTask
 import com.github.gradle.node.npm.task.NpmTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springdoc.openapi.gradle.plugin.OpenApiGeneratorTask
@@ -45,14 +44,13 @@ openApiGenerate {
     generatorName.set("typescript-axios")
     inputSpec.set("${buildDir}/openapi.json")
     outputDir.set("${projectDir}/webapp/src/api")
+    configOptions.set(mapOf(
+        "useSingleRequestParameter" to "true"
+    ))
 }
 
 tasks.openApiGenerate {
     dependsOn(tasks.withType<OpenApiGeneratorTask>())
-}
-
-tasks.withType<NpmInstallTask> {
-    workingDir.set(file("${projectDir}/webapp"))
 }
 
 tasks.register<NpmTask>("buildWebapp") {
@@ -60,22 +58,14 @@ tasks.register<NpmTask>("buildWebapp") {
     npmCommand.set(listOf("run", "build"))
 }
 
-tasks.register<Copy>("copyWebapp") {
-    dependsOn(tasks.named("buildWebapp"))
+tasks.register<Copy>("bundleWebapp") {
+    dependsOn(tasks.named("removeWebapp"), tasks.named("buildWebapp"))
     from(file("${projectDir}/webapp/dist"))
     into(file("${projectDir}/src/main/resources/public"))
 }
 
-tasks.register<Delete>("cleanWebapp") {
+tasks.register<Delete>("removeWebapp") {
     delete(file("${projectDir}/src/main/resources/public"))
-}
-
-tasks.clean {
-    dependsOn(tasks.named("cleanWebapp"))
-}
-
-tasks.processResources {
-    dependsOn(tasks.named("copyWebapp"))
 }
 
 tasks.withType<KotlinCompile> {

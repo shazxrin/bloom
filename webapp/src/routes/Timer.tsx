@@ -1,23 +1,17 @@
 import {
     Center,
-    Modal, Overlay,
+    Modal,
+    Overlay,
     Stack,
 } from "@mantine/core";
 import {ActionFunction, LoaderFunction, useFetcher, useLoaderData} from "react-router-dom"
-import {
-    apiGetAllCategory,
-    apiGetCurrentTask, apiPostCreateCategory,
-    apiPostCreateTask,
-    apiPostEndTask,
-    apiPostPauseTask,
-    apiPostResumeTask
-} from "../api.ts";
 import TimerClock from "../components/timer/TimerClock.tsx";
 import TimerButtons from "../components/timer/TimerButtons.tsx";
 import TimerLabel from "../components/timer/TimerLabel.tsx";
 import {useDisclosure} from "@mantine/hooks";
 import CreateCategoryForm from "../components/category/CreateCategoryForm.tsx";
 import CreateTaskForm from "../components/task/CreateTaskForm.tsx";
+import {CategoryControllerApi, TaskControllerApi} from "../api";
 
 interface LoaderData {
     currentTask: {
@@ -37,50 +31,60 @@ interface LoaderData {
 }
 
 export const timerLoader: LoaderFunction = async (): Promise<LoaderData> => {
-    const {data: apiCurrentTask, status: apiCurrentTaskStatus} = await apiGetCurrentTask()
-    const {data: apiAllCategory} = await apiGetAllCategory()
+    const taskApi = new TaskControllerApi();
+    const apiCurrentTaskResponse = await taskApi.getCurrentTask();
+
+    const categoryApi = new CategoryControllerApi();
+    const apiAllCategoriesResponse = await categoryApi.getAllCategories();
 
     return {
-        currentTask: apiCurrentTaskStatus == 204 ? null : {
-            name: apiCurrentTask.name,
-            categoryId: apiCurrentTask.categoryId,
-            duration: apiCurrentTask.duration,
-            remainingDuration: apiCurrentTask.remainingDuration,
-            isPaused: apiCurrentTask.isPaused,
-            startTime: new Date(apiCurrentTask.startTime),
-            lastStartTime: new Date(apiCurrentTask.lastStartTime)
+        currentTask: apiCurrentTaskResponse.status == 204 ? null : {
+            name: apiCurrentTaskResponse.data.name,
+            categoryId: apiCurrentTaskResponse.data.categoryId,
+            duration: apiCurrentTaskResponse.data.duration,
+            remainingDuration: apiCurrentTaskResponse.data.remainingDuration,
+            isPaused: apiCurrentTaskResponse.data.isPaused,
+            startTime: new Date(apiCurrentTaskResponse.data.startTime),
+            lastStartTime: new Date(apiCurrentTaskResponse.data.lastStartTime)
         },
-        categories: apiAllCategory
+        categories: apiAllCategoriesResponse.data
     };
 }
 
 export const timerAction: ActionFunction = async ({request}) => {
+    const taskApi = new TaskControllerApi();
+    const categoryApi = new CategoryControllerApi();
+
     const formData = await request.formData();
     const action = formData.get("action")?.toString() ?? "";
 
     if (action === "taskPause") {
-        await apiPostPauseTask();
+        await taskApi.postPauseCurrentTask();
     } else if (action === "taskResume") {
-        await apiPostResumeTask();
+        await taskApi.postResumeCurrentTask();
     } else if (action === "taskEnd") {
-        await apiPostEndTask();
+        await taskApi.postEndCurrentTask();
     } else if (action === "taskCreate") {
         const name = formData.get("name")?.toString() ?? "";
         const categoryId = formData.get("categoryId")?.toString() ?? "";
         const duration = parseInt(formData.get("duration")?.toString() ?? "0");
 
-        await apiPostCreateTask({
-            name: name,
-            categoryId: categoryId,
-            duration: duration
+        await taskApi.postCreateCurrentTask({
+            createCurrentTaskDto: {
+                name: name,
+                categoryId: categoryId,
+                duration: duration
+            }
         });
     } else if (action === "categoryCreate") {
         const name = formData.get("name")?.toString() ?? "";
         const color = formData.get("color")?.toString() ?? "";
 
-        await apiPostCreateCategory({
-            name: name,
-            color: color
+        await categoryApi.postCreateCategory({
+            createCategoryDto: {
+                name: name,
+                color: color
+            }
         });
     }
 
