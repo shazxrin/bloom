@@ -1,13 +1,9 @@
-import com.github.gradle.node.npm.task.NpmTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.springdoc.openapi.gradle.plugin.OpenApiGeneratorTask
 
 plugins {
     id("org.springframework.boot") version "3.0.6"
     id("io.spring.dependency-management") version "1.1.0"
     id("org.springdoc.openapi-gradle-plugin") version "1.6.0"
-    id("org.openapi.generator") version "6.6.0"
-    id("com.github.node-gradle.node") version "5.0.0"
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
 }
@@ -38,34 +34,6 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
-}
-
-openApiGenerate {
-    generatorName.set("typescript-axios")
-    inputSpec.set("${buildDir}/openapi.json")
-    outputDir.set("${projectDir}/webapp/src/api")
-    configOptions.set(mapOf(
-        "useSingleRequestParameter" to "true"
-    ))
-}
-
-tasks.openApiGenerate {
-    dependsOn(tasks.withType<OpenApiGeneratorTask>())
-}
-
-tasks.register<NpmTask>("buildWebapp") {
-    workingDir.set(file("${projectDir}/webapp"))
-    npmCommand.set(listOf("run", "build"))
-}
-
-tasks.register<Copy>("bundleWebapp") {
-    dependsOn(tasks.named("removeWebapp"), tasks.named("buildWebapp"))
-    from(file("${projectDir}/webapp/dist"))
-    into(file("${projectDir}/src/main/resources/public"))
-}
-
-tasks.register<Delete>("removeWebapp") {
-    delete(file("${projectDir}/src/main/resources/public"))
 }
 
 tasks.withType<KotlinCompile> {
