@@ -5,7 +5,6 @@ spring:
       port: 27017
       database: bloom
 server:
-  disable-cors: false
   error:
     include-stacktrace: never
     include-message: always
