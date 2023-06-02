@@ -1,28 +1,35 @@
 package me.shazxrin.bloom.service
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import me.shazxrin.bloom.dto.category.UpdateCategoryDto
-import me.shazxrin.bloom.dto.category.CreateCategoryDto
-import me.shazxrin.bloom.dto.category.ListCategoryDto
 import me.shazxrin.bloom.exception.NotFoundException
 import me.shazxrin.bloom.model.Category
 import me.shazxrin.bloom.repository.CategoryRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
+interface CategoryService {
+    suspend fun createCategory(name: String, color: String)
+
+    suspend fun deleteCategory(id: String)
+
+    suspend fun updateCategory(id: String, name: String?, color: String?)
+
+    fun getAllCategories(): Flow<Category>
+}
+
 @Service
-class CategoryService @Autowired constructor(private val categoryRepository: CategoryRepository) {
-    suspend fun createCategory(createCategoryDto: CreateCategoryDto) {
+class DefaultCategoryService @Autowired constructor(private val categoryRepository: CategoryRepository) :
+    CategoryService {
+    override suspend fun createCategory(name: String, color: String) {
         val newCategory = Category(
-            name = createCategoryDto.name,
-            color = createCategoryDto.color
+            name = name,
+            color = color
         )
 
         categoryRepository.save(newCategory)
     }
 
-    suspend fun deleteCategory(id: String) {
+    override suspend fun deleteCategory(id: String) {
         if (!categoryRepository.existsById(id)) {
             throw NotFoundException("Category does not exist!")
         }
@@ -30,7 +37,7 @@ class CategoryService @Autowired constructor(private val categoryRepository: Cat
         categoryRepository.deleteById(id)
     }
 
-    suspend fun updateCategory(id: String, updateCategoryDto: UpdateCategoryDto) {
+    override suspend fun updateCategory(id: String, name: String?, color: String?) {
         val existingCategory = categoryRepository.findById(id)
 
         if (existingCategory == null) {
@@ -38,14 +45,14 @@ class CategoryService @Autowired constructor(private val categoryRepository: Cat
         }
 
         val updatedExistingCategory = existingCategory.copy(
-            name = updateCategoryDto.name ?: existingCategory.name,
-            color = updateCategoryDto.color ?: existingCategory.color
+            name = name ?: existingCategory.name,
+            color = color ?: existingCategory.color
         )
 
         categoryRepository.save(updatedExistingCategory)
     }
 
-    fun getAllCategories(): Flow<ListCategoryDto> {
-        return categoryRepository.findAll().map { ListCategoryDto(it.id, it.name, it.color) }
+    override fun getAllCategories(): Flow<Category> {
+        return categoryRepository.findAll()
     }
 }

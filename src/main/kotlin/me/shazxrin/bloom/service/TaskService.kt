@@ -1,10 +1,6 @@
 package me.shazxrin.bloom.service
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import me.shazxrin.bloom.dto.task.CreateCurrentTaskDto
-import me.shazxrin.bloom.dto.task.CurrentTaskDto
-import me.shazxrin.bloom.dto.task.ListTaskDto
 import me.shazxrin.bloom.exception.ExistsException
 import me.shazxrin.bloom.exception.NotFoundException
 import me.shazxrin.bloom.exception.StateException
@@ -15,29 +11,42 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
+
+interface TaskService {
+    suspend fun createCurrentTask(name: String, categoryId: String, duration: Long)
+
+    suspend fun pauseCurrentTask()
+
+    suspend fun resumeCurrentTask()
+
+    suspend fun endCurrentTask()
+
+    suspend fun getCurrentTask(): Task?
+
+    fun getAllTasks(): Flow<Task>
+}
 
 @Service
-class TaskService @Autowired constructor(
+class DefaultTaskService @Autowired constructor(
     private val taskRepository: TaskRepository,
     private val categoryRepository: CategoryRepository
-) {
+) : TaskService {
 
-    suspend fun createCurrentTask(createCurrentTaskDto: CreateCurrentTaskDto) {
+    override suspend fun createCurrentTask(name: String, categoryId: String, duration: Long) {
         if (taskRepository.findByEndTimeIsNull() != null) {
             throw ExistsException("Current task already exists!")
         }
 
-        if (!categoryRepository.existsById(createCurrentTaskDto.categoryId)) {
+        if (!categoryRepository.existsById(categoryId)) {
             throw NotFoundException("Category does not exist!")
         }
 
         val newCurrentTask = Task(
-            name = createCurrentTaskDto.name,
-            categoryId = createCurrentTaskDto.categoryId,
-            duration = createCurrentTaskDto.duration,
+            name = name,
+            categoryId = categoryId,
+            duration = duration,
             isPaused = false,
-            remainingDuration = createCurrentTaskDto.duration,
+            remainingDuration = duration,
             startTime = LocalDateTime.now(),
             lastStartTime = LocalDateTime.now(),
             endTime = null
@@ -46,7 +55,7 @@ class TaskService @Autowired constructor(
         taskRepository.save(newCurrentTask)
     }
 
-    suspend fun pauseCurrentTask() {
+    override suspend fun pauseCurrentTask() {
         val currentTask = taskRepository.findByEndTimeIsNull()
 
         if (currentTask == null) {
@@ -65,7 +74,7 @@ class TaskService @Autowired constructor(
         taskRepository.save(pausedCurrentTask)
     }
 
-    suspend fun resumeCurrentTask() {
+    override suspend fun resumeCurrentTask() {
         val currentTask = taskRepository.findByEndTimeIsNull()
 
         if (currentTask == null) {
@@ -84,7 +93,7 @@ class TaskService @Autowired constructor(
         taskRepository.save(pausedCurrentTask)
     }
 
-    suspend fun endCurrentTask() {
+    override suspend fun endCurrentTask() {
         val currentTask = taskRepository.findByEndTimeIsNull()
 
         if (currentTask == null) {
@@ -95,35 +104,11 @@ class TaskService @Autowired constructor(
         taskRepository.save(completedCurrentTask)
     }
 
-    suspend fun getCurrentTask(): CurrentTaskDto? {
-        val currentTask = taskRepository.findByEndTimeIsNull()
-
-        return if (currentTask == null) {
-            null
-        } else {
-            CurrentTaskDto(
-                currentTask.name,
-                currentTask.categoryId,
-                currentTask.duration,
-                currentTask.remainingDuration,
-                currentTask.isPaused,
-                currentTask.startTime,
-                currentTask.lastStartTime
-            )
-        }
+    override suspend fun getCurrentTask(): Task? {
+        return taskRepository.findByEndTimeIsNull()
     }
 
-    fun getAllTasks(): Flow<ListTaskDto> {
+    override fun getAllTasks(): Flow<Task> {
         return taskRepository.findAll()
-            .map {
-                ListTaskDto(
-                    it.id,
-                    it.name,
-                    it.categoryId,
-                    it.duration,
-                    it.startTime,
-                    it.endTime
-                )
-            }
     }
 }
