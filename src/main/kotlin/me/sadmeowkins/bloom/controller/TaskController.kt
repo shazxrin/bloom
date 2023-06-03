@@ -2,7 +2,7 @@ package me.sadmeowkins.bloom.controller
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import me.shazxrin.bloom.dto.task.*
+import me.sadmeowkins.bloom.dto.task.*
 import me.sadmeowkins.bloom.service.TaskService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/tasks")
-class TaskController @Autowired constructor(private val taskService: me.sadmeowkins.bloom.service.TaskService) {
+class TaskController @Autowired constructor(private val taskService: TaskService) {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/current/create")
-    suspend fun postCreateCurrentTask(@RequestBody createCurrentTaskDto: me.sadmeowkins.bloom.dto.task.CreateCurrentTaskDto) {
+    suspend fun postCreateCurrentTask(@RequestBody createCurrentTaskDto: CreateCurrentTaskDto) {
         with(createCurrentTaskDto) {
             taskService.createCurrentTask(name, categoryId, duration)
         }
@@ -45,7 +45,7 @@ class TaskController @Autowired constructor(private val taskService: me.sadmeowk
     }
 
     @GetMapping("/current")
-    suspend fun getCurrentTask(): ResponseEntity<me.sadmeowkins.bloom.dto.task.CurrentTaskDto?> {
+    suspend fun getCurrentTask(): ResponseEntity<CurrentTaskDto?> {
         val currentTask = taskService.getCurrentTask()
 
         return if (currentTask == null) {
@@ -54,7 +54,7 @@ class TaskController @Autowired constructor(private val taskService: me.sadmeowk
                 .build()
         } else {
             val currentTaskDto = with(currentTask) {
-                me.sadmeowkins.bloom.dto.task.CurrentTaskDto(
+                CurrentTaskDto(
                     name,
                     categoryId,
                     duration,
@@ -73,10 +73,10 @@ class TaskController @Autowired constructor(private val taskService: me.sadmeowk
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    suspend fun getAllTasks(): Flow<me.sadmeowkins.bloom.dto.task.ListTaskDto> {
+    suspend fun getAllTasks(): Flow<ListTaskDto> {
         return taskService.getAllTasks().map {
             with(it) {
-                me.sadmeowkins.bloom.dto.task.ListTaskDto(id, name, categoryId, duration, startTime, endTime)
+                ListTaskDto(id, name, categoryId, duration, startTime, endTime)
             }
         }
     }

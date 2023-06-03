@@ -11,17 +11,17 @@ import org.springframework.web.server.ResponseStatusException
 @RestControllerAdvice
 class RestControllerExceptionAdvice {
     @ExceptionHandler
-    fun handleNotFoundException(ex: me.sadmeowkins.bloom.exception.NotFoundException) {
+    fun handleNotFoundException(ex: NotFoundException) {
         throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message)
     }
 
     @ExceptionHandler
-    fun handleExistException(ex: me.sadmeowkins.bloom.exception.ExistsException) {
+    fun handleExistException(ex: ExistsException) {
         throw ResponseStatusException(HttpStatus.BAD_REQUEST, ex.message)
     }
 
     @ExceptionHandler
-    fun handleStateException(ex: me.sadmeowkins.bloom.exception.StateException) {
+    fun handleStateException(ex: StateException) {
         throw ResponseStatusException(HttpStatus.BAD_REQUEST, ex.message)
     }
 }

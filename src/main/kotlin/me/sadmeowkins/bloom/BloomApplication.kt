@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class BloomApplication
 
 fun main(args: Array<String>) {
-    runApplication<me.sadmeowkins.bloom.BloomApplication>(*args)
+    runApplication<BloomApplication>(*args)
 }

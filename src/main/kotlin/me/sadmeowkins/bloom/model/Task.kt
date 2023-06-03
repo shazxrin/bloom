@@ -16,4 +16,4 @@ data class Task(
     val startTime: LocalDateTime,
     val lastStartTime: LocalDateTime,
     val endTime: LocalDateTime?,
-) : me.sadmeowkins.bloom.model.Entity(LocalDateTime.now(), LocalDateTime.now())
+) : Entity(LocalDateTime.now(), LocalDateTime.now())

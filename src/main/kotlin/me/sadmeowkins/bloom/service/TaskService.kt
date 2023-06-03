@@ -21,27 +21,27 @@ interface TaskService {
 
     suspend fun endCurrentTask()
 
-    suspend fun getCurrentTask(): me.sadmeowkins.bloom.model.Task?
+    suspend fun getCurrentTask(): Task?
 
-    fun getAllTasks(): Flow<me.sadmeowkins.bloom.model.Task>
+    fun getAllTasks(): Flow<Task>
 }
 
 @Service
 class DefaultTaskService @Autowired constructor(
-    private val taskRepository: me.sadmeowkins.bloom.repository.TaskRepository,
-    private val categoryRepository: me.sadmeowkins.bloom.repository.CategoryRepository
-) : me.sadmeowkins.bloom.service.TaskService {
+    private val taskRepository: TaskRepository,
+    private val categoryRepository: CategoryRepository
+) : TaskService {
 
     override suspend fun createCurrentTask(name: String, categoryId: String, duration: Long) {
         if (taskRepository.findByEndTimeIsNull() != null) {
-            throw me.sadmeowkins.bloom.exception.ExistsException("Current task already exists!")
+            throw ExistsException("Current task already exists!")
         }
 
         if (!categoryRepository.existsById(categoryId)) {
-            throw me.sadmeowkins.bloom.exception.NotFoundException("Category does not exist!")
+            throw NotFoundException("Category does not exist!")
         }
 
-        val newCurrentTask = me.sadmeowkins.bloom.model.Task(
+        val newCurrentTask = Task(
             name = name,
             categoryId = categoryId,
             duration = duration,
@@ -59,16 +59,19 @@ class DefaultTaskService @Autowired constructor(
         val currentTask = taskRepository.findByEndTimeIsNull()
 
         if (currentTask == null) {
-            throw me.sadmeowkins.bloom.exception.NotFoundException("Current task does not exist")
+            throw NotFoundException("Current task does not exist")
         }
 
         if (currentTask.isPaused) {
-            throw me.sadmeowkins.bloom.exception.StateException("Current task is already paused")
+            throw StateException("Current task is already paused")
         }
 
         val pausedCurrentTask = currentTask.copy(
             isPaused = true,
-            remainingDuration = currentTask.remainingDuration - Duration.between(currentTask.lastStartTime, LocalDateTime.now()).toSeconds()
+            remainingDuration = currentTask.remainingDuration - Duration.between(
+                currentTask.lastStartTime,
+                LocalDateTime.now()
+            ).toSeconds()
         )
 
         taskRepository.save(pausedCurrentTask)
@@ -78,11 +81,11 @@ class DefaultTaskService @Autowired constructor(
         val currentTask = taskRepository.findByEndTimeIsNull()
 
         if (currentTask == null) {
-            throw me.sadmeowkins.bloom.exception.NotFoundException("Current task does not exist")
+            throw NotFoundException("Current task does not exist")
         }
 
         if (!currentTask.isPaused) {
-            throw me.sadmeowkins.bloom.exception.StateException("Current task is not paused")
+            throw StateException("Current task is not paused")
         }
 
         val pausedCurrentTask = currentTask.copy(
@@ -97,18 +100,18 @@ class DefaultTaskService @Autowired constructor(
         val currentTask = taskRepository.findByEndTimeIsNull()
 
         if (currentTask == null) {
-            throw me.sadmeowkins.bloom.exception.NotFoundException("Current task does not exist")
+            throw NotFoundException("Current task does not exist")
         }
 
         val completedCurrentTask = currentTask.copy(endTime = LocalDateTime.now())
         taskRepository.save(completedCurrentTask)
     }
 
-    override suspend fun getCurrentTask(): me.sadmeowkins.bloom.model.Task? {
+    override suspend fun getCurrentTask(): Task? {
         return taskRepository.findByEndTimeIsNull()
     }
 
-    override fun getAllTasks(): Flow<me.sadmeowkins.bloom.model.Task> {
+    override fun getAllTasks(): Flow<Task> {
         return taskRepository.findAll()
     }
 }

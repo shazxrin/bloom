@@ -14,14 +14,14 @@ interface CategoryService {
 
     suspend fun updateCategory(id: String, name: String?, color: String?)
 
-    fun getAllCategories(): Flow<me.sadmeowkins.bloom.model.Category>
+    fun getAllCategories(): Flow<Category>
 }
 
 @Service
-class DefaultCategoryService @Autowired constructor(private val categoryRepository: me.sadmeowkins.bloom.repository.CategoryRepository) :
-    me.sadmeowkins.bloom.service.CategoryService {
+class DefaultCategoryService @Autowired constructor(private val categoryRepository: CategoryRepository) :
+    CategoryService {
     override suspend fun createCategory(name: String, color: String) {
-        val newCategory = me.sadmeowkins.bloom.model.Category(
+        val newCategory = Category(
             name = name,
             color = color
         )
@@ -31,7 +31,7 @@ class DefaultCategoryService @Autowired constructor(private val categoryReposito
 
     override suspend fun deleteCategory(id: String) {
         if (!categoryRepository.existsById(id)) {
-            throw me.sadmeowkins.bloom.exception.NotFoundException("Category does not exist!")
+            throw NotFoundException("Category does not exist!")
         }
 
         categoryRepository.deleteById(id)
@@ -41,7 +41,7 @@ class DefaultCategoryService @Autowired constructor(private val categoryReposito
         val existingCategory = categoryRepository.findById(id)
 
         if (existingCategory == null) {
-            throw me.sadmeowkins.bloom.exception.NotFoundException("Category does not exist!")
+            throw NotFoundException("Category does not exist!")
         }
 
         val updatedExistingCategory = existingCategory.copy(
@@ -52,7 +52,7 @@ class DefaultCategoryService @Autowired constructor(private val categoryReposito
         categoryRepository.save(updatedExistingCategory)
     }
 
-    override fun getAllCategories(): Flow<me.sadmeowkins.bloom.model.Category> {
+    override fun getAllCategories(): Flow<Category> {
         return categoryRepository.findAll()
     }
 }

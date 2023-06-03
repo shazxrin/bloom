@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/categories")
-class CategoryController @Autowired constructor(private val categoryService: me.sadmeowkins.bloom.service.CategoryService) {
+class CategoryController @Autowired constructor(private val categoryService: CategoryService) {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    suspend fun postCreateCategory(@RequestBody createCategoryDto: me.sadmeowkins.bloom.dto.category.CreateCategoryDto) {
+    suspend fun postCreateCategory(@RequestBody createCategoryDto: CreateCategoryDto) {
         with(createCategoryDto) {
             categoryService.createCategory(name, color)
         }
@@ -26,7 +26,7 @@ class CategoryController @Autowired constructor(private val categoryService: me.
     @PatchMapping("/{id}")
     suspend fun patchUpdateCategory(
         @PathVariable id: String,
-        @RequestBody updateCategoryDto: me.sadmeowkins.bloom.dto.category.UpdateCategoryDto
+        @RequestBody updateCategoryDto: UpdateCategoryDto
     ) {
         with(updateCategoryDto) {
             categoryService.updateCategory(id, name, color)
@@ -41,11 +41,11 @@ class CategoryController @Autowired constructor(private val categoryService: me.
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    suspend fun getAllCategories(): Flow<me.sadmeowkins.bloom.dto.category.ListCategoryDto> {
+    suspend fun getAllCategories(): Flow<ListCategoryDto> {
         return categoryService.getAllCategories()
             .map {
                 with(it) {
-                    me.sadmeowkins.bloom.dto.category.ListCategoryDto(id, name, color)
+                    ListCategoryDto(id, name, color)
                 }
             }
     }
