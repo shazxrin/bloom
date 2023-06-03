@@ -1,0 +1,58 @@
+package me.sadmeowkins.bloom.service
+
+import kotlinx.coroutines.flow.Flow
+import me.sadmeowkins.bloom.exception.NotFoundException
+import me.sadmeowkins.bloom.model.Category
+import me.sadmeowkins.bloom.repository.CategoryRepository
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+
+interface CategoryService {
+    suspend fun createCategory(name: String, color: String)
+
+    suspend fun deleteCategory(id: String)
+
+    suspend fun updateCategory(id: String, name: String?, color: String?)
+
+    fun getAllCategories(): Flow<me.sadmeowkins.bloom.model.Category>
+}
+
+@Service
+class DefaultCategoryService @Autowired constructor(private val categoryRepository: me.sadmeowkins.bloom.repository.CategoryRepository) :
+    me.sadmeowkins.bloom.service.CategoryService {
+    override suspend fun createCategory(name: String, color: String) {
+        val newCategory = me.sadmeowkins.bloom.model.Category(
+            name = name,
+            color = color
+        )
+
+        categoryRepository.save(newCategory)
+    }
+
+    override suspend fun deleteCategory(id: String) {
+        if (!categoryRepository.existsById(id)) {
+            throw me.sadmeowkins.bloom.exception.NotFoundException("Category does not exist!")
+        }
+
+        categoryRepository.deleteById(id)
+    }
+
+    override suspend fun updateCategory(id: String, name: String?, color: String?) {
+        val existingCategory = categoryRepository.findById(id)
+
+        if (existingCategory == null) {
+            throw me.sadmeowkins.bloom.exception.NotFoundException("Category does not exist!")
+        }
+
+        val updatedExistingCategory = existingCategory.copy(
+            name = name ?: existingCategory.name,
+            color = color ?: existingCategory.color
+        )
+
+        categoryRepository.save(updatedExistingCategory)
+    }
+
+    override fun getAllCategories(): Flow<me.sadmeowkins.bloom.model.Category> {
+        return categoryRepository.findAll()
+    }
+}
