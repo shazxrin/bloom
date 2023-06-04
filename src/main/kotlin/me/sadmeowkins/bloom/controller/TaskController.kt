@@ -1,5 +1,6 @@
 package me.sadmeowkins.bloom.controller
 
+import jakarta.validation.Valid
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import me.sadmeowkins.bloom.dto.task.*
@@ -20,7 +21,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/current/create")
-    suspend fun postCreateCurrentTask(@RequestBody createCurrentTaskDto: CreateCurrentTaskDto) {
+    suspend fun postCreateCurrentTask(@Valid @RequestBody createCurrentTaskDto: CreateCurrentTaskDTO) {
         with(createCurrentTaskDto) {
             taskService.createCurrentTask(name, categoryId, duration)
         }
@@ -45,7 +46,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
     }
 
     @GetMapping("/current")
-    suspend fun getCurrentTask(): ResponseEntity<CurrentTaskDto?> {
+    suspend fun getCurrentTask(): ResponseEntity<CurrentTaskDTO?> {
         val currentTask = taskService.getCurrentTask()
 
         return if (currentTask == null) {
@@ -54,7 +55,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
                 .build()
         } else {
             val currentTaskDto = with(currentTask) {
-                CurrentTaskDto(
+                CurrentTaskDTO(
                     name,
                     categoryId,
                     duration,
@@ -73,10 +74,10 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    suspend fun getAllTasks(): Flow<ListTaskDto> {
+    suspend fun getAllTasks(): Flow<ListTaskDTO> {
         return taskService.getAllTasks().map {
             with(it) {
-                ListTaskDto(id, name, categoryId, duration, startTime, endTime)
+                ListTaskDTO(id, name, categoryId, duration, startTime, endTime)
             }
         }
     }

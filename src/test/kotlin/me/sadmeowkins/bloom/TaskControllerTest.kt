@@ -1,7 +1,7 @@
 package me.sadmeowkins.bloom
 
 import me.sadmeowkins.bloom.controller.TaskController
-import me.sadmeowkins.bloom.dto.task.CreateCurrentTaskDto
+import me.sadmeowkins.bloom.dto.task.CreateCurrentTaskDTO
 import me.sadmeowkins.bloom.service.TaskService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +20,7 @@ class TaskControllerTest @Autowired constructor(val webTestClient: WebTestClient
             .post()
             .uri("/api/task/current/create")
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(CreateCurrentTaskDto("Testing Name", "1", 10))
+            .bodyValue(CreateCurrentTaskDTO("Testing Name", "1", 10))
             .exchange()
             .expectStatus().isCreated()
     }

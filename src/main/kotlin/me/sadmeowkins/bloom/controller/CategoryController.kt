@@ -1,10 +1,11 @@
 package me.sadmeowkins.bloom.controller
 
+import jakarta.validation.Valid
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import me.sadmeowkins.bloom.dto.category.CreateCategoryDto
-import me.sadmeowkins.bloom.dto.category.ListCategoryDto
-import me.sadmeowkins.bloom.dto.category.UpdateCategoryDto
+import me.sadmeowkins.bloom.dto.category.CreateCategoryDTO
+import me.sadmeowkins.bloom.dto.category.ListCategoryDTO
+import me.sadmeowkins.bloom.dto.category.UpdateCategoryDTO
 import me.sadmeowkins.bloom.service.CategoryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -16,7 +17,7 @@ class CategoryController @Autowired constructor(private val categoryService: Cat
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    suspend fun postCreateCategory(@RequestBody createCategoryDto: CreateCategoryDto) {
+    suspend fun postCreateCategory(@Valid @RequestBody createCategoryDto: CreateCategoryDTO) {
         with(createCategoryDto) {
             categoryService.createCategory(name, color)
         }
@@ -26,7 +27,7 @@ class CategoryController @Autowired constructor(private val categoryService: Cat
     @PatchMapping("/{id}")
     suspend fun patchUpdateCategory(
         @PathVariable id: String,
-        @RequestBody updateCategoryDto: UpdateCategoryDto
+        @Valid @RequestBody updateCategoryDto: UpdateCategoryDTO
     ) {
         with(updateCategoryDto) {
             categoryService.updateCategory(id, name, color)
@@ -41,11 +42,11 @@ class CategoryController @Autowired constructor(private val categoryService: Cat
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    suspend fun getAllCategories(): Flow<ListCategoryDto> {
+    suspend fun getAllCategories(): Flow<ListCategoryDTO> {
         return categoryService.getAllCategories()
             .map {
                 with(it) {
-                    ListCategoryDto(id, name, color)
+                    ListCategoryDTO(id, name, color)
                 }
             }
     }
