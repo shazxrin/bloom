@@ -1,8 +1,6 @@
 package me.sadmeowkins.bloom.controller
 
 import jakarta.validation.Valid
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import me.sadmeowkins.bloom.dto.task.*
 import me.sadmeowkins.bloom.service.TaskService
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,7 +19,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/current/create")
-    suspend fun postCreateCurrentTask(@Valid @RequestBody createCurrentTaskDto: CreateCurrentTaskDTO) {
+    fun postCreateCurrentTask(@Valid @RequestBody createCurrentTaskDto: CreateCurrentTaskDto) {
         with(createCurrentTaskDto) {
             taskService.createCurrentTask(name, categoryId, duration)
         }
@@ -29,24 +27,24 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/current/pause")
-    suspend fun postPauseCurrentTask() {
+    fun postPauseCurrentTask() {
         taskService.pauseCurrentTask()
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/current/resume")
-    suspend fun postResumeCurrentTask() {
+    fun postResumeCurrentTask() {
         taskService.resumeCurrentTask()
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/current/end")
-    suspend fun postEndCurrentTask() {
+    fun postEndCurrentTask() {
         taskService.endCurrentTask()
     }
 
     @GetMapping("/current")
-    suspend fun getCurrentTask(): ResponseEntity<CurrentTaskDTO?> {
+    fun getCurrentTask(): ResponseEntity<CurrentTaskDto?> {
         val currentTask = taskService.getCurrentTask()
 
         return if (currentTask == null) {
@@ -55,7 +53,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
                 .build()
         } else {
             val currentTaskDto = with(currentTask) {
-                CurrentTaskDTO(
+                CurrentTaskDto(
                     name,
                     categoryId,
                     duration,
@@ -74,10 +72,10 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    suspend fun getAllTasks(): Flow<ListTaskDTO> {
+    fun getAllTasks(): Iterable<ListTaskDto> {
         return taskService.getAllTasks().map {
             with(it) {
-                ListTaskDTO(id, name, categoryId, duration, startTime, endTime)
+                ListTaskDto(id ?: "", name, categoryId, duration, startTime, endTime)
             }
         }
     }

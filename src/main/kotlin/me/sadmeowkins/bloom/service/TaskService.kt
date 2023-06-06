@@ -1,7 +1,5 @@
 package me.sadmeowkins.bloom.service
 
-import kotlinx.coroutines.flow.Flow
-import me.sadmeowkins.bloom.exception.ExistsException
 import me.sadmeowkins.bloom.exception.NotFoundException
 import me.sadmeowkins.bloom.exception.StateException
 import me.sadmeowkins.bloom.model.Task
@@ -11,19 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.LocalDateTime
+import kotlin.jvm.optionals.getOrNull
 
 interface TaskService {
-    suspend fun createCurrentTask(name: String, categoryId: String, duration: Long)
+    fun createCurrentTask(name: String, categoryId: String, duration: Long)
 
-    suspend fun pauseCurrentTask()
+    fun pauseCurrentTask()
 
-    suspend fun resumeCurrentTask()
+    fun resumeCurrentTask()
 
-    suspend fun endCurrentTask()
+    fun endCurrentTask()
 
-    suspend fun getCurrentTask(): Task?
+    fun getCurrentTask(): Task?
 
-    fun getAllTasks(): Flow<Task>
+    fun getAllTasks(): Iterable<Task>
 }
 
 @Service
@@ -32,9 +31,9 @@ class DefaultTaskService @Autowired constructor(
     private val categoryRepository: CategoryRepository
 ) : TaskService {
 
-    override suspend fun createCurrentTask(name: String, categoryId: String, duration: Long) {
-        if (taskRepository.findByEndTimeIsNull() != null) {
-            throw ExistsException("Current task already exists!")
+    override fun createCurrentTask(name: String, categoryId: String, duration: Long) {
+        if (taskRepository.existsByEndTimeIsNull()) {
+            throw StateException("Current task already exists!")
         }
 
         if (!categoryRepository.existsById(categoryId)) {
@@ -42,6 +41,7 @@ class DefaultTaskService @Autowired constructor(
         }
 
         val newCurrentTask = Task(
+            id = null,
             name = name,
             categoryId = categoryId,
             duration = duration,
@@ -55,12 +55,9 @@ class DefaultTaskService @Autowired constructor(
         taskRepository.save(newCurrentTask)
     }
 
-    override suspend fun pauseCurrentTask() {
-        val currentTask = taskRepository.findByEndTimeIsNull()
-
-        if (currentTask == null) {
-            throw NotFoundException("Current task does not exist")
-        }
+    override fun pauseCurrentTask() {
+        val currentTask =
+            taskRepository.findByEndTimeIsNull().orElseThrow { NotFoundException("Current task does not exist") }
 
         if (currentTask.isPaused) {
             throw StateException("Current task is already paused")
@@ -77,12 +74,9 @@ class DefaultTaskService @Autowired constructor(
         taskRepository.save(pausedCurrentTask)
     }
 
-    override suspend fun resumeCurrentTask() {
-        val currentTask = taskRepository.findByEndTimeIsNull()
-
-        if (currentTask == null) {
-            throw NotFoundException("Current task does not exist")
-        }
+    override fun resumeCurrentTask() {
+        val currentTask =
+            taskRepository.findByEndTimeIsNull().orElseThrow { NotFoundException("Current task does not exist") }
 
         if (!currentTask.isPaused) {
             throw StateException("Current task is not paused")
@@ -96,22 +90,19 @@ class DefaultTaskService @Autowired constructor(
         taskRepository.save(pausedCurrentTask)
     }
 
-    override suspend fun endCurrentTask() {
-        val currentTask = taskRepository.findByEndTimeIsNull()
-
-        if (currentTask == null) {
-            throw NotFoundException("Current task does not exist")
-        }
+    override fun endCurrentTask() {
+        val currentTask =
+            taskRepository.findByEndTimeIsNull().orElseThrow { NotFoundException("Current task does not exist") }
 
         val completedCurrentTask = currentTask.copy(endTime = LocalDateTime.now())
         taskRepository.save(completedCurrentTask)
     }
 
-    override suspend fun getCurrentTask(): Task? {
-        return taskRepository.findByEndTimeIsNull()
+    override fun getCurrentTask(): Task? {
+        return taskRepository.findByEndTimeIsNull().getOrNull()
     }
 
-    override fun getAllTasks(): Flow<Task> {
+    override fun getAllTasks(): Iterable<Task> {
         return taskRepository.findAll()
     }
 }

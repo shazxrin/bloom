@@ -2,7 +2,7 @@ package me.sadmeowkins.bloom.dto.category
 
 import jakarta.validation.constraints.NotEmpty
 
-data class UpdateCategoryDTO(
+data class UpdateCategoryDto(
     @field:NotEmpty val name: String?,
     @field:NotEmpty val color: String?
 )

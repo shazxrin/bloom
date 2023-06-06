@@ -1,6 +1,5 @@
 package me.sadmeowkins.bloom.service
 
-import kotlinx.coroutines.flow.Flow
 import me.sadmeowkins.bloom.exception.NotFoundException
 import me.sadmeowkins.bloom.model.Category
 import me.sadmeowkins.bloom.repository.CategoryRepository
@@ -8,20 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 interface CategoryService {
-    suspend fun createCategory(name: String, color: String)
+    fun createCategory(name: String, color: String)
 
-    suspend fun deleteCategory(id: String)
+    fun deleteCategory(id: String)
 
-    suspend fun updateCategory(id: String, name: String?, color: String?)
+    fun updateCategory(id: String, name: String?, color: String?)
 
-    fun getAllCategories(): Flow<Category>
+    fun getAllCategories(): Iterable<Category>
 }
 
 @Service
 class DefaultCategoryService @Autowired constructor(private val categoryRepository: CategoryRepository) :
     CategoryService {
-    override suspend fun createCategory(name: String, color: String) {
+    override fun createCategory(name: String, color: String) {
         val newCategory = Category(
+            id = null,
             name = name,
             color = color
         )
@@ -29,7 +29,7 @@ class DefaultCategoryService @Autowired constructor(private val categoryReposito
         categoryRepository.save(newCategory)
     }
 
-    override suspend fun deleteCategory(id: String) {
+    override fun deleteCategory(id: String) {
         if (!categoryRepository.existsById(id)) {
             throw NotFoundException("Category does not exist!")
         }
@@ -37,12 +37,9 @@ class DefaultCategoryService @Autowired constructor(private val categoryReposito
         categoryRepository.deleteById(id)
     }
 
-    override suspend fun updateCategory(id: String, name: String?, color: String?) {
-        val existingCategory = categoryRepository.findById(id)
-
-        if (existingCategory == null) {
-            throw NotFoundException("Category does not exist!")
-        }
+    override fun updateCategory(id: String, name: String?, color: String?) {
+        val existingCategory =
+            categoryRepository.findById(id).orElseThrow { NotFoundException("Category does not exist!") }
 
         val updatedExistingCategory = existingCategory.copy(
             name = name ?: existingCategory.name,
@@ -52,7 +49,7 @@ class DefaultCategoryService @Autowired constructor(private val categoryReposito
         categoryRepository.save(updatedExistingCategory)
     }
 
-    override fun getAllCategories(): Flow<Category> {
+    override fun getAllCategories(): Iterable<Category> {
         return categoryRepository.findAll()
     }
 }

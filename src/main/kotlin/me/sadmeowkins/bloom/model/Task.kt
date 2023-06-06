@@ -1,19 +1,28 @@
 package me.sadmeowkins.bloom.model
 
-import org.bson.types.ObjectId
-import org.springframework.data.annotation.Id
-import org.springframework.data.mongodb.core.mapping.Document
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
-@Document
+@Table(name = "tasks")
+@Entity
 data class Task(
-    @Id val id: String = ObjectId.get().toString(),
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    val id: String?,
+
     val name: String,
+
     val categoryId: String,
+
     val duration: Long,
+
     val remainingDuration: Long,
+
     val isPaused: Boolean,
+
     val startTime: LocalDateTime,
+
     val lastStartTime: LocalDateTime,
+
     val endTime: LocalDateTime?,
-) : Entity(LocalDateTime.now(), LocalDateTime.now())
+) : BaseEntity()

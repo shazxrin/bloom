@@ -1,12 +1,19 @@
 package me.sadmeowkins.bloom.model
 
-import org.bson.types.ObjectId
-import org.springframework.data.annotation.Id
-import org.springframework.data.mongodb.core.mapping.Document
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Table
 
-@Document
+@Table(name = "categories")
+@Entity
 data class Category(
-    @Id val id: String = ObjectId.get().toString(),
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    val id: String?,
+
     val name: String,
+
     val color: String
-)
+) : BaseEntity()

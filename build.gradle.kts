@@ -1,11 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.0.6"
+    id("org.springframework.boot") version "3.1.0"
     id("io.spring.dependency-management") version "1.1.0"
     id("org.springdoc.openapi-gradle-plugin") version "1.6.0"
-    kotlin("jvm") version "1.7.22"
-    kotlin("plugin.spring") version "1.7.22"
+    kotlin("jvm") version "1.8.21"
+    kotlin("plugin.spring") version "1.8.21"
+    kotlin("plugin.jpa") version "1.8.21"
 }
 
 group = "me.sadmeowkins"
@@ -17,25 +18,22 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
-    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-
-    implementation("org.springframework.boot:spring-boot-starter-actuator:3.1.0")
-
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
-
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
-    developmentOnly("org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    runtimeOnly("org.postgresql:postgresql")
+
+    developmentOnly("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("io.projectreactor:reactor-test")
 }
 
 tasks.withType<KotlinCompile> {
