@@ -36,14 +36,16 @@ class DefaultTaskService @Autowired constructor(
             throw StateException("Current task already exists!")
         }
 
-        if (!categoryRepository.existsById(categoryId)) {
+        val categoryOptional = categoryRepository.findById(categoryId)
+        if (categoryOptional.isEmpty) {
             throw NotFoundException("Category does not exist!")
         }
+        val category = categoryOptional.get()
 
         val newCurrentTask = Task(
             id = null,
             name = name,
-            categoryId = categoryId,
+            category = category,
             duration = duration,
             isPaused = false,
             remainingDuration = duration,

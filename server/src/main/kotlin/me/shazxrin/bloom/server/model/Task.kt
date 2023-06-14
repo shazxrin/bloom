@@ -12,7 +12,8 @@ data class Task(
 
     val name: String,
 
-    val categoryId: String,
+    @ManyToOne
+    val category: Category,
 
     val duration: Long,
 

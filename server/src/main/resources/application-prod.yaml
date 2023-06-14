@@ -3,4 +3,4 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:postgresql://localhost:5432/bloom
+    url: jdbc:postgresql://localhost:60000/bloom

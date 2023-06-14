@@ -57,7 +57,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
             val currentTaskDto = with(currentTask) {
                 CurrentTaskDto(
                     name,
-                    categoryId,
+                    category.id ?: "",
                     duration,
                     remainingDuration,
                     isPaused,
@@ -77,7 +77,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
     fun getAllTasks(): Iterable<ListTaskDto> {
         return taskService.getAllTasks().map {
             with(it) {
-                ListTaskDto(id ?: "", name, categoryId, duration, startTime, endTime)
+                ListTaskDto(id ?: "", name, category.id ?: "", duration, startTime, endTime)
             }
         }
     }
