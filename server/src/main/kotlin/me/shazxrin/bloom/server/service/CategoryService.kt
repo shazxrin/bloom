@@ -4,6 +4,7 @@ import me.shazxrin.bloom.server.exception.NotFoundException
 import me.shazxrin.bloom.server.model.Category
 import me.shazxrin.bloom.server.repository.CategoryRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 interface CategoryService {
@@ -38,8 +39,8 @@ class DefaultCategoryService @Autowired constructor(private val categoryReposito
     }
 
     override fun updateCategory(id: String, name: String?, color: String?) {
-        val existingCategory =
-            categoryRepository.findById(id).orElseThrow { NotFoundException("Category does not exist!") }
+        val existingCategory = categoryRepository.findByIdOrNull(id)
+            ?: throw NotFoundException("Category does not exist!")
 
         val updatedExistingCategory = existingCategory.copy(
             name = name ?: existingCategory.name,

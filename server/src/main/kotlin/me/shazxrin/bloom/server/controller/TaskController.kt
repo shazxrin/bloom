@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
@@ -74,8 +75,11 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    fun getAllTasks(): Iterable<ListTaskDto> {
-        return taskService.getAllTasks().map {
+    fun getAllTasks(@RequestParam(required = false) categoryId: String?): Iterable<ListTaskDto> {
+        val tasks =
+            if (categoryId != null) taskService.getAllTasksByCategoryId(categoryId) else taskService.getAllTasks()
+
+        return tasks.map {
             with(it) {
                 ListTaskDto(id ?: "", name, category.id ?: "", duration, startTime, endTime)
             }

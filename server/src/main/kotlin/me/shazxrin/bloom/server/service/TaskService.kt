@@ -6,10 +6,10 @@ import me.shazxrin.bloom.server.model.Task
 import me.shazxrin.bloom.server.repository.CategoryRepository
 import me.shazxrin.bloom.server.repository.TaskRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.LocalDateTime
-import kotlin.jvm.optionals.getOrNull
 
 interface TaskService {
     fun createCurrentTask(name: String, categoryId: String, duration: Long)
@@ -23,6 +23,8 @@ interface TaskService {
     fun getCurrentTask(): Task?
 
     fun getAllTasks(): Iterable<Task>
+
+    fun getAllTasksByCategoryId(categoryId: String): Iterable<Task>
 }
 
 @Service
@@ -36,11 +38,8 @@ class DefaultTaskService @Autowired constructor(
             throw StateException("Current task already exists!")
         }
 
-        val categoryOptional = categoryRepository.findById(categoryId)
-        if (categoryOptional.isEmpty) {
-            throw NotFoundException("Category does not exist!")
-        }
-        val category = categoryOptional.get()
+        val category = categoryRepository.findByIdOrNull(categoryId)
+            ?: throw NotFoundException("Category does not exist!")
 
         val newCurrentTask = Task(
             id = null,
@@ -58,8 +57,8 @@ class DefaultTaskService @Autowired constructor(
     }
 
     override fun pauseCurrentTask() {
-        val currentTask =
-            taskRepository.findByEndTimeIsNull().orElseThrow { NotFoundException("Current task does not exist") }
+        val currentTask = taskRepository.findByEndTimeIsNull()
+                ?: throw NotFoundException("Current task does not exist")
 
         if (currentTask.isPaused) {
             throw StateException("Current task is already paused")
@@ -77,8 +76,8 @@ class DefaultTaskService @Autowired constructor(
     }
 
     override fun resumeCurrentTask() {
-        val currentTask =
-            taskRepository.findByEndTimeIsNull().orElseThrow { NotFoundException("Current task does not exist") }
+        val currentTask = taskRepository.findByEndTimeIsNull()
+            ?: throw NotFoundException("Current task does not exist")
 
         if (!currentTask.isPaused) {
             throw StateException("Current task is not paused")
@@ -93,18 +92,22 @@ class DefaultTaskService @Autowired constructor(
     }
 
     override fun endCurrentTask() {
-        val currentTask =
-            taskRepository.findByEndTimeIsNull().orElseThrow { NotFoundException("Current task does not exist") }
+        val currentTask = taskRepository.findByEndTimeIsNull()
+            ?: throw NotFoundException("Current task does not exist")
 
         val completedCurrentTask = currentTask.copy(endTime = LocalDateTime.now())
         taskRepository.save(completedCurrentTask)
     }
 
     override fun getCurrentTask(): Task? {
-        return taskRepository.findByEndTimeIsNull().getOrNull()
+        return taskRepository.findByEndTimeIsNull()
     }
 
     override fun getAllTasks(): Iterable<Task> {
         return taskRepository.findAll()
+    }
+
+    override fun getAllTasksByCategoryId(categoryId: String): Iterable<Task> {
+        return taskRepository.findTasksByCategory_IdOrderByStartTime(categoryId)
     }
 }
