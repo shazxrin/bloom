@@ -7,6 +7,7 @@ spring:
     password: password
     url: jdbc:postgresql://localhost:60001/bloom
 server:
+  dev-disable-cors: true
   error:
     include-stacktrace: never
     include-message: always

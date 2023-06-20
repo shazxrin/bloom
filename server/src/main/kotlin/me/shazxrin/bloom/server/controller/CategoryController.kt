@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/api/categories")
 class CategoryController @Autowired constructor(private val categoryService: CategoryService) {
 
     @ResponseStatus(HttpStatus.CREATED)
