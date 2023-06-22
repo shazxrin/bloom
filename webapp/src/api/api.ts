@@ -119,74 +119,6 @@ export interface CurrentTaskDto {
 /**
  * 
  * @export
- * @interface ListCategoryDto
- */
-export interface ListCategoryDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof ListCategoryDto
-     */
-    'id': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ListCategoryDto
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ListCategoryDto
-     */
-    'color': string;
-}
-/**
- * 
- * @export
- * @interface ListTaskDto
- */
-export interface ListTaskDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof ListTaskDto
-     */
-    'id': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ListTaskDto
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ListTaskDto
-     */
-    'categoryId': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof ListTaskDto
-     */
-    'duration': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ListTaskDto
-     */
-    'startTime': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ListTaskDto
-     */
-    'endTime'?: string;
-}
-/**
- * 
- * @export
  * @interface UpdateCategoryDto
  */
 export interface UpdateCategoryDto {
@@ -195,13 +127,13 @@ export interface UpdateCategoryDto {
      * @type {string}
      * @memberof UpdateCategoryDto
      */
-    'name'?: string;
+    'name': string;
     /**
      * 
      * @type {string}
      * @memberof UpdateCategoryDto
      */
-    'color'?: string;
+    'color': string;
 }
 
 /**
@@ -219,7 +151,7 @@ export const CategoryControllerApiAxiosParamCreator = function (configuration?: 
         deleteCategory: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('deleteCategory', 'id', id)
-            const localVarPath = `/api/category/{id}`
+            const localVarPath = `/api/categories/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -249,7 +181,7 @@ export const CategoryControllerApiAxiosParamCreator = function (configuration?: 
          * @throws {RequiredError}
          */
         getAllCategories: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/category/all`;
+            const localVarPath = `/api/categories/all`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -284,7 +216,7 @@ export const CategoryControllerApiAxiosParamCreator = function (configuration?: 
             assertParamExists('patchUpdateCategory', 'id', id)
             // verify required parameter 'updateCategoryDto' is not null or undefined
             assertParamExists('patchUpdateCategory', 'updateCategoryDto', updateCategoryDto)
-            const localVarPath = `/api/category/{id}`
+            const localVarPath = `/api/categories/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -320,7 +252,7 @@ export const CategoryControllerApiAxiosParamCreator = function (configuration?: 
         postCreateCategory: async (createCategoryDto: CreateCategoryDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createCategoryDto' is not null or undefined
             assertParamExists('postCreateCategory', 'createCategoryDto', createCategoryDto)
-            const localVarPath = `/api/category`;
+            const localVarPath = `/api/categories`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -362,7 +294,7 @@ export const CategoryControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteCategory(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async deleteCategory(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteCategory(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -371,7 +303,7 @@ export const CategoryControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllCategories(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ListCategoryDto>>> {
+        async getAllCategories(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAllCategories(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -382,7 +314,7 @@ export const CategoryControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async patchUpdateCategory(id: string, updateCategoryDto: UpdateCategoryDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async patchUpdateCategory(id: string, updateCategoryDto: UpdateCategoryDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.patchUpdateCategory(id, updateCategoryDto, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -392,7 +324,7 @@ export const CategoryControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postCreateCategory(createCategoryDto: CreateCategoryDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async postCreateCategory(createCategoryDto: CreateCategoryDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postCreateCategory(createCategoryDto, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -412,7 +344,7 @@ export const CategoryControllerApiFactory = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteCategory(requestParameters: CategoryControllerApiDeleteCategoryRequest, options?: AxiosRequestConfig): AxiosPromise<object> {
+        deleteCategory(requestParameters: CategoryControllerApiDeleteCategoryRequest, options?: AxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.deleteCategory(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
@@ -420,7 +352,7 @@ export const CategoryControllerApiFactory = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllCategories(options?: AxiosRequestConfig): AxiosPromise<Array<ListCategoryDto>> {
+        getAllCategories(options?: AxiosRequestConfig): AxiosPromise<object> {
             return localVarFp.getAllCategories(options).then((request) => request(axios, basePath));
         },
         /**
@@ -429,7 +361,7 @@ export const CategoryControllerApiFactory = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        patchUpdateCategory(requestParameters: CategoryControllerApiPatchUpdateCategoryRequest, options?: AxiosRequestConfig): AxiosPromise<object> {
+        patchUpdateCategory(requestParameters: CategoryControllerApiPatchUpdateCategoryRequest, options?: AxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.patchUpdateCategory(requestParameters.id, requestParameters.updateCategoryDto, options).then((request) => request(axios, basePath));
         },
         /**
@@ -438,7 +370,7 @@ export const CategoryControllerApiFactory = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postCreateCategory(requestParameters: CategoryControllerApiPostCreateCategoryRequest, options?: AxiosRequestConfig): AxiosPromise<object> {
+        postCreateCategory(requestParameters: CategoryControllerApiPostCreateCategoryRequest, options?: AxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.postCreateCategory(requestParameters.createCategoryDto, options).then((request) => request(axios, basePath));
         },
     };
@@ -553,11 +485,12 @@ export const TaskControllerApiAxiosParamCreator = function (configuration?: Conf
     return {
         /**
          * 
+         * @param {string} [categoryId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllTasks: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/task/all`;
+        getAllTasks: async (categoryId?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/tasks/all`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -568,6 +501,10 @@ export const TaskControllerApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (categoryId !== undefined) {
+                localVarQueryParameter['categoryId'] = categoryId;
+            }
 
 
     
@@ -586,7 +523,7 @@ export const TaskControllerApiAxiosParamCreator = function (configuration?: Conf
          * @throws {RequiredError}
          */
         getCurrentTask: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/task/current`;
+            const localVarPath = `/api/tasks/current`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -618,7 +555,7 @@ export const TaskControllerApiAxiosParamCreator = function (configuration?: Conf
         postCreateCurrentTask: async (createCurrentTaskDto: CreateCurrentTaskDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createCurrentTaskDto' is not null or undefined
             assertParamExists('postCreateCurrentTask', 'createCurrentTaskDto', createCurrentTaskDto)
-            const localVarPath = `/api/task/current/create`;
+            const localVarPath = `/api/tasks/current/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -650,7 +587,7 @@ export const TaskControllerApiAxiosParamCreator = function (configuration?: Conf
          * @throws {RequiredError}
          */
         postEndCurrentTask: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/task/current/end`;
+            const localVarPath = `/api/tasks/current/end`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -679,7 +616,7 @@ export const TaskControllerApiAxiosParamCreator = function (configuration?: Conf
          * @throws {RequiredError}
          */
         postPauseCurrentTask: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/task/current/pause`;
+            const localVarPath = `/api/tasks/current/pause`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -708,7 +645,7 @@ export const TaskControllerApiAxiosParamCreator = function (configuration?: Conf
          * @throws {RequiredError}
          */
         postResumeCurrentTask: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/task/current/resume`;
+            const localVarPath = `/api/tasks/current/resume`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -743,11 +680,12 @@ export const TaskControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {string} [categoryId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllTasks(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ListTaskDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllTasks(options);
+        async getAllTasks(categoryId?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllTasks(categoryId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -765,7 +703,7 @@ export const TaskControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postCreateCurrentTask(createCurrentTaskDto: CreateCurrentTaskDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async postCreateCurrentTask(createCurrentTaskDto: CreateCurrentTaskDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postCreateCurrentTask(createCurrentTaskDto, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -774,7 +712,7 @@ export const TaskControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postEndCurrentTask(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async postEndCurrentTask(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postEndCurrentTask(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -783,7 +721,7 @@ export const TaskControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postPauseCurrentTask(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async postPauseCurrentTask(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postPauseCurrentTask(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -792,7 +730,7 @@ export const TaskControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postResumeCurrentTask(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async postResumeCurrentTask(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postResumeCurrentTask(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -808,11 +746,12 @@ export const TaskControllerApiFactory = function (configuration?: Configuration,
     return {
         /**
          * 
+         * @param {TaskControllerApiGetAllTasksRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllTasks(options?: AxiosRequestConfig): AxiosPromise<Array<ListTaskDto>> {
-            return localVarFp.getAllTasks(options).then((request) => request(axios, basePath));
+        getAllTasks(requestParameters: TaskControllerApiGetAllTasksRequest = {}, options?: AxiosRequestConfig): AxiosPromise<object> {
+            return localVarFp.getAllTasks(requestParameters.categoryId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -828,7 +767,7 @@ export const TaskControllerApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postCreateCurrentTask(requestParameters: TaskControllerApiPostCreateCurrentTaskRequest, options?: AxiosRequestConfig): AxiosPromise<object> {
+        postCreateCurrentTask(requestParameters: TaskControllerApiPostCreateCurrentTaskRequest, options?: AxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.postCreateCurrentTask(requestParameters.createCurrentTaskDto, options).then((request) => request(axios, basePath));
         },
         /**
@@ -836,7 +775,7 @@ export const TaskControllerApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postEndCurrentTask(options?: AxiosRequestConfig): AxiosPromise<object> {
+        postEndCurrentTask(options?: AxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.postEndCurrentTask(options).then((request) => request(axios, basePath));
         },
         /**
@@ -844,7 +783,7 @@ export const TaskControllerApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postPauseCurrentTask(options?: AxiosRequestConfig): AxiosPromise<object> {
+        postPauseCurrentTask(options?: AxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.postPauseCurrentTask(options).then((request) => request(axios, basePath));
         },
         /**
@@ -852,11 +791,25 @@ export const TaskControllerApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postResumeCurrentTask(options?: AxiosRequestConfig): AxiosPromise<object> {
+        postResumeCurrentTask(options?: AxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.postResumeCurrentTask(options).then((request) => request(axios, basePath));
         },
     };
 };
+
+/**
+ * Request parameters for getAllTasks operation in TaskControllerApi.
+ * @export
+ * @interface TaskControllerApiGetAllTasksRequest
+ */
+export interface TaskControllerApiGetAllTasksRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof TaskControllerApiGetAllTasks
+     */
+    readonly categoryId?: string
+}
 
 /**
  * Request parameters for postCreateCurrentTask operation in TaskControllerApi.
@@ -881,12 +834,13 @@ export interface TaskControllerApiPostCreateCurrentTaskRequest {
 export class TaskControllerApi extends BaseAPI {
     /**
      * 
+     * @param {TaskControllerApiGetAllTasksRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TaskControllerApi
      */
-    public getAllTasks(options?: AxiosRequestConfig) {
-        return TaskControllerApiFp(this.configuration).getAllTasks(options).then((request) => request(this.axios, this.basePath));
+    public getAllTasks(requestParameters: TaskControllerApiGetAllTasksRequest = {}, options?: AxiosRequestConfig) {
+        return TaskControllerApiFp(this.configuration).getAllTasks(requestParameters.categoryId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
