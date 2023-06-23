@@ -40,7 +40,7 @@ class CategoryController @Autowired constructor(private val categoryService: Cat
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    fun getAllCategories(): Iterable<ListCategoryDto> {
+    fun getAllCategories(): List<ListCategoryDto> {
         return categoryService.getAllCategories()
             .map {
                 with(it) {

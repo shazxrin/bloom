@@ -75,7 +75,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    fun getAllTasks(@RequestParam(required = false) categoryId: String?): Iterable<ListTaskDto> {
+    fun getAllTasks(@RequestParam(required = false) categoryId: String?): List<ListTaskDto> {
         val tasks =
             if (categoryId != null) taskService.getAllTasksByCategoryId(categoryId) else taskService.getAllTasks()
 
