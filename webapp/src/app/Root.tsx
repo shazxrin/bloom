@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState} from 'react'
 import {
     AppShell,
     Header,
@@ -6,14 +6,13 @@ import {
     MediaQuery,
     Burger,
     useMantineTheme,
-} from '@mantine/core';
-import {Outlet} from 'react-router-dom';
-import AppNavBar from '../components/AppNavbar.tsx';
-import {ModalsProvider} from "@mantine/modals";
+} from '@mantine/core'
+import AppNavBar from '../components/AppNavbar.tsx'
+import Timer from "./timer/Timer.tsx"
 
 export default function Root() {
-    const theme = useMantineTheme();
-    const [opened, setOpened] = useState(false);
+    const theme = useMantineTheme()
+    const [opened, setOpened] = useState(false)
 
     return (
         <AppShell
@@ -43,9 +42,7 @@ export default function Root() {
                 </Header>
             }
         >
-            <ModalsProvider>
-                <Outlet/>
-            </ModalsProvider>
+            <Timer />
         </AppShell>
-    );
+    )
 }

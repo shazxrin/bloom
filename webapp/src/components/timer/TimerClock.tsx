@@ -2,33 +2,46 @@ import {useEffect, useState} from "react";
 import {differenceInSeconds} from "date-fns";
 import {Group, Text, useMantineTheme} from "@mantine/core";
 import useMobile from "../../hooks/useMobile.ts";
+import {useTimerStore} from "../../stores/timerStore.tsx";
 
-interface TimerClockProps {
-    remainingDuration: number;
-    lastStartTime: Date;
-    isPaused: boolean;
-    hasTask: boolean;
+interface TimerClockTextProps {
+    color: string
+    value: number
 }
 
-export default function TimerClock({remainingDuration, lastStartTime, isPaused, hasTask}: TimerClockProps) {
-    const [leftDuration, setLeftDuration] = useState(remainingDuration);
+function TimerClockText({color, value}: TimerClockTextProps) {
+    const isMobile = useMobile()
+
+    return (
+        <Text size={isMobile ? "5rem" : "8rem"} weight={"bold"} color={color} ff={"DM Mono"}>
+            {String(value).padStart(2, "0")}
+        </Text>
+    )
+}
+
+export default function TimerClock() {
+    const {currentTask} = useTimerStore((state) => ({
+        currentTask: state.currentTask,
+    }))
+
+    const [leftDuration, setLeftDuration] = useState(currentTask?.remainingDuration ?? 0);
     const [hours, setHours] = useState(0);
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
 
     useEffect(() => {
-        if (hasTask && !isPaused) {
+        if (currentTask && !currentTask.isPaused) {
             const timer = setInterval(() => {
-                setLeftDuration(remainingDuration - differenceInSeconds(new Date(), lastStartTime));
+                setLeftDuration(currentTask.remainingDuration - differenceInSeconds(new Date(), new Date(currentTask.lastStartTime)));
             }, 1000);
 
             return () => clearInterval(timer);
         }
-    }, [remainingDuration, lastStartTime, hasTask, isPaused]);
+    }, [currentTask]);
 
     useEffect(() => {
-        setLeftDuration(remainingDuration);
-    }, [remainingDuration]);
+        setLeftDuration(currentTask?.remainingDuration ?? 0);
+    }, [currentTask]);
 
     useEffect(() => {
         const hours = Math.max(Math.floor(Math.abs(leftDuration) / 3600), 0);
@@ -47,8 +60,8 @@ export default function TimerClock({remainingDuration, lastStartTime, isPaused, 
     const doneColor = theme.colors.blue[8];
     const [timerColor, setTimerColor] = useState(neutralColor);
     useEffect(() => {
-        if (hasTask) {
-            if (isPaused) {
+        if (!!currentTask) {
+            if (currentTask.isPaused) {
                 setTimerColor(pausedColor)
             } else {
                 if (leftDuration > 0) {
@@ -60,21 +73,13 @@ export default function TimerClock({remainingDuration, lastStartTime, isPaused, 
         } else {
             setTimerColor(neutralColor);
         }
-    }, [hasTask, isPaused, leftDuration]);
-
-    const isMobile = useMobile();
+    }, [currentTask, leftDuration]);
 
     return (
         <Group spacing={"xl"}>
-            <Text size={isMobile ? "5rem" : "8rem"} weight={"bold"} color={timerColor} ff={"DM Mono"}>
-                {String(hours).padStart(2, "0")}
-            </Text>
-            <Text size={isMobile ? "5rem" : "8rem"} weight={"bold"} color={timerColor} ff={"DM Mono"}>
-                {String(minutes).padStart(2, "0")}
-            </Text>
-            <Text size={isMobile ? "5rem" : "8rem"} weight={"bold"} color={timerColor} ff={"DM Mono"}>
-                {String(seconds).padStart(2, "0")}
-            </Text>
+            <TimerClockText color={timerColor} value={hours}/>
+            <TimerClockText color={timerColor} value={minutes}/>
+            <TimerClockText color={timerColor} value={seconds}/>
         </Group>
     );
 }

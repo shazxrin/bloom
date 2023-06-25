@@ -7,7 +7,7 @@ import {
     useMantineTheme,
 } from "@mantine/core";
 import {IconLayoutDashboard, IconHourglass} from "@tabler/icons-react";
-import {Link} from "react-router-dom";
+import {Link} from "wouter";
 
 interface MainLinkProps {
     icon: React.ReactNode;
