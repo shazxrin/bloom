@@ -1,7 +1,7 @@
 import {ActionIcon, Group, useMantineTheme} from "@mantine/core";
 import {IconPlayerPause, IconPlayerPlay, IconPlayerStop} from "@tabler/icons-react";
-import {useTimerStore} from "../../stores/timerStore.tsx";
 import FadeTransition from "../misc/FadeTransition.tsx";
+import {useTaskStore} from "../../stores/taskStore.ts";
 
 export default function TimerButtons() {
     const {
@@ -9,7 +9,7 @@ export default function TimerButtons() {
         resumeCurrentTask,
         pauseCurrentTask,
         endCurrentTask
-    } = useTimerStore((state) => ({
+    } = useTaskStore((state) => ({
         currentTask: state.currentTask,
         resumeCurrentTask: state.resumeCurrentTask,
         pauseCurrentTask: state.pauseCurrentTask,

@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {
     AppShell,
     Header,
@@ -9,10 +9,23 @@ import {
 } from '@mantine/core'
 import AppNavBar from '../components/AppNavbar.tsx'
 import Timer from "./timer/Timer.tsx"
+import {useTaskStore} from "../stores/taskStore.ts";
+import {useCategoryStore} from "../stores/categoryStore.ts";
 
 export default function Root() {
     const theme = useMantineTheme()
     const [opened, setOpened] = useState(false)
+
+    const {fetchCurrentTask} = useTaskStore((state) => ({
+        fetchCurrentTask: state.fetchCurrentTask
+    }))
+    const {fetchCategories} = useCategoryStore((state) => ({
+        fetchCategories: state.fetchCategories
+    }))
+    useEffect(() => {
+       fetchCategories()
+       fetchCurrentTask()
+    }, [])
 
     return (
         <AppShell

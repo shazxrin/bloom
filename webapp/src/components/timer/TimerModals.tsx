@@ -2,21 +2,26 @@ import {Button, Center, Modal, Overlay} from "@mantine/core";
 import CreateTaskForm from "../task/CreateTaskForm.tsx";
 import CreateCategoryForm from "../category/CreateCategoryForm.tsx";
 import {useDisclosure} from "@mantine/hooks";
-import {useTimerStore} from "../../stores/timerStore.tsx";
 import {IconSparkles} from "@tabler/icons-react";
 import FadeTransition from "../misc/FadeTransition.tsx";
+import {useTaskStore} from "../../stores/taskStore.ts";
+import {useCategoryStore} from "../../stores/categoryStore.ts";
 
 export default function TimerModals() {
     const {
         currentTask,
-        categories,
         createCurrentTask,
-        createCategory,
-    } = useTimerStore((state) => ({
+    } = useTaskStore((state) => ({
         currentTask: state.currentTask,
-        categories: state.categories,
         createCurrentTask: state.createCurrentTask,
-        createCategory: state.createCategory,
+    }))
+
+    const {
+        categories,
+        createCategory
+    } = useCategoryStore((state) => ({
+        categories: state.categories,
+        createCategory: state.createCategory
     }))
 
     const [isCreateTaskModalOpened, {
@@ -31,7 +36,7 @@ export default function TimerModals() {
 
     return (
         <>
-            <Overlay opacity={0.5} hidden={!isCreateTaskModalOpened} />
+            <Overlay opacity={0.5} hidden={!isCreateTaskModalOpened}/>
 
             <Modal title={"Create new task"}
                    centered
