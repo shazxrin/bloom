@@ -1,19 +1,18 @@
 package me.shazxrin.bloom.server.model
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.validation.constraints.NotNull
+import org.bson.types.ObjectId
+import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.mapping.Document
 
-@Table(name = "categories")
-@Entity
+@Document
 data class Category(
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    val id: String?,
+    val id: String = ObjectId.get().toString(),
 
+    @field:NotNull
     val name: String,
 
+    @field:NotNull
     val color: String
 ) : BaseEntity()

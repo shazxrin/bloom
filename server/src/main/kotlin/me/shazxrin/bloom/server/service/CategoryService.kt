@@ -1,28 +1,27 @@
 package me.shazxrin.bloom.server.service
 
+import kotlinx.coroutines.flow.Flow
 import me.shazxrin.bloom.server.exception.NotFoundException
 import me.shazxrin.bloom.server.model.Category
 import me.shazxrin.bloom.server.repository.CategoryRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 interface CategoryService {
-    fun createCategory(name: String, color: String)
+    suspend fun createCategory(name: String, color: String)
 
-    fun deleteCategory(id: String)
+    suspend fun deleteCategory(id: String)
 
-    fun updateCategory(id: String, name: String?, color: String?)
+    suspend fun updateCategory(id: String, name: String?, color: String?)
 
-    fun getAllCategories(): Iterable<Category>
+    suspend fun getAllCategories(): Flow<Category>
 }
 
 @Service
 class DefaultCategoryService @Autowired constructor(private val categoryRepository: CategoryRepository) :
     CategoryService {
-    override fun createCategory(name: String, color: String) {
+    override suspend fun createCategory(name: String, color: String) {
         val newCategory = Category(
-            id = null,
             name = name,
             color = color
         )
@@ -30,7 +29,7 @@ class DefaultCategoryService @Autowired constructor(private val categoryReposito
         categoryRepository.save(newCategory)
     }
 
-    override fun deleteCategory(id: String) {
+    override suspend fun deleteCategory(id: String) {
         if (!categoryRepository.existsById(id)) {
             throw NotFoundException("Category does not exist!")
         }
@@ -38,8 +37,8 @@ class DefaultCategoryService @Autowired constructor(private val categoryReposito
         categoryRepository.deleteById(id)
     }
 
-    override fun updateCategory(id: String, name: String?, color: String?) {
-        val existingCategory = categoryRepository.findByIdOrNull(id)
+    override suspend fun updateCategory(id: String, name: String?, color: String?) {
+        val existingCategory = categoryRepository.findById(id)
             ?: throw NotFoundException("Category does not exist!")
 
         val updatedExistingCategory = existingCategory.copy(
@@ -50,7 +49,7 @@ class DefaultCategoryService @Autowired constructor(private val categoryReposito
         categoryRepository.save(updatedExistingCategory)
     }
 
-    override fun getAllCategories(): Iterable<Category> {
+    override suspend fun getAllCategories(): Flow<Category> {
         return categoryRepository.findAll()
     }
 }

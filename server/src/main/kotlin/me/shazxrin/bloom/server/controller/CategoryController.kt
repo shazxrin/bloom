@@ -1,6 +1,8 @@
 package me.shazxrin.bloom.server.controller
 
 import jakarta.validation.Valid
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import me.shazxrin.bloom.server.dto.category.CreateCategoryDto
 import me.shazxrin.bloom.server.dto.category.ListCategoryDto
 import me.shazxrin.bloom.server.dto.category.UpdateCategoryDto
@@ -15,7 +17,7 @@ class CategoryController @Autowired constructor(private val categoryService: Cat
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    fun postCreateCategory(@Valid @RequestBody createCategoryDto: CreateCategoryDto) {
+    suspend fun postCreateCategory(@Valid @RequestBody createCategoryDto: CreateCategoryDto) {
         with(createCategoryDto) {
             categoryService.createCategory(name, color)
         }
@@ -23,7 +25,7 @@ class CategoryController @Autowired constructor(private val categoryService: Cat
 
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{id}")
-    fun patchUpdateCategory(
+    suspend fun patchUpdateCategory(
         @PathVariable id: String,
         @Valid @RequestBody updateCategoryDto: UpdateCategoryDto
     ) {
@@ -34,17 +36,17 @@ class CategoryController @Autowired constructor(private val categoryService: Cat
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
-    fun deleteCategory(@PathVariable id: String) {
+    suspend fun deleteCategory(@PathVariable id: String) {
         categoryService.deleteCategory(id)
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    fun getAllCategories(): List<ListCategoryDto> {
+    suspend fun getAllCategories(): Flow<ListCategoryDto> {
         return categoryService.getAllCategories()
             .map {
                 with(it) {
-                    ListCategoryDto(id ?: "", name, color)
+                    ListCategoryDto(id, name, color)
                 }
             }
     }

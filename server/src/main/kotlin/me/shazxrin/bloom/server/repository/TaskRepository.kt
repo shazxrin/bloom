@@ -1,15 +1,16 @@
 package me.shazxrin.bloom.server.repository
 
+import kotlinx.coroutines.flow.Flow
 import me.shazxrin.bloom.server.model.Task
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import java.time.LocalDateTime
 
-interface TaskRepository : CrudRepository<Task, String> {
-    fun findByEndTimeIsNull(): Task?
+interface TaskRepository : CoroutineCrudRepository<Task, String> {
+    suspend fun findByEndTimeIsNull(): Task?
 
-    fun existsByEndTimeIsNull(): Boolean
+    suspend fun existsByEndTimeIsNull(): Boolean
 
-    fun findTasksByCategory_IdOrderByStartTime(categoryId: String): Iterable<Task>
+    suspend fun findTasksByCategoryIdOrderByStartTime(categoryId: String): Flow<Task>
 
-    fun findTasksByStartTimeBetween(fromLocalDateTime: LocalDateTime, endLocalDateTime: LocalDateTime): Iterable<Task>
+    suspend fun findTasksByStartTimeBetween(fromLocalDateTime: LocalDateTime, endLocalDateTime: LocalDateTime): Flow<Task>
 }

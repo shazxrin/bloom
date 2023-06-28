@@ -1,11 +1,9 @@
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
-  datasource:
-    username: postgres
-    password: password
-    url: jdbc:postgresql://localhost:60001/bloom
+  data:
+    mongodb:
+      host: localhost
+      port: 60001
+      database: bloom-testing
 server:
   dev-disable-cors: true
   error:

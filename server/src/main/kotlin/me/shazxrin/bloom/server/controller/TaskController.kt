@@ -1,6 +1,8 @@
 package me.shazxrin.bloom.server.controller
 
 import jakarta.validation.Valid
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import me.shazxrin.bloom.server.service.TaskService
 import me.shazxrin.bloom.server.dto.task.CreateCurrentTaskDto
 import me.shazxrin.bloom.server.dto.task.CurrentTaskDto
@@ -22,7 +24,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/current/create")
-    fun postCreateCurrentTask(@Valid @RequestBody createCurrentTaskDto: CreateCurrentTaskDto) {
+    suspend fun postCreateCurrentTask(@Valid @RequestBody createCurrentTaskDto: CreateCurrentTaskDto) {
         with(createCurrentTaskDto) {
             taskService.createCurrentTask(name, categoryId, duration)
         }
@@ -30,24 +32,24 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/current/pause")
-    fun postPauseCurrentTask() {
+    suspend fun postPauseCurrentTask() {
         taskService.pauseCurrentTask()
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/current/resume")
-    fun postResumeCurrentTask() {
+    suspend fun postResumeCurrentTask() {
         taskService.resumeCurrentTask()
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/current/end")
-    fun postEndCurrentTask() {
+    suspend fun postEndCurrentTask() {
         taskService.endCurrentTask()
     }
 
     @GetMapping("/current")
-    fun getCurrentTask(): ResponseEntity<CurrentTaskDto?> {
+    suspend fun getCurrentTask(): ResponseEntity<CurrentTaskDto?> {
         val currentTask = taskService.getCurrentTask()
 
         return if (currentTask == null) {
@@ -58,7 +60,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
             val currentTaskDto = with(currentTask) {
                 CurrentTaskDto(
                     name,
-                    category.id ?: "",
+                    categoryId,
                     duration,
                     remainingDuration,
                     isPaused,
@@ -75,14 +77,12 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    fun getAllTasks(@RequestParam(required = false) categoryId: String?): List<ListTaskDto> {
+    suspend fun getAllTasks(@RequestParam(required = false) categoryId: String?): Flow<ListTaskDto> {
         val tasks =
             if (categoryId != null) taskService.getAllTasksByCategoryId(categoryId) else taskService.getAllTasks()
 
         return tasks.map {
-            with(it) {
-                ListTaskDto(id ?: "", name, category.id ?: "", duration, startTime, endTime)
-            }
+            ListTaskDto(it.id, it.name, it.categoryId, it.duration, it.startTime, it.endTime)
         }
     }
 }

@@ -1,8 +1,8 @@
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
-  datasource:
-    url: jdbc:postgresql://localhost:60000/bloom
+  data:
+    mongodb:
+      host: localhost
+      port: 60000
+      database: bloom
 server:
   dev-disable-cors: false
