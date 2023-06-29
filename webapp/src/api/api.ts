@@ -187,6 +187,31 @@ export interface ListTaskDto {
 /**
  * 
  * @export
+ * @interface PagedListDtoListTaskDto
+ */
+export interface PagedListDtoListTaskDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof PagedListDtoListTaskDto
+     */
+    'page': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PagedListDtoListTaskDto
+     */
+    'totalPages': number;
+    /**
+     * 
+     * @type {Array<ListTaskDto>}
+     * @memberof PagedListDtoListTaskDto
+     */
+    'items': Array<ListTaskDto>;
+}
+/**
+ * 
+ * @export
  * @interface ProblemDetail
  */
 export interface ProblemDetail {
@@ -596,11 +621,14 @@ export const TaskControllerApiAxiosParamCreator = function (configuration?: Conf
     return {
         /**
          * 
+         * @param {number} page 
          * @param {string} [categoryId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllTasks: async (categoryId?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getAllTasks: async (page: number, categoryId?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'page' is not null or undefined
+            assertParamExists('getAllTasks', 'page', page)
             const localVarPath = `/api/tasks/all`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -612,6 +640,10 @@ export const TaskControllerApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
 
             if (categoryId !== undefined) {
                 localVarQueryParameter['categoryId'] = categoryId;
@@ -791,12 +823,13 @@ export const TaskControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {number} page 
          * @param {string} [categoryId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllTasks(categoryId?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ListTaskDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllTasks(categoryId, options);
+        async getAllTasks(page: number, categoryId?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PagedListDtoListTaskDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllTasks(page, categoryId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -861,8 +894,8 @@ export const TaskControllerApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllTasks(requestParameters: TaskControllerApiGetAllTasksRequest = {}, options?: AxiosRequestConfig): AxiosPromise<Array<ListTaskDto>> {
-            return localVarFp.getAllTasks(requestParameters.categoryId, options).then((request) => request(axios, basePath));
+        getAllTasks(requestParameters: TaskControllerApiGetAllTasksRequest, options?: AxiosRequestConfig): AxiosPromise<PagedListDtoListTaskDto> {
+            return localVarFp.getAllTasks(requestParameters.page, requestParameters.categoryId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -916,6 +949,13 @@ export const TaskControllerApiFactory = function (configuration?: Configuration,
 export interface TaskControllerApiGetAllTasksRequest {
     /**
      * 
+     * @type {number}
+     * @memberof TaskControllerApiGetAllTasks
+     */
+    readonly page: number
+
+    /**
+     * 
      * @type {string}
      * @memberof TaskControllerApiGetAllTasks
      */
@@ -950,8 +990,8 @@ export class TaskControllerApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof TaskControllerApi
      */
-    public getAllTasks(requestParameters: TaskControllerApiGetAllTasksRequest = {}, options?: AxiosRequestConfig) {
-        return TaskControllerApiFp(this.configuration).getAllTasks(requestParameters.categoryId, options).then((request) => request(this.axios, this.basePath));
+    public getAllTasks(requestParameters: TaskControllerApiGetAllTasksRequest, options?: AxiosRequestConfig) {
+        return TaskControllerApiFp(this.configuration).getAllTasks(requestParameters.page, requestParameters.categoryId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -1,6 +1,5 @@
 package me.shazxrin.bloom.server.service
 
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
 import me.shazxrin.bloom.server.exception.NotFoundException
 import me.shazxrin.bloom.server.exception.StateException
@@ -8,6 +7,7 @@ import me.shazxrin.bloom.server.model.*
 import me.shazxrin.bloom.server.repository.CategoryRepository
 import me.shazxrin.bloom.server.repository.TaskRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import java.time.DayOfWeek
 import java.time.Duration
@@ -16,6 +16,7 @@ import java.time.Month
 import java.time.Year
 import java.time.temporal.IsoFields
 import java.time.temporal.TemporalAdjusters
+import kotlin.math.ceil
 
 interface TaskService {
     suspend fun createCurrentTask(name: String, categoryId: String, duration: Long)
@@ -28,9 +29,9 @@ interface TaskService {
 
     suspend fun getCurrentTask(): Task?
 
-    suspend fun getAllTasks(): Flow<Task>
+    suspend fun getAllTasks(page: Int): PagedList<Task>
 
-    suspend fun getAllTasksByCategoryId(categoryId: String): Flow<Task>
+    suspend fun getAllTasksByCategoryId(categoryId: String, page: Int): PagedList<Task>
 
     suspend fun getTasksOverviewDay(year: Int, month: Int, dayOfMonth: Int): TaskOverview
 
@@ -52,7 +53,7 @@ class DefaultTaskService @Autowired constructor(
             throw StateException("Current task already exists!")
         }
 
-        if (categoryRepository.existsById(categoryId)) {
+        if (!categoryRepository.existsById(categoryId)) {
             throw NotFoundException("Category does not exist!")
         }
 
@@ -117,12 +118,40 @@ class DefaultTaskService @Autowired constructor(
         return taskRepository.findByEndTimeIsNull()
     }
 
-    override suspend fun getAllTasks(): Flow<Task> {
-        return taskRepository.findAll()
+    override suspend fun getAllTasks(page: Int): PagedList<Task> {
+        val pageable = PageRequest.of(page, 10)
+
+        val items = taskRepository
+            .findTasksByIdNotNullOrderByStartTimeDesc(pageable)
+            .toList()
+
+        val totalItems = taskRepository
+            .countTasksByIdNotNull()
+        val totalPages = ceil(totalItems.toDouble() / 10).toInt()
+
+        return PagedList(
+            page,
+            totalPages,
+            items
+        )
     }
 
-    override suspend fun getAllTasksByCategoryId(categoryId: String): Flow<Task> {
-        return taskRepository.findTasksByCategoryIdOrderByStartTime(categoryId)
+    override suspend fun getAllTasksByCategoryId(categoryId: String, page: Int): PagedList<Task> {
+        val pageable = PageRequest.of(page, 10)
+
+        val items = taskRepository
+            .findTasksByCategoryIdOrderByStartTimeDesc(categoryId, pageable)
+            .toList()
+
+        val totalItems = taskRepository
+            .countTasksByCategoryId(categoryId)
+        val totalPages = ceil(totalItems.toDouble() / 10).toInt()
+
+        return PagedList(
+            page,
+            totalPages,
+            items
+        )
     }
 
     override suspend fun getTasksOverviewDay(year: Int, month: Int, dayOfMonth: Int): TaskOverview {

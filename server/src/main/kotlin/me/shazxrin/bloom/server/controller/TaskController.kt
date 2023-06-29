@@ -1,8 +1,8 @@
 package me.shazxrin.bloom.server.controller
 
 import jakarta.validation.Valid
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import me.shazxrin.bloom.server.dto.common.PagedListDto
+import me.shazxrin.bloom.server.dto.common.map
 import me.shazxrin.bloom.server.service.TaskService
 import me.shazxrin.bloom.server.dto.task.CreateCurrentTaskDto
 import me.shazxrin.bloom.server.dto.task.CurrentTaskDto
@@ -77,11 +77,14 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    suspend fun getAllTasks(@RequestParam(required = false) categoryId: String?): Flow<ListTaskDto> {
-        val tasks =
-            if (categoryId != null) taskService.getAllTasksByCategoryId(categoryId) else taskService.getAllTasks()
+    suspend fun getAllTasks(
+        @RequestParam(required = true) page: Int,
+        @RequestParam(required = false) categoryId: String?
+    ): PagedListDto<ListTaskDto> {
+        val pagedList =
+            if (categoryId != null) taskService.getAllTasksByCategoryId(categoryId, page) else taskService.getAllTasks(page)
 
-        return tasks.map {
+        return pagedList.map {
             ListTaskDto(it.id, it.name, it.categoryId, it.duration, it.startTime, it.endTime)
         }
     }
