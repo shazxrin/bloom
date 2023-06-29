@@ -1,8 +1,8 @@
-import {useEffect, useState} from "react";
-import {differenceInSeconds} from "date-fns";
-import {Group, Text, useMantineTheme} from "@mantine/core";
-import useMobile from "../../hooks/useMobile.ts";
-import {useTaskStore} from "../../stores/taskStore.ts";
+import {useEffect, useState} from "react"
+import {differenceInSeconds} from "date-fns"
+import {Group, Text, useMantineTheme} from "@mantine/core"
+import useMobile from "../../hooks/useMobile.ts"
+import {useTaskStore} from "../../stores/taskStore.ts"
 
 interface TimerClockTextProps {
     color: string
@@ -24,56 +24,59 @@ export default function TimerClock() {
         currentTask: state.currentTask,
     }))
 
-    const [leftDuration, setLeftDuration] = useState(currentTask?.remainingDuration ?? 0);
-    const [hours, setHours] = useState(0);
-    const [minutes, setMinutes] = useState(0);
-    const [seconds, setSeconds] = useState(0);
+    const [leftDuration, setLeftDuration] = useState(currentTask?.remainingDuration ?? 0)
+    const [hours, setHours] = useState(0)
+    const [minutes, setMinutes] = useState(0)
+    const [seconds, setSeconds] = useState(0)
 
     useEffect(() => {
         if (currentTask && !currentTask.isPaused) {
             const timer = setInterval(() => {
-                setLeftDuration(currentTask.remainingDuration - differenceInSeconds(new Date(), new Date(currentTask.lastStartTime)));
-            }, 1000);
+                setLeftDuration(currentTask.remainingDuration - differenceInSeconds(new Date(), new Date(currentTask.lastStartTime)))
+            }, 1000)
 
-            return () => clearInterval(timer);
+            return () => clearInterval(timer)
         }
-    }, [currentTask]);
+    }, [currentTask])
 
     useEffect(() => {
-        setLeftDuration(currentTask?.remainingDuration ?? 0);
-    }, [currentTask]);
+        const leftDuration = currentTask ?
+            currentTask.remainingDuration - differenceInSeconds(new Date(), new Date(currentTask.lastStartTime)) : 0
+
+        setLeftDuration(leftDuration)
+    }, [currentTask])
 
     useEffect(() => {
-        const hours = Math.max(Math.floor(Math.abs(leftDuration) / 3600), 0);
-        const minutes = Math.max(Math.floor((Math.abs(leftDuration) - (hours * 3600)) / 60), 0);
-        const seconds = Math.max(Math.floor(Math.abs(leftDuration) - (hours * 3600) - (minutes * 60)), 0);
+        const hours = Math.max(Math.floor(Math.abs(leftDuration) / 3600), 0)
+        const minutes = Math.max(Math.floor((Math.abs(leftDuration) - (hours * 3600)) / 60), 0)
+        const seconds = Math.max(Math.floor(Math.abs(leftDuration) - (hours * 3600) - (minutes * 60)), 0)
 
-        setHours(hours);
-        setMinutes(minutes);
-        setSeconds(seconds);
-    }, [leftDuration]);
+        setHours(hours)
+        setMinutes(minutes)
+        setSeconds(seconds)
+    }, [leftDuration])
 
-    const theme = useMantineTheme();
-    const pausedColor = theme.colors.yellow[8];
-    const neutralColor = theme.colors.gray[8];
-    const ongoingColor = theme.colors.green[8];
-    const doneColor = theme.colors.blue[8];
-    const [timerColor, setTimerColor] = useState(neutralColor);
+    const theme = useMantineTheme()
+    const pausedColor = theme.colors.yellow[8]
+    const neutralColor = theme.colors.gray[8]
+    const ongoingColor = theme.colors.green[8]
+    const doneColor = theme.colors.blue[8]
+    const [timerColor, setTimerColor] = useState(neutralColor)
     useEffect(() => {
         if (!!currentTask) {
             if (currentTask.isPaused) {
                 setTimerColor(pausedColor)
             } else {
                 if (leftDuration > 0) {
-                    setTimerColor(ongoingColor);
+                    setTimerColor(ongoingColor)
                 } else {
                     setTimerColor(doneColor)
                 }
             }
         } else {
-            setTimerColor(neutralColor);
+            setTimerColor(neutralColor)
         }
-    }, [currentTask, leftDuration]);
+    }, [currentTask, leftDuration])
 
     return (
         <Group spacing={"xl"}>
@@ -81,5 +84,5 @@ export default function TimerClock() {
             <TimerClockText color={timerColor} value={minutes}/>
             <TimerClockText color={timerColor} value={seconds}/>
         </Group>
-    );
+    )
 }
