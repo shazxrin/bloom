@@ -1,8 +1,8 @@
-import {Badge, Center, Group, Text, useMantineTheme} from "@mantine/core";
+import {Center, Group, Text, useMantineTheme} from "@mantine/core";
 import {IconArrowRight} from "@tabler/icons-react";
-import tinycolor from "tinycolor2";
 import {useTaskStore} from "../../stores/taskStore.ts";
 import {useCategoryStore} from "../../stores/categoryStore.ts";
+import CategoryBadge from "../category/CategoryBadge.tsx";
 
 export default function TimerLabel() {
     const {currentTask} = useTaskStore((state) => ({
@@ -24,14 +24,10 @@ export default function TimerLabel() {
             <Group align={"center"}>
                 {!!currentTask &&
                     <>
-                        <Badge sx={{
-                            color: tinycolor(categoryColor).isLight() ? theme.colors.gray[8] : theme.colors.gray[3],
-                            backgroundColor: categoryColor
-                        }}>
-                            {categoryName}
-                        </Badge>
+                        <CategoryBadge name={categoryName} color={categoryColor}/>
                         <IconArrowRight size={18}></IconArrowRight>
-                    </>}
+                    </>
+                }
 
 
                 <Text color={theme.colors.gray[6]} size={"sm"}>

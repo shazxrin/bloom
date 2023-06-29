@@ -6,7 +6,7 @@ import {
     Text,
     useMantineTheme,
 } from "@mantine/core";
-import {IconLayoutDashboard, IconHourglass} from "@tabler/icons-react";
+import {IconLayoutDashboard, IconHourglass, IconHistory} from "@tabler/icons-react";
 import {Link} from "wouter";
 
 interface MainLinkProps {
@@ -39,7 +39,7 @@ function MainLink({icon, color, label, link}: MainLinkProps) {
                 })}
             >
                 <Group>
-                    <ThemeIcon color={color} variant="light">
+                    <ThemeIcon color={color} variant="filled">
                         {icon}
                     </ThemeIcon>
 
@@ -57,9 +57,9 @@ interface AppNavBarProps {
 export default function AppNavBar({opened}: AppNavBarProps) {
     const theme = useMantineTheme();
 
-    const backgroundColor = theme.colors.pink[7];
+    const backgroundColor = theme.colors.pink[9];
     const iconSize = 18;
-    const iconColor = theme.colors.gray[5];
+    const iconColor = theme.colors.gray[4];
 
     return (
         <Navbar
@@ -79,6 +79,12 @@ export default function AppNavBar({opened}: AppNavBarProps) {
                 color={backgroundColor}
                 label="Timer"
                 link="/timer"
+            />
+            <MainLink
+                icon={<IconHistory color={iconColor} size={iconSize}/>}
+                color={backgroundColor}
+                label="History"
+                link="/history"
             />
         </Navbar>
     );

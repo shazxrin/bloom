@@ -1,15 +1,16 @@
-import {CurrentTaskDto, TaskControllerApi} from "../api";
+import {CurrentTaskDto, PagedListDtoListTaskDto, TaskControllerApi} from "../api";
 import {create} from "zustand";
 import {devtools} from "zustand/middleware";
 
 interface TaskStore {
     isLoading: boolean
     currentTask: CurrentTaskDto | null
-    fetchCurrentTask: () => void
-    createCurrentTask: (name: string, categoryId: string, duration: number) => void
-    pauseCurrentTask: () => void
-    resumeCurrentTask: () => void
-    endCurrentTask: () => void
+    fetchCurrentTask: () => Promise<void>
+    createCurrentTask: (name: string, categoryId: string, duration: number) => Promise<void>
+    pauseCurrentTask: () => Promise<void>
+    resumeCurrentTask: () => Promise<void>
+    endCurrentTask: () => Promise<void>
+    getAllTasks: (page: number) => Promise<PagedListDtoListTaskDto>
 }
 
 export const useTaskStore = create<TaskStore>()(
@@ -105,6 +106,16 @@ export const useTaskStore = create<TaskStore>()(
                 }
 
                 get().fetchCurrentTask()
+            },
+            getAllTasks: async (page: number): Promise<PagedListDtoListTaskDto> => {
+                set((state) => ({...state, isLoading: true}))
+
+                const tasksApi = new TaskControllerApi()
+                const response = await tasksApi.getAllTasks({
+                    page: page
+                })
+
+                return response.data
             },
         })
     )
