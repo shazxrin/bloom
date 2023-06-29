@@ -29,19 +29,23 @@ export default function TimerClock() {
     const [minutes, setMinutes] = useState(0)
     const [seconds, setSeconds] = useState(0)
 
+    const [timerIntervalId, setTimerIntervalId] = useState(0)
     useEffect(() => {
         if (currentTask && !currentTask.isPaused) {
-            const timer = setInterval(() => {
+            const id = setInterval(() => {
                 setLeftDuration(currentTask.remainingDuration - differenceInSeconds(new Date(), new Date(currentTask.lastStartTime)))
             }, 1000)
 
-            return () => clearInterval(timer)
+            setTimerIntervalId(id)
+
+            return () => clearInterval(id)
+        } else {
+            clearInterval(timerIntervalId)
         }
     }, [currentTask])
 
     useEffect(() => {
-        const leftDuration = currentTask ?
-            currentTask.remainingDuration - differenceInSeconds(new Date(), new Date(currentTask.lastStartTime)) : 0
+        const leftDuration = currentTask ? currentTask.remainingDuration : 0
 
         setLeftDuration(leftDuration)
     }, [currentTask])
