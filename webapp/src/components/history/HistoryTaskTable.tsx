@@ -5,7 +5,7 @@ import {
     Box,
     Center,
     LoadingOverlay,
-    Pagination,
+    Pagination, Skeleton,
     Table,
     useMantineTheme
 } from "@mantine/core";
@@ -50,34 +50,41 @@ export default function HistoryTaskTable() {
 
             <Table verticalSpacing={"md"} striped={true} highlightOnHover={true}>
                 <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Duration</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                </tr>
+                    <tr>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Duration</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                    </tr>
                 </thead>
                 <tbody>
-                {tasks.map((task) => (
-                    <tr>
-                        <td>{task.name}</td>
-                        <td>
-                            <CategoryBadge
-                                name={categories.find(c => c.id === task.categoryId)?.name ?? ""}
-                                color={categories.find(c => c.id === task.categoryId)?.color ?? ""}/>
-                        </td>
-                        <td>
-                            {formatDuration({
-                                hours: secondsToHours(task.duration),
-                                minutes: secondsToMinutes(task.duration) - (secondsToHours(task.duration) * 60),
-                                seconds: task.duration - (secondsToMinutes(task.duration) * 60)
-                            })}
-                        </td>
-                        <th>{format(new Date(task.startTime), dateTimeFormat)}</th>
-                        <th>{task.endTime ? format(new Date(task.endTime), dateTimeFormat) : "In Progress"}</th>
-                    </tr>
-                ))}
+                    {isLoading &&
+                        Array.from({length: 10}, () => (
+                            <tr>
+                                {Array.from({length: 5}, () => <td><Skeleton height={12} radius="xl" /></td>)}
+                            </tr>
+                        ))
+                    }
+                    {tasks.map((task) => (
+                        <tr>
+                            <td>{task.name}</td>
+                            <td>
+                                <CategoryBadge
+                                    name={categories.find(c => c.id === task.categoryId)?.name ?? ""}
+                                    color={categories.find(c => c.id === task.categoryId)?.color ?? ""}/>
+                            </td>
+                            <td>
+                                {formatDuration({
+                                    hours: secondsToHours(task.duration),
+                                    minutes: secondsToMinutes(task.duration) - (secondsToHours(task.duration) * 60),
+                                    seconds: task.duration - (secondsToMinutes(task.duration) * 60)
+                                })}
+                            </td>
+                            <td>{format(new Date(task.startTime), dateTimeFormat)}</td>
+                            <td>{task.endTime ? format(new Date(task.endTime), dateTimeFormat) : "In Progress"}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </Table>
 
