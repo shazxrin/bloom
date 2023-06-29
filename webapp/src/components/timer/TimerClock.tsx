@@ -67,7 +67,7 @@ export default function TimerClock() {
     const doneColor = theme.colors.blue[8]
     const [timerColor, setTimerColor] = useState(neutralColor)
     useEffect(() => {
-        if (!!currentTask) {
+        if (currentTask) {
             if (currentTask.isPaused) {
                 setTimerColor(pausedColor)
             } else {
