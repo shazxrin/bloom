@@ -12,7 +12,6 @@ import Timer from "./timer/Timer.tsx"
 import {useTaskStore} from "../stores/taskStore.ts";
 import {useCategoryStore} from "../stores/categoryStore.ts";
 import History from "./history/History.tsx";
-import Dashboard from "./dashboard/Dashboard.tsx";
 import {Route, Switch} from "wouter";
 
 export default function Root() {
@@ -59,7 +58,6 @@ export default function Root() {
             }
         >
             <Switch>
-                <Route path={"/"} component={Dashboard} />
                 <Route path={"/timer"} component={Timer} />
                 <Route path={"/history"} component={History} />
             </Switch>

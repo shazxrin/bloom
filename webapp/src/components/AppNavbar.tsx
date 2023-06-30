@@ -6,7 +6,7 @@ import {
     Text,
     useMantineTheme,
 } from "@mantine/core";
-import {IconLayoutDashboard, IconHourglass, IconHistory} from "@tabler/icons-react";
+import {IconHourglass, IconHistory} from "@tabler/icons-react";
 import {Link} from "wouter";
 
 interface MainLinkProps {
@@ -68,12 +68,6 @@ export default function AppNavBar({opened}: AppNavBarProps) {
             hidden={!opened}
             width={{sm: 200, lg: 300}}
         >
-            <MainLink
-                icon={<IconLayoutDashboard color={iconColor} size={iconSize}/>}
-                color={backgroundColor}
-                label="Dashboard"
-                link="/"
-            />
             <MainLink
                 icon={<IconHourglass color={iconColor} size={iconSize}/>}
                 color={backgroundColor}
