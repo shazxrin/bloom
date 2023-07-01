@@ -1,9 +1,11 @@
+import com.github.gradle.node.npm.task.NpmTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.springframework.boot") version "3.1.0"
     id("io.spring.dependency-management") version "1.1.0"
     id("org.springdoc.openapi-gradle-plugin") version "1.6.0"
+    id("com.github.node-gradle.node") version "5.0.0"
     kotlin("jvm") version "1.8.21"
     kotlin("plugin.spring") version "1.8.21"
 }
@@ -35,6 +37,23 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
+}
+
+tasks.register<Delete>("cleanWebapp") {
+    delete(file("${projectDir}/src/main/resources/public"))
+    delete(file("${projectDir}/../webapp/dist"))
+}
+
+tasks.register<NpmTask>("buildWebapp") {
+    dependsOn(tasks.named("cleanWebapp"))
+    workingDir.set(file("${projectDir}/../webapp"))
+    npmCommand.set(listOf("run", "build"))
+}
+
+tasks.register<Copy>("bundleWebapp") {
+    dependsOn(tasks.named("buildWebapp"))
+    from(file("${projectDir}/../webapp/dist"))
+    into(file("${projectDir}/src/main/resources/public"))
 }
 
 tasks.withType<KotlinCompile> {
