@@ -60,14 +60,14 @@ export default function HistoryTaskTable() {
                 </thead>
                 <tbody>
                     {isLoading &&
-                        Array.from({length: 10}, () => (
-                            <tr>
-                                {Array.from({length: 5}, () => <td><Skeleton height={12} radius="xl" /></td>)}
+                        Array.from({length: 10}, (_, i) => (
+                            <tr key={i}>
+                                {Array.from({length: 5}, (_, j) => <td key={j}><Skeleton height={12} radius="xl" /></td>)}
                             </tr>
                         ))
                     }
                     {tasks.map((task) => (
-                        <tr>
+                        <tr key={task.id}>
                             <td>{task.name}</td>
                             <td>
                                 <CategoryBadge
