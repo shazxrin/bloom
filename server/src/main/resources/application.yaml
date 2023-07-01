@@ -5,7 +5,6 @@ spring:
       port: 60001
       database: bloom-testing
 server:
-  dev-disable-cors: true
   error:
     include-stacktrace: never
     include-message: always

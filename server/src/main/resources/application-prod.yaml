@@ -4,5 +4,3 @@ spring:
       host: localhost
       port: 60000
       database: bloom
-server:
-  dev-disable-cors: false
