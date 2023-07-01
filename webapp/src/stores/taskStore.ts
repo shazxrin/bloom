@@ -1,121 +1,171 @@
-import {CurrentTaskDto, PagedListDtoListTaskDto, TaskControllerApi} from "../api";
 import {create} from "zustand";
 import {devtools} from "zustand/middleware";
+import API from "../api/api.ts";
+import {CurrentTaskDto, ListTaskDto, PagedListDto} from "../api/dto.ts";
 
 interface TaskStore {
     isLoading: boolean
+    loadedDetails: string | null
+    errorDetails: string | null
     currentTask: CurrentTaskDto | null
     fetchCurrentTask: () => Promise<void>
     createCurrentTask: (name: string, categoryId: string, duration: number) => Promise<void>
     pauseCurrentTask: () => Promise<void>
     resumeCurrentTask: () => Promise<void>
     endCurrentTask: () => Promise<void>
-    getAllTasks: (page: number) => Promise<PagedListDtoListTaskDto>
+    getAllTasks: (page: number) => Promise<PagedListDto<ListTaskDto> | null>
 }
 
 export const useTaskStore = create<TaskStore>()(
     devtools(
         (set, get) => ({
             isLoading: false,
-            hasError: false,
-            errorMessage: null,
+            loadedDetails: null,
+            errorDetails: null,
             categories: [],
             currentTask: null,
             fetchCurrentTask: async () => {
                 set((state) => ({...state, isLoading: true}))
 
-                const tasksApi = new TaskControllerApi()
-                const tasksResponse = await tasksApi.getCurrentTask()
+                try {
+                    const currentTask = await API.tasks.getCurrent()
 
-                if (tasksResponse.status == 200) {
                     set((state) => ({
                         ...state,
-                        currentTask: tasksResponse.data,
-                        isLoading: false,
-                        hasError: false
+                        currentTask: currentTask,
+                        loadedDetails: "Successfully fetched current task",
+                        errorDetails: null,
+                        isLoading: false
                     }))
-                } else if (tasksResponse.status == 204) {
+                } catch (err) {
                     set((state) => ({
                         ...state,
-                        currentTask: null,
-                        isLoading: false,
-                        hasError: false
+                        loadedDetails: null,
+                        errorDetails: "Failed to fetch current task",
+                        isLoading: false
                     }))
-                } else {
-                    set((state) => ({...state, isLoading: false, hasError: true}))
                 }
             },
             createCurrentTask: async (name: string, categoryId: string, duration: number) => {
                 set((state) => ({...state, isLoading: true}))
 
-                const tasksApi = new TaskControllerApi()
-                const createResponse = await tasksApi.postCreateCurrentTask({
-                    createCurrentTaskDto: {
+                try {
+                    await API.tasks.postCurrentCreate({
                         name: name,
                         categoryId: categoryId,
                         duration: duration
-                    }
-                })
+                    })
 
-                if (createResponse.status == 201) {
-                    set((state) => ({...state, isLoading: false, hasError: false}))
-                } else {
-                    set((state) => ({...state, isLoading: false, hasError: true}))
+                    set((state) => ({
+                        ...state,
+                        loadedDetails: "Successfully created current task",
+                        errorDetails: null,
+                        isLoading: false
+                    }))
+                } catch (err) {
+                    set((state) => ({
+                        ...state,
+                        loadedDetails: null,
+                        errorDetails: "Failed to fetch current task",
+                        isLoading: false
+                    }))
                 }
 
-                get().fetchCurrentTask()
+                await get().fetchCurrentTask()
             },
             pauseCurrentTask: async () => {
                 set((state) => ({...state, isLoading: true}))
 
-                const tasksApi = new TaskControllerApi()
-                const response = await tasksApi.postPauseCurrentTask()
+                try {
+                    await API.tasks.postCurrentPause()
 
-                if (response.status == 200) {
-                    set((state) => ({...state, isLoading: false, hasError: false}))
-                } else {
-                    set((state) => ({...state, isLoading: false, hasError: true}))
+                    set((state) => ({
+                        ...state,
+                        loadedDetails: "Successfully paused current task",
+                        errorDetails: null,
+                        isLoading: false
+                    }))
+                } catch (err) {
+                    set((state) => ({
+                        ...state,
+                        loadedDetails: null,
+                        errorDetails: "Failed to pause current task",
+                        isLoading: false
+                    }))
                 }
 
-                get().fetchCurrentTask()
+                await get().fetchCurrentTask()
             },
             resumeCurrentTask: async () => {
                 set((state) => ({...state, isLoading: true}))
 
-                const tasksApi = new TaskControllerApi()
-                const response = await tasksApi.postResumeCurrentTask()
+                try {
+                    await API.tasks.postCurrentResume()
 
-                if (response.status == 200) {
-                    set((state) => ({...state, isLoading: false, hasError: false}))
-                } else {
-                    set((state) => ({...state, isLoading: false, hasError: true}))
+                    set((state) => ({
+                        ...state,
+                        loadedDetails: "Successfully resumed current task",
+                        errorDetails: null,
+                        isLoading: false
+                    }))
+                } catch (err) {
+                    set((state) => ({
+                        ...state,
+                        loadedDetails: null,
+                        errorDetails: "Failed to resume current task",
+                        isLoading: false
+                    }))
                 }
 
-                get().fetchCurrentTask()
+                await get().fetchCurrentTask()
             },
             endCurrentTask: async () => {
                 set((state) => ({...state, isLoading: true}))
 
-                const tasksApi = new TaskControllerApi()
-                const response = await tasksApi.postEndCurrentTask()
+                try {
+                    await API.tasks.postCurrentEnd()
 
-                if (response.status == 200) {
-                    set((state) => ({...state, isLoading: false, hasError: false}))
-                } else {
-                    set((state) => ({...state, isLoading: false, hasError: true}))
+                    set((state) => ({
+                        ...state,
+                        loadedDetails: "Successfully ended current task",
+                        errorDetails: null,
+                        isLoading: false
+                    }))
+                } catch (err) {
+                    set((state) => ({
+                        ...state,
+                        loadedDetails: null,
+                        errorDetails: "Failed to end current task",
+                        isLoading: false
+                    }))
                 }
 
-                get().fetchCurrentTask()
+                await get().fetchCurrentTask()
             },
-            getAllTasks: async (page: number): Promise<PagedListDtoListTaskDto> => {
+            getAllTasks: async (page: number) => {
                 set((state) => ({...state, isLoading: true}))
 
-                const tasksApi = new TaskControllerApi()
-                const response = await tasksApi.getAllTasks({
-                    page: page
-                })
+                try {
+                    const pagedList = await API.tasks.getAll(page)
 
-                return response.data
+                    set((state) => ({
+                        ...state,
+                        loadedDetails: "Successfully fetched all tasks",
+                        errorDetails: null,
+                        isLoading: false
+                    }))
+
+                    return pagedList
+                } catch (err) {
+                    set((state) => ({
+                        ...state,
+                        loadedDetails: null,
+                        errorDetails: "Failed to fetch all tasks",
+                        isLoading: false
+                    }))
+
+                    return null
+                }
             },
         })
     )

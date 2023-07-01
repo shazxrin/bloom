@@ -1,6 +1,5 @@
 import {useTaskStore} from "../../stores/taskStore.ts";
 import {useCallback, useEffect, useState} from "react";
-import {ListTaskDto} from "../../api";
 import {
     Box,
     Center,
@@ -12,6 +11,7 @@ import {
 import {useCategoryStore} from "../../stores/categoryStore.ts";
 import {format, formatDuration, secondsToHours, secondsToMinutes} from "date-fns";
 import CategoryBadge from "../category/CategoryBadge.tsx";
+import {ListTaskDto} from "../../api/dto.ts";
 
 const dateTimeFormat = "dd MMMM yyyy HH:mm"
 
@@ -32,8 +32,8 @@ export default function HistoryTaskTable() {
     const fetchPage = useCallback(async () => {
         setIsLoading(true)
         const pagedList = await getAllTasks(page - 1)
-        setTasks(pagedList.items)
-        setTotalPages(pagedList.totalPages)
+        setTasks(pagedList?.items ?? [])
+        setTotalPages(pagedList?.totalPages ?? 0)
         setIsLoading(false)
     }, [page])
 
