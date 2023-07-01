@@ -1,6 +1,6 @@
 spring:
   data:
     mongodb:
-      host: localhost
-      port: 60000
+      host: db-mongo
+      port: 27017
       database: bloom
