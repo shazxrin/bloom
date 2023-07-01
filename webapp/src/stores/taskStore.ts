@@ -33,7 +33,7 @@ export const useTaskStore = create<TaskStore>()(
                     set((state) => ({
                         ...state,
                         currentTask: currentTask,
-                        loadedDetails: "Successfully fetched current task",
+                        loadedDetails: null,
                         errorDetails: null,
                         isLoading: false
                     }))
@@ -150,7 +150,7 @@ export const useTaskStore = create<TaskStore>()(
 
                     set((state) => ({
                         ...state,
-                        loadedDetails: "Successfully fetched all tasks",
+                        loadedDetails: null,
                         errorDetails: null,
                         isLoading: false
                     }))

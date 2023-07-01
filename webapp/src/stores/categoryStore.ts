@@ -28,7 +28,7 @@ export const useCategoryStore = create<CategoryStore>()(
                     set((state) => ({
                         ...state,
                         categories: categories,
-                        loadedDetails: "Successfully fetch categories",
+                        loadedDetails: null,
                         errorDetails: null,
                         isLoading: false
                     }))

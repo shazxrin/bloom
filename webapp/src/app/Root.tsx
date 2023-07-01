@@ -1,32 +1,31 @@
 import {useEffect, useState} from 'react'
-import {
-    AppShell,
-    Header,
-    Text,
-    MediaQuery,
-    Burger,
-    useMantineTheme,
-} from '@mantine/core'
+import {AppShell, Burger, Header, MediaQuery, Text, useMantineTheme,} from '@mantine/core'
 import AppNavBar from '../components/AppNavbar.tsx'
 import Timer from "./timer/Timer.tsx"
 import {useTaskStore} from "../stores/taskStore.ts";
 import {useCategoryStore} from "../stores/categoryStore.ts";
 import History from "./history/History.tsx";
 import {Route, Switch} from "wouter";
+import Notifier from "../components/notification/Notifier.tsx";
 
 export default function Root() {
     const theme = useMantineTheme()
     const [opened, setOpened] = useState(false)
 
-    const {fetchCurrentTask} = useTaskStore((state) => ({
-        fetchCurrentTask: state.fetchCurrentTask
+    const {
+        fetchCurrentTask
+    } = useTaskStore((state) => ({
+        fetchCurrentTask: state.fetchCurrentTask,
     }))
-    const {fetchCategories} = useCategoryStore((state) => ({
-        fetchCategories: state.fetchCategories
+    const {
+        fetchCategories
+    } = useCategoryStore((state) => ({
+        fetchCategories: state.fetchCategories,
     }))
+
     useEffect(() => {
-       fetchCategories()
-       fetchCurrentTask()
+        fetchCategories()
+        fetchCurrentTask()
     }, [])
 
     return (
@@ -57,9 +56,10 @@ export default function Root() {
                 </Header>
             }
         >
+            <Notifier/>
             <Switch>
-                <Route path={"/timer"} component={Timer} />
-                <Route path={"/history"} component={History} />
+                <Route path={"/timer"} component={Timer}/>
+                <Route path={"/history"} component={History}/>
             </Switch>
         </AppShell>
     )
