@@ -14,3 +14,4 @@ services:
       JAVA_OPTS: '-Duser.timezone="Asia/Singapore"'
     networks:
       - net-main
+    restart: always
