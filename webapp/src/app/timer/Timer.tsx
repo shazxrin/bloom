@@ -5,7 +5,7 @@ import {
 import TimerClock from "../../components/timer/TimerClock.tsx"
 import TimerButtons from "../../components/timer/TimerButtons.tsx"
 import TimerLabel from "../../components/timer/TimerLabel.tsx"
-import TimerModals from "../../components/timer/TimerModals.tsx";
+import TimerModals from "../../components/timer/TimerModals.tsx"
 
 export default function Timer() {
     return (

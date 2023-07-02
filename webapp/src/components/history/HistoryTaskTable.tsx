@@ -1,5 +1,5 @@
-import {useTaskStore} from "../../stores/taskStore.ts";
-import {useCallback, useEffect, useState} from "react";
+import {useTaskStore} from "../../stores/taskStore.ts"
+import {useCallback, useEffect, useState} from "react"
 import {
     Box,
     Center,
@@ -7,11 +7,11 @@ import {
     Pagination, Skeleton,
     Table,
     useMantineTheme
-} from "@mantine/core";
-import {useCategoryStore} from "../../stores/categoryStore.ts";
-import {format, formatDuration, secondsToHours, secondsToMinutes} from "date-fns";
-import CategoryBadge from "../category/CategoryBadge.tsx";
-import {ListTaskDto} from "../../api/dto.ts";
+} from "@mantine/core"
+import {useCategoryStore} from "../../stores/categoryStore.ts"
+import {format, formatDuration, secondsToHours, secondsToMinutes} from "date-fns"
+import CategoryBadge from "../category/CategoryBadge.tsx"
+import {ListTaskDto} from "../../api/dto.ts"
 
 const dateTimeFormat = "dd MMMM yyyy HH:mm"
 

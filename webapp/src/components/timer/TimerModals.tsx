@@ -1,11 +1,11 @@
-import {Button, Center, Modal, Overlay} from "@mantine/core";
-import CreateTaskForm from "../task/CreateTaskForm.tsx";
-import CreateCategoryForm from "../category/CreateCategoryForm.tsx";
-import {useDisclosure} from "@mantine/hooks";
-import {IconSparkles} from "@tabler/icons-react";
-import FadeTransition from "../misc/FadeTransition.tsx";
-import {useTaskStore} from "../../stores/taskStore.ts";
-import {useCategoryStore} from "../../stores/categoryStore.ts";
+import {Button, Center, Modal, Overlay} from "@mantine/core"
+import CreateTaskForm from "../task/CreateTaskForm.tsx"
+import CreateCategoryForm from "../category/CreateCategoryForm.tsx"
+import {useDisclosure} from "@mantine/hooks"
+import {IconSparkles} from "@tabler/icons-react"
+import FadeTransition from "../transition/FadeTransition.tsx"
+import {useTaskStore} from "../../stores/taskStore.ts"
+import {useCategoryStore} from "../../stores/categoryStore.ts"
 
 export default function TimerModals() {
     const {

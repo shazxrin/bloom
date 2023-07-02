@@ -1,5 +1,5 @@
-import {Badge, useMantineTheme} from "@mantine/core";
-import tinycolor from "tinycolor2";
+import {Badge, useMantineTheme} from "@mantine/core"
+import tinycolor from "tinycolor2"
 
 
 interface CategoryBadgeProps {

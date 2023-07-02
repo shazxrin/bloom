@@ -1,11 +1,11 @@
-import React, {forwardRef} from "react";
-import {Button, ColorSwatch, Group, NumberInput, Select, Stack, Text, TextInput} from "@mantine/core";
-import {isNotEmpty, useForm} from "@mantine/form";
-import {IconPlayerPlay, IconSparkles} from "@tabler/icons-react";
+import React, {forwardRef} from "react"
+import {Button, ColorSwatch, Group, NumberInput, Select, Stack, Text, TextInput} from "@mantine/core"
+import {isNotEmpty, useForm} from "@mantine/form"
+import {IconPlayerPlay, IconSparkles} from "@tabler/icons-react"
 
 interface CategorySelectItemProps extends React.ComponentPropsWithoutRef<'div'> {
-    label: string;
-    color: string;
+    label: string
+    color: string
 }
 
 const CategorySelectItem = forwardRef<HTMLDivElement, CategorySelectItemProps>(
@@ -17,20 +17,20 @@ const CategorySelectItem = forwardRef<HTMLDivElement, CategorySelectItemProps>(
             </Group>
         </div>
     )
-);
+)
 
 interface CreateTaskFormValues {
-    name: string;
-    hours: number;
-    minutes: number;
-    seconds: number;
-    categoryId: string;
+    name: string
+    hours: number
+    minutes: number
+    seconds: number
+    categoryId: string
 }
 
 interface CreateTaskFormProps {
-    categories: { id: string, name: string, color: string }[];
-    onSubmit: (formValues: CreateTaskFormValues) => void;
-    onCreateCategoryClick: () => void;
+    categories: { id: string, name: string, color: string }[]
+    onSubmit: (formValues: CreateTaskFormValues) => void
+    onCreateCategoryClick: () => void
 }
 
 export default function CreateTaskForm({categories, onSubmit, onCreateCategoryClick}: CreateTaskFormProps) {
@@ -46,7 +46,7 @@ export default function CreateTaskForm({categories, onSubmit, onCreateCategoryCl
             name: isNotEmpty("Please enter a task name"),
             categoryId: isNotEmpty("Please select a category")
         }
-    });
+    })
 
     return (
         <form onSubmit={form.onSubmit(onSubmit)}>
@@ -86,5 +86,5 @@ export default function CreateTaskForm({categories, onSubmit, onCreateCategoryCl
                 Start
             </Button>
         </form>
-    );
+    )
 }

@@ -1,14 +1,14 @@
-import {isNotEmpty, useForm} from "@mantine/form";
-import {Button, ColorInput, TextInput} from "@mantine/core";
-import {IconSparkles} from "@tabler/icons-react";
+import {isNotEmpty, useForm} from "@mantine/form"
+import {Button, ColorInput, TextInput} from "@mantine/core"
+import {IconSparkles} from "@tabler/icons-react"
 
 interface CreateCategoryFormValues {
-    name: string;
-    color: string;
+    name: string
+    color: string
 }
 
 interface CreateCategoryFormProps {
-    onSubmit: (formValues: CreateCategoryFormValues) => void;
+    onSubmit: (formValues: CreateCategoryFormValues) => void
 }
 
 export default function CreateCategoryForm({onSubmit}: CreateCategoryFormProps) {
@@ -21,7 +21,7 @@ export default function CreateCategoryForm({onSubmit}: CreateCategoryFormProps) 
             name: isNotEmpty("Please enter a name"),
             color: isNotEmpty("Please select a color")
         }
-    });
+    })
 
     return (
         <form onSubmit={form.onSubmit(onSubmit)}>
@@ -38,5 +38,5 @@ export default function CreateCategoryForm({onSubmit}: CreateCategoryFormProps) 
                 Create
             </Button>
         </form>
-    );
+    )
 }

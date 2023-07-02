@@ -1,5 +1,5 @@
-import {Stack, Title} from "@mantine/core";
-import HistoryTaskTable from "../../components/history/HistoryTaskTable.tsx";
+import {Stack, Title} from "@mantine/core"
+import HistoryTaskTable from "../../components/history/HistoryTaskTable.tsx"
 
 export default function History() {
     return (

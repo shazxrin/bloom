@@ -1,8 +1,8 @@
-import {Center, Group, Text, useMantineTheme} from "@mantine/core";
-import {IconArrowRight} from "@tabler/icons-react";
-import {useTaskStore} from "../../stores/taskStore.ts";
-import {useCategoryStore} from "../../stores/categoryStore.ts";
-import CategoryBadge from "../category/CategoryBadge.tsx";
+import {Center, Group, Text, useMantineTheme} from "@mantine/core"
+import {IconArrowRight} from "@tabler/icons-react"
+import {useTaskStore} from "../../stores/taskStore.ts"
+import {useCategoryStore} from "../../stores/categoryStore.ts"
+import CategoryBadge from "../category/CategoryBadge.tsx"
 
 export default function TimerLabel() {
     const {currentTask} = useTaskStore((state) => ({
@@ -35,5 +35,5 @@ export default function TimerLabel() {
                 </Text>
             </Group>
         </Center>
-    );
+    )
 }

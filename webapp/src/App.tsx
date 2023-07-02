@@ -1,15 +1,15 @@
 import {AppShell, MantineProvider, useMantineTheme} from "@mantine/core"
 import "./App.css"
-import {Notifications} from "@mantine/notifications";
-import {useEffect, useState} from "react";
-import {useTaskStore} from "./stores/taskStore.ts";
-import {useCategoryStore} from "./stores/categoryStore.ts";
-import AppNavBar from "./components/shell/AppNavbar.tsx";
-import AppHeader from "./components/shell/AppHeader.tsx";
-import Notifier from "./components/notification/Notifier.tsx";
-import {Route, Switch} from "wouter";
-import Timer from "./app/timer/Timer.tsx";
-import History from "./app/history/History.tsx";
+import {Notifications} from "@mantine/notifications"
+import {useEffect, useState} from "react"
+import {useTaskStore} from "./stores/taskStore.ts"
+import {useCategoryStore} from "./stores/categoryStore.ts"
+import AppNavBar from "./components/shell/AppNavbar.tsx"
+import AppHeader from "./components/shell/AppHeader.tsx"
+import Notifier from "./components/notification/Notifier.tsx"
+import {Route, Switch} from "wouter"
+import Timer from "./app/timer/Timer.tsx"
+import History from "./app/history/History.tsx"
 
 export default function App() {
     const theme = useMantineTheme()

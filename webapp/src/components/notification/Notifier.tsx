@@ -1,8 +1,8 @@
-import {useTaskStore} from "../../stores/taskStore.ts";
-import {useCategoryStore} from "../../stores/categoryStore.ts";
-import {useEffect} from "react";
-import {notifications} from "@mantine/notifications";
-import {IconCircleCheck, IconCircleX} from "@tabler/icons-react";
+import {useTaskStore} from "../../stores/taskStore.ts"
+import {useCategoryStore} from "../../stores/categoryStore.ts"
+import {useEffect} from "react"
+import {notifications} from "@mantine/notifications"
+import {IconCircleCheck, IconCircleX} from "@tabler/icons-react"
 
 export default function Notifier() {
     const {

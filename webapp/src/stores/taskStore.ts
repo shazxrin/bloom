@@ -1,7 +1,7 @@
-import {create} from "zustand";
-import {devtools} from "zustand/middleware";
-import API from "../api/api.ts";
-import {CurrentTaskDto, ListTaskDto, PagedListDto} from "../api/dto.ts";
+import {create} from "zustand"
+import {devtools} from "zustand/middleware"
+import API from "../api/api.ts"
+import {CurrentTaskDto, ListTaskDto, PagedListDto} from "../api/dto.ts"
 
 interface TaskStore {
     isLoading: boolean

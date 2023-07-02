@@ -1,6 +1,6 @@
-import {Transition} from "react-transition-group";
-import React, {useRef} from "react";
-import {Box} from "@mantine/core";
+import {Transition} from "react-transition-group"
+import React, {useRef} from "react"
+import {Box} from "@mantine/core"
 
 const duration = 300
 
