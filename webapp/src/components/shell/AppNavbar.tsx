@@ -5,20 +5,22 @@ import {
     UnstyledButton,
     Text,
     useMantineTheme,
-} from "@mantine/core";
-import {IconHourglass, IconHistory} from "@tabler/icons-react";
-import {Link} from "wouter";
+} from "@mantine/core"
+import {IconHourglass, IconHistory} from "@tabler/icons-react"
+import {Link} from "wouter"
+import React from "react"
 
 interface MainLinkProps {
-    icon: React.ReactNode;
-    color: string;
-    label: string;
-    link: string;
+    icon: React.ReactNode
+    color: string
+    label: string
+    link: string
+    onClick: () => void
 }
 
-function MainLink({icon, color, label, link}: MainLinkProps) {
+function MainLink({icon, color, label, link, onClick}: MainLinkProps) {
     return (
-        <Link to={link} style={{textDecoration: 'none'}}>
+        <Link to={link} style={{textDecoration: 'none'}} onClick={onClick}>
             <UnstyledButton
                 sx={(theme) => ({
                     display: "block",
@@ -47,25 +49,26 @@ function MainLink({icon, color, label, link}: MainLinkProps) {
                 </Group>
             </UnstyledButton>
         </Link>
-    );
+    )
 }
 
 interface AppNavBarProps {
-    opened: boolean;
+    isNavBarOpened: boolean
+    closeNavBar: () => void
 }
 
-export default function AppNavBar({opened}: AppNavBarProps) {
-    const theme = useMantineTheme();
+export default function AppNavBar({isNavBarOpened, closeNavBar}: AppNavBarProps) {
+    const theme = useMantineTheme()
 
-    const backgroundColor = theme.colors.pink[9];
-    const iconSize = 18;
-    const iconColor = theme.colors.gray[4];
+    const backgroundColor = theme.colors.pink[9]
+    const iconSize = 18
+    const iconColor = theme.colors.gray[4]
 
     return (
         <Navbar
             p="md"
             hiddenBreakpoint="sm"
-            hidden={!opened}
+            hidden={!isNavBarOpened}
             width={{sm: 200, lg: 300}}
         >
             <MainLink
@@ -73,13 +76,15 @@ export default function AppNavBar({opened}: AppNavBarProps) {
                 color={backgroundColor}
                 label="Timer"
                 link="/timer"
+                onClick={closeNavBar}
             />
             <MainLink
                 icon={<IconHistory color={iconColor} size={iconSize}/>}
                 color={backgroundColor}
                 label="History"
                 link="/history"
+                onClick={closeNavBar}
             />
         </Navbar>
-    );
+    )
 }
