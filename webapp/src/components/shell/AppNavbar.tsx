@@ -27,16 +27,9 @@ function MainLink({icon, color, label, link, onClick}: MainLinkProps) {
                     width: "100%",
                     padding: theme.spacing.xs,
                     borderRadius: theme.radius.sm,
-                    color:
-                        theme.colorScheme === "dark"
-                            ? theme.colors.dark[0]
-                            : theme.black,
-
+                    color: theme.colors.dark[0],
                     "&:hover": {
-                        backgroundColor:
-                            theme.colorScheme === "dark"
-                                ? theme.colors.dark[6]
-                                : theme.colors.gray[0],
+                        backgroundColor: theme.colors.dark[6]
                     },
                 })}
             >
@@ -60,9 +53,9 @@ interface AppNavBarProps {
 export default function AppNavBar({isNavBarOpened, closeNavBar}: AppNavBarProps) {
     const theme = useMantineTheme()
 
-    const backgroundColor = theme.colors.pink[9]
+    const backgroundColor = theme.colors.pink[5]
     const iconSize = 18
-    const iconColor = theme.colors.gray[4]
+    const iconColor = theme.colors.gray[9]
 
     return (
         <Navbar

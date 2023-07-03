@@ -1,4 +1,4 @@
-import {Burger, Header, MediaQuery, Text, useMantineTheme} from "@mantine/core"
+import {Burger, Header, MediaQuery, Image, useMantineTheme} from "@mantine/core"
 
 interface AppHeaderProps {
     isNavBarOpened: boolean
@@ -21,7 +21,7 @@ export default function AppHeader({isNavBarOpened, closeNavBar}: AppHeaderProps)
                     />
                 </MediaQuery>
 
-                <Text size={"lg"} weight={"bold"}>bloom</Text>
+                <Image maw={100} src={"/bloom_full.svg"} />
             </div>
         </Header>
     )
