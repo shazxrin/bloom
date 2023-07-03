@@ -2,9 +2,13 @@ import {useTaskStore} from "../../stores/taskStore.ts"
 import {useCategoryStore} from "../../stores/categoryStore.ts"
 import {useEffect} from "react"
 import {notifications} from "@mantine/notifications"
-import {IconCircleCheck, IconCircleX} from "@tabler/icons-react"
+import {IconCircleCheck, IconExclamationCircle} from "@tabler/icons-react"
+import {useMantineTheme} from "@mantine/core"
 
 export default function Notifier() {
+    const theme = useMantineTheme()
+    const iconColor = theme.colors.gray[9]
+
     const {
         loadedDetails: taskStoreLoadedDetails,
         errorDetails: taskStoreErrorDetails
@@ -23,11 +27,11 @@ export default function Notifier() {
     useEffect(() => {
         if (taskStoreLoadedDetails) {
             notifications.show({
-                title: "Success",
+                title: "Action successful",
                 message: taskStoreLoadedDetails,
                 withCloseButton: true,
                 withBorder: true,
-                icon: <IconCircleCheck />,
+                icon: <IconCircleCheck color={iconColor}/>,
                 color: "green",
                 radius: "md"
             })
@@ -35,11 +39,11 @@ export default function Notifier() {
 
         if (categoryStoreLoadedDetails) {
             notifications.show({
-                title: "Success",
+                title: "Action successful",
                 message: categoryStoreLoadedDetails,
                 withCloseButton: true,
                 withBorder: true,
-                icon: <IconCircleCheck />,
+                icon: <IconCircleCheck color={iconColor}/>,
                 color: "green",
                 radius: "md"
             })
@@ -47,11 +51,11 @@ export default function Notifier() {
 
         if (taskStoreErrorDetails) {
             notifications.show({
-                title: "Error",
+                title: "An error has occurred",
                 message: taskStoreLoadedDetails,
                 withCloseButton: true,
                 withBorder: true,
-                icon: <IconCircleX />,
+                icon: <IconExclamationCircle color={iconColor}/>,
                 color: "red",
                 radius: "md"
             })
@@ -59,11 +63,11 @@ export default function Notifier() {
 
         if (categoryStoreErrorDetails) {
             notifications.show({
-                title: "Error",
+                title: "An error has occurred",
                 message: categoryStoreErrorDetails,
                 withCloseButton: true,
                 withBorder: true,
-                icon: <IconCircleX />,
+                icon: <IconExclamationCircle color={iconColor}/>,
                 color: "red",
                 radius: "md"
             })
