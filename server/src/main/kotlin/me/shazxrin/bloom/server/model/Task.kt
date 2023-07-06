@@ -32,5 +32,5 @@ data class Task(
     @field:NotNull
     val lastStartTime: LocalDateTime,
 
-    val endTime: LocalDateTime?,
+    val endTime: LocalDateTime?
 ) : BaseEntity()

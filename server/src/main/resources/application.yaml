@@ -4,7 +4,15 @@ spring:
       host: localhost
       port: 60001
       database: bloom-testing
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 server:
   error:
     include-stacktrace: never
     include-message: always
+bloom:
+  mq:
+    queue: whistle
