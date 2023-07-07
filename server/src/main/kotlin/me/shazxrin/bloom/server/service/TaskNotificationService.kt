@@ -27,7 +27,7 @@ class DefaultTaskNotificationService @Autowired constructor(
     }
 
     override suspend fun notifyCurrentTaskCompletion(task: Task) {
-        rabbitTemplate.convertAndSend(queueName, "<b>[Bloom] Timer Completed</b>\n${task.name} has been completed")
+        rabbitTemplate.convertAndSend(queueName, "<b>[Bloom] :: Timer Completed</b>\n\n${task.name} has been completed")
 
         taskNotificationRepository.save(TaskNotification(taskId = task.id))
     }
