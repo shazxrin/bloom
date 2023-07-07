@@ -4,3 +4,8 @@ spring:
       host: db-mongo
       port: 27017
       database: bloom
+  rabbitmq:
+    host: mq-rabbit
+    port: 5672
+    username: guest
+    password: guest
