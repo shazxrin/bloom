@@ -3,29 +3,43 @@
   <i>personal time and habit tracker</i>
 </p>
 
-# Setup
+## Setup
 
-## Web Application
+### Web Application
 
 ```bash
 gradle npmInstall
 ```
 
-## Server
+### Server
 
 ```bash
 gradle build
 ```
 
-# Building
+## Development
 
-## Web Application
+### Web Application
+
+```bash
+gradle devWebapp
+```
+
+### Server
+
+```bash
+gradle bootRun
+```
+
+## Building
+
+### Web Application
 
 ```bash
 gradle bundleWebapp
 ```
 
-## Server
+### Server
 
 ```bash
 gradle bootBuildImage
