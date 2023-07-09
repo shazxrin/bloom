@@ -1,3 +1,4 @@
+import com.github.gradle.node.npm.task.NpmInstallTask
 import com.github.gradle.node.npm.task.NpmTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -43,18 +44,18 @@ dependencies {
 
 tasks.register<Delete>("cleanWebapp") {
     delete(file("${projectDir}/src/main/resources/public"))
-    delete(file("${projectDir}/../webapp/dist"))
+    delete(file("${projectDir}/webapp/dist"))
 }
 
 tasks.register<NpmTask>("buildWebapp") {
     dependsOn(tasks.named("cleanWebapp"))
-    workingDir.set(file("${projectDir}/../webapp"))
+    workingDir.set(file("${projectDir}/webapp"))
     npmCommand.set(listOf("run", "build"))
 }
 
 tasks.register<Copy>("bundleWebapp") {
     dependsOn(tasks.named("buildWebapp"))
-    from(file("${projectDir}/../webapp/dist"))
+    from(file("${projectDir}/webapp/dist"))
     into(file("${projectDir}/src/main/resources/public"))
 }
 
