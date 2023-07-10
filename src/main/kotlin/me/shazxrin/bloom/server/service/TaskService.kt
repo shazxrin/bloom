@@ -33,6 +33,12 @@ interface TaskService {
 
     suspend fun getAllTasksByCategoryId(categoryId: String, page: Int): PagedList<Task>
 
+    suspend fun addTask(name: String, categoryId: String, duration: Long, startTime: LocalDateTime)
+
+    suspend fun deleteTask(id: String)
+
+    suspend fun updateTask(id: String, name: String?, categoryId: String?, duration: Long?, startTime: LocalDateTime?)
+
     suspend fun getTasksOverviewDay(year: Int, month: Int, dayOfMonth: Int): TaskOverview
 
     suspend fun getTasksOverviewWeek(week: Int, year: Int): TaskOverview
@@ -152,6 +158,49 @@ class DefaultTaskService @Autowired constructor(
             totalPages,
             items
         )
+    }
+
+    override suspend fun addTask(
+        name: String,
+        categoryId: String,
+        duration: Long,
+        startTime: LocalDateTime
+    ) {
+        val taskToBeAdded = Task(
+            name = name,
+            categoryId = categoryId,
+            duration = duration,
+            isPaused = false,
+            remainingDuration = duration,
+            startTime = startTime,
+            lastStartTime = startTime,
+            endTime = startTime.plusSeconds(duration)
+        )
+
+        taskRepository.save(taskToBeAdded)
+    }
+
+    override suspend fun deleteTask(id: String) {
+        taskRepository.deleteById(id)
+    }
+
+    override suspend fun updateTask(
+        id: String,
+        name: String?,
+        categoryId: String?,
+        duration: Long?,
+        startTime: LocalDateTime?
+    ) {
+        val taskToBeUpdated = taskRepository.findById(id) ?: throw NotFoundException("Task not found")
+
+        val updatedTask = taskToBeUpdated.copy(
+            name = name ?: taskToBeUpdated.name,
+            categoryId = categoryId ?: taskToBeUpdated.categoryId,
+            duration = duration ?: taskToBeUpdated.duration,
+            startTime = startTime ?: taskToBeUpdated.startTime
+        )
+
+        taskRepository.save(updatedTask)
     }
 
     override suspend fun getTasksOverviewDay(year: Int, month: Int, dayOfMonth: Int): TaskOverview {

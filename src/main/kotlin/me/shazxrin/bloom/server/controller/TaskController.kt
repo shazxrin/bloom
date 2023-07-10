@@ -3,14 +3,14 @@ package me.shazxrin.bloom.server.controller
 import jakarta.validation.Valid
 import me.shazxrin.bloom.server.dto.common.PagedListDto
 import me.shazxrin.bloom.server.dto.common.map
+import me.shazxrin.bloom.server.dto.task.*
 import me.shazxrin.bloom.server.service.TaskService
-import me.shazxrin.bloom.server.dto.task.CreateCurrentTaskDto
-import me.shazxrin.bloom.server.dto.task.CurrentTaskDto
-import me.shazxrin.bloom.server.dto.task.ListTaskDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -87,5 +87,27 @@ class TaskController @Autowired constructor(private val taskService: TaskService
         return pagedList.map {
             ListTaskDto(it.id, it.name, it.categoryId, it.duration, it.startTime, it.endTime)
         }
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/")
+    suspend fun postAddTask(@Valid @RequestBody addTaskDto: AddTaskDto) {
+        with(addTaskDto) {
+            taskService.addTask(name, categoryId, duration, startTime)
+        }
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{id}")
+    suspend fun patchUpdateTask(@PathVariable id: String, @Valid @RequestBody updateTaskDto: UpdateTaskDto) {
+        with(updateTaskDto) {
+            taskService.updateTask(id, name, categoryId, duration, startTime)
+        }
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{id}")
+    suspend fun deleteTask(@PathVariable id: String) {
+        taskService.deleteTask(id)
     }
 }
