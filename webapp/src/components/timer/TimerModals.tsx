@@ -3,7 +3,6 @@ import CreateTaskForm from "../task/CreateTaskForm.tsx"
 import CreateCategoryForm from "../category/CreateCategoryForm.tsx"
 import {useDisclosure} from "@mantine/hooks"
 import {IconSparkles} from "@tabler/icons-react"
-import FadeTransition from "../transition/FadeTransition.tsx"
 import {useTaskStore} from "../../stores/taskStore.ts"
 import {useCategoryStore} from "../../stores/categoryStore.ts"
 
@@ -77,14 +76,14 @@ export default function TimerModals() {
                 }}/>
             </Modal>
 
-            <FadeTransition trigger={!currentTask}>
+            {!currentTask &&
                 <Center>
                     <Button onClick={openCreateTaskModal} leftIcon={<IconSparkles/>}
                             variant={"subtle"} w={"50%"}>
                         Create new task
                     </Button>
                 </Center>
-            </FadeTransition>
+            }
         </>
     )
 }

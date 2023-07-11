@@ -1,6 +1,5 @@
 import {ActionIcon, Group, useMantineTheme} from "@mantine/core"
 import {IconPlayerPause, IconPlayerPlay, IconPlayerStop} from "@tabler/icons-react"
-import FadeTransition from "../transition/FadeTransition.tsx"
 import {useTaskStore} from "../../stores/taskStore.ts"
 
 export default function TimerButtons() {
@@ -19,24 +18,26 @@ export default function TimerButtons() {
     const theme = useMantineTheme()
 
     return (
-        <FadeTransition trigger={!!currentTask}>
-            <Group position={"center"}>
-                <ActionIcon size={"xl"} variant={"default"} radius={"xl"}
-                            disabled={currentTask?.isPaused ?? true}
-                            onClick={pauseCurrentTask}>
-                    <IconPlayerPause color={theme.colors.yellow[7]}/>
-                </ActionIcon>
-                <ActionIcon size={"xl"} variant={"default"} radius={"xl"}
-                            disabled={!(currentTask?.isPaused) ?? false}
-                            onClick={resumeCurrentTask}>
-                    <IconPlayerPlay color={theme.colors.green[7]}/>
-                </ActionIcon>
-                <ActionIcon size={"xl"} variant={"default"} radius={"xl"}
-                            disabled={!currentTask}
-                            onClick={endCurrentTask}>
-                    <IconPlayerStop color={theme.colors.red[7]}/>
-                </ActionIcon>
-            </Group>
-        </FadeTransition>
+        <>
+            {currentTask &&
+                <Group position={"center"}>
+                    <ActionIcon size={"xl"} variant={"default"} radius={"xl"}
+                                disabled={currentTask?.isPaused ?? true}
+                                onClick={pauseCurrentTask}>
+                        <IconPlayerPause color={theme.colors.yellow[7]}/>
+                    </ActionIcon>
+                    <ActionIcon size={"xl"} variant={"default"} radius={"xl"}
+                                disabled={!(currentTask?.isPaused) ?? false}
+                                onClick={resumeCurrentTask}>
+                        <IconPlayerPlay color={theme.colors.green[7]}/>
+                    </ActionIcon>
+                    <ActionIcon size={"xl"} variant={"default"} radius={"xl"}
+                                disabled={!currentTask}
+                                onClick={endCurrentTask}>
+                        <IconPlayerStop color={theme.colors.red[7]}/>
+                    </ActionIcon>
+                </Group>
+            }
+        </>
     )
 }
