@@ -1,11 +1,12 @@
 import {
+    AddTaskDto,
     CreateCategoryDto,
     CreateCurrentTaskDto,
     CurrentTaskDto,
     ListCategoryDto,
     ListTaskDto,
     PagedListDto,
-    UpdateCategoryDto
+    UpdateCategoryDto, UpdateTaskDto
 } from "./dto.ts"
 import axios, {HttpStatusCode} from "axios"
 
@@ -27,6 +28,12 @@ interface TasksApi {
     postCurrentPause(): Promise<void>
 
     postCurrentResume(): Promise<void>
+
+    post(addTaskDto: AddTaskDto): Promise<void>
+
+    patch(id: string, updateTaskDto: UpdateTaskDto): Promise<void>
+
+    delete(id: string): Promise<void>
 }
 
 interface CategoriesApi {
@@ -94,6 +101,27 @@ const tasksApi: TasksApi = {
     postCurrentResume: async () => {
         try {
             await axios.post<void>("api/tasks/current/resume")
+        } catch (err) {
+            throw new ApiError()
+        }
+    },
+    post: async (addTaskDto: AddTaskDto) => {
+        try {
+            await axios.post<void, void, AddTaskDto>("api/tasks", addTaskDto)
+        } catch (err) {
+            throw new ApiError()
+        }
+    },
+    patch: async (id: string, updateTaskDto: UpdateTaskDto) => {
+        try {
+            await axios.patch<void, void, UpdateTaskDto>(`api/tasks/${id}`, updateTaskDto)
+        } catch (err) {
+            throw new ApiError()
+        }
+    },
+    delete: async (id: string) => {
+        try {
+            await axios.delete<void>(`api/tasks/${id}`)
         } catch (err) {
             throw new ApiError()
         }

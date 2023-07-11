@@ -44,3 +44,17 @@ export interface ListTaskDto {
     startTime: string
     endTime?: string
 }
+
+export interface AddTaskDto {
+    name: string
+    categoryId: string
+    duration: number
+    startTime: string
+}
+
+export interface UpdateTaskDto {
+    name?: string | undefined
+    categoryId?: string | undefined
+    duration?: number | undefined
+    startTime?: string | undefined
+}
