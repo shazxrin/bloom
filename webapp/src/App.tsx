@@ -10,6 +10,9 @@ import Notifier from "./components/notification/Notifier.tsx"
 import {Route, Switch} from "wouter"
 import Timer from "./app/timer/Timer.tsx"
 import History from "./app/history/History.tsx"
+import {ModalsProvider} from "@mantine/modals"
+import TaskFormModal from "./components/task/TaskFormModal.tsx"
+import CategoryFormModal from "./components/category/CategoryFormModal.tsx"
 
 export default function App() {
     const theme = useMantineTheme()
@@ -41,24 +44,29 @@ export default function App() {
                 fontFamilyMonospace: "DM Mono, monospace"
             }}
         >
-            <Notifications/>
-            <AppShell
-                styles={{
-                    main: {
-                        background:theme.colors.dark[8]
-                    },
-                }}
-                navbarOffsetBreakpoint="sm"
-                asideOffsetBreakpoint="sm"
-                navbar={<AppNavBar isNavBarOpened={isNavBarOpened} closeNavBar={() => setIsNavBarOpened((o) => !o)}/>}
-                header={<AppHeader isNavBarOpened={isNavBarOpened} closeNavBar={() => setIsNavBarOpened((o) => !o)}/>}
-            >
-                <Notifier/>
-                <Switch>
-                    <Route path={"/timer"} component={Timer}/>
-                    <Route path={"/history"} component={History}/>
-                </Switch>
-            </AppShell>
+            <ModalsProvider modalProps={{centered: true}} modals={{
+                "taskFormModal": TaskFormModal,
+                "categoryFormModal": CategoryFormModal
+            }} >
+                <Notifications/>
+                <AppShell
+                    styles={{
+                        main: {
+                            background:theme.colors.dark[8]
+                        },
+                    }}
+                    navbarOffsetBreakpoint="sm"
+                    asideOffsetBreakpoint="sm"
+                    navbar={<AppNavBar isNavBarOpened={isNavBarOpened} closeNavBar={() => setIsNavBarOpened((o) => !o)}/>}
+                    header={<AppHeader isNavBarOpened={isNavBarOpened} closeNavBar={() => setIsNavBarOpened((o) => !o)}/>}
+                >
+                    <Notifier/>
+                    <Switch>
+                        <Route path={"/timer"} component={Timer}/>
+                        <Route path={"/history"} component={History}/>
+                    </Switch>
+                </AppShell>
+            </ModalsProvider>
         </MantineProvider>
     )
 }

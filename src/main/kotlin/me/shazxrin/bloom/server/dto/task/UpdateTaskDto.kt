@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotEmpty
 import java.time.LocalDateTime
 
 data class UpdateTaskDto(
-    @field:NotEmpty val name: String,
-    @field:NotEmpty val categoryId: String,
-    @field:NotEmpty val duration: Long,
-    @field:NotEmpty val startTime: LocalDateTime
+    val name: String,
+    val categoryId: String,
+    val duration: Long,
+    val startTime: LocalDateTime
 )

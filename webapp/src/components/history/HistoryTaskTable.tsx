@@ -1,17 +1,23 @@
 import {useTaskStore} from "../../stores/taskStore.ts"
 import {useCallback, useEffect, useState} from "react"
 import {
+    ActionIcon,
     Box,
     Center,
+    Group,
     LoadingOverlay,
-    Pagination, Skeleton,
+    Pagination,
+    Skeleton,
     Table,
+    Title,
     useMantineTheme
 } from "@mantine/core"
 import {useCategoryStore} from "../../stores/categoryStore.ts"
 import {format, formatDuration, secondsToHours, secondsToMinutes} from "date-fns"
 import CategoryBadge from "../category/CategoryBadge.tsx"
 import {ListTaskDto} from "../../api/dto.ts"
+import {IconPencil, IconTrash} from "@tabler/icons-react"
+import {modals} from "@mantine/modals"
 
 const dateTimeFormat = "dd MMMM yyyy HH:mm"
 
@@ -56,6 +62,7 @@ export default function HistoryTaskTable() {
                         <th>Duration</th>
                         <th>Start Time</th>
                         <th>End Time</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,6 +90,23 @@ export default function HistoryTaskTable() {
                             </td>
                             <td>{format(new Date(task.startTime), dateTimeFormat)}</td>
                             <td>{task.endTime ? format(new Date(task.endTime), dateTimeFormat) : "In Progress"}</td>
+                            <td>
+                                <Group>
+                                    <ActionIcon onClick={() => modals.openContextModal({
+                                        modal: "taskFormModal",
+                                        title: <Title order={5}>Update Task</Title>,
+                                        innerProps: {
+                                            mode: "update",
+                                            task: task
+                                        }
+                                    })}>
+                                        <IconPencil />
+                                    </ActionIcon>
+                                    <ActionIcon>
+                                        <IconTrash />
+                                    </ActionIcon>
+                                </Group>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
