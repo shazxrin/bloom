@@ -2,21 +2,18 @@ import {useTaskStore} from "../../stores/taskStore.ts"
 import {useCallback, useEffect, useState} from "react"
 import {
     ActionIcon,
-    Box,
-    Center,
-    Group,
-    LoadingOverlay,
+    Button,
+    Group, Loader,
     Pagination,
-    Skeleton,
+    Stack,
     Table,
     Title,
-    useMantineTheme
 } from "@mantine/core"
 import {useCategoryStore} from "../../stores/categoryStore.ts"
 import {format, formatDuration, secondsToHours, secondsToMinutes} from "date-fns"
 import CategoryBadge from "../category/CategoryBadge.tsx"
 import {ListTaskDto} from "../../api/dto.ts"
-import {IconPencil, IconTrash} from "@tabler/icons-react"
+import {IconPencil, IconRefresh, IconTrash} from "@tabler/icons-react"
 import {modals} from "@mantine/modals"
 
 const dateTimeFormat = "dd MMMM yyyy HH:mm"
@@ -47,14 +44,23 @@ export default function HistoryTaskTable() {
         fetchPage()
     }, [fetchPage])
 
-    const theme = useMantineTheme()
-
     return (
-        <Box pos={"relative"}>
-            <LoadingOverlay visible={isLoading} transitionDuration={500} overlayOpacity={0.75}
-                            overlayBlur={0.2} overlayColor={theme.colors.dark[8]}/>
+        <Stack>
+            <Group position={"apart"}>
+                <Pagination color={"pink"} total={totalPages} value={page} onChange={setPage}/>
 
-            <Table verticalSpacing={"md"} striped={true} highlightOnHover={true}>
+                <Group>
+                    {isLoading && <Loader color={"pink"}/>}
+                    <Button color={"pink"}
+                            leftIcon={<IconRefresh size={18}/>}
+                            onClick={() => fetchPage()}>
+                        Refresh
+                    </Button>
+                </Group>
+            </Group>
+
+
+            <Table verticalSpacing={"md"} striped={true}>
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -66,13 +72,6 @@ export default function HistoryTaskTable() {
                     </tr>
                 </thead>
                 <tbody>
-                    {isLoading &&
-                        Array.from({length: 10}, (_, i) => (
-                            <tr key={i}>
-                                {Array.from({length: 5}, (_, j) => <td key={j}><Skeleton height={12} radius="xl" /></td>)}
-                            </tr>
-                        ))
-                    }
                     {tasks.map((task) => (
                         <tr key={task.id}>
                             <td>{task.name}</td>
@@ -97,7 +96,8 @@ export default function HistoryTaskTable() {
                                         title: <Title order={5}>Update Task</Title>,
                                         innerProps: {
                                             mode: "update",
-                                            task: task
+                                            task: task,
+                                            onActionSuccess: () => fetchPage()
                                         }
                                     })}>
                                         <IconPencil />
@@ -106,7 +106,8 @@ export default function HistoryTaskTable() {
                                         modal: "taskDeleteModal",
                                         title: <Title order={5}>Delete Task</Title>,
                                         innerProps: {
-                                            task: task
+                                            task: task,
+                                            onActionSuccess: () => fetchPage()
                                         }
                                     })}>
                                         <IconTrash />
@@ -117,10 +118,6 @@ export default function HistoryTaskTable() {
                     ))}
                 </tbody>
             </Table>
-
-            <Center>
-                <Pagination color={"pink"} total={totalPages} value={page} onChange={setPage} mt={16}/>
-            </Center>
-        </Box>
+        </Stack>
     )
 }

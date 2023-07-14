@@ -75,6 +75,7 @@ interface TaskFormValues {
 interface TaskFormModalProps {
     mode: "create" | "add" | "update"
     task?: ListTaskDto | undefined
+    onActionSuccess?: () => void | undefined
 }
 
 export default function TaskFormModal({
@@ -123,12 +124,15 @@ export default function TaskFormModal({
                 switch (innerProps.mode) {
                     case "create":
                         createCurrentTask(values.name, values.categoryId, duration)
+                            .then(innerProps.onActionSuccess)
                         break
                     case "add":
                         addTask(values.name, values.categoryId, duration, format(values.startTime, "yyyy-MM-dd'T'HH:mm:ss"))
+                            .then(innerProps.onActionSuccess)
                         break
                     case "update":
                         updateTask(innerProps.task?.id ?? "", values.name, values.categoryId, duration, format(values.startTime, "yyyy-MM-dd'T'HH:mm:ss"))
+                            .then(innerProps.onActionSuccess)
                         break
                 }
 

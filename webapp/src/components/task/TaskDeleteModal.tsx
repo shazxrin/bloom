@@ -5,6 +5,7 @@ import {useTaskStore} from "../../stores/taskStore.ts"
 
 interface TaskDeleteModalProps {
     task: ListTaskDto
+    onActionSuccess: () => void
 }
 
 export default function TaskDeleteModal({
@@ -31,6 +32,7 @@ export default function TaskDeleteModal({
                 <Button color={"red"}
                         onClick={() => {
                             deleteTask(innerProps.task.id)
+                                .then(innerProps.onActionSuccess)
 
                             context.closeContextModal(id)
                         }}>
