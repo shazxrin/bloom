@@ -13,6 +13,7 @@ import History from "./app/history/History.tsx"
 import {ModalsProvider} from "@mantine/modals"
 import TaskFormModal from "./components/task/TaskFormModal.tsx"
 import CategoryFormModal from "./components/category/CategoryFormModal.tsx"
+import TaskDeleteModal from "./components/task/TaskDeleteModal.tsx"
 
 export default function App() {
     const theme = useMantineTheme()
@@ -46,6 +47,7 @@ export default function App() {
         >
             <ModalsProvider modalProps={{centered: true}} modals={{
                 "taskFormModal": TaskFormModal,
+                "taskDeleteModal": TaskDeleteModal,
                 "categoryFormModal": CategoryFormModal
             }} >
                 <Notifications/>

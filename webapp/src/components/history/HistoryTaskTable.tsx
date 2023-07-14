@@ -102,7 +102,13 @@ export default function HistoryTaskTable() {
                                     })}>
                                         <IconPencil />
                                     </ActionIcon>
-                                    <ActionIcon>
+                                    <ActionIcon onClick={() => modals.openContextModal({
+                                        modal: "taskDeleteModal",
+                                        title: <Title order={5}>Delete Task</Title>,
+                                        innerProps: {
+                                            task: task
+                                        }
+                                    })}>
                                         <IconTrash />
                                     </ActionIcon>
                                 </Group>
