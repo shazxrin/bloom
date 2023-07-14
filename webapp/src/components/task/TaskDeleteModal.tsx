@@ -2,6 +2,7 @@ import {ContextModalProps} from "@mantine/modals"
 import {Box, Button, Group, Text} from "@mantine/core"
 import {ListTaskDto} from "../../api/dto.ts"
 import {useTaskStore} from "../../stores/taskStore.ts"
+import {IconTrash} from "@tabler/icons-react"
 
 interface TaskDeleteModalProps {
     task: ListTaskDto
@@ -29,14 +30,15 @@ export default function TaskDeleteModal({
                     Cancel
                 </Button>
 
-                <Button color={"red"}
+                <Button leftIcon={<IconTrash size={18}/>}
+                        color={"red"}
                         onClick={() => {
                             deleteTask(innerProps.task.id)
                                 .then(innerProps.onActionSuccess)
 
                             context.closeContextModal(id)
                         }}>
-                    Confirm
+                    Delete
                 </Button>
             </Group>
         </Box>

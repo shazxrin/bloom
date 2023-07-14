@@ -1,14 +1,6 @@
 import {useTaskStore} from "../../stores/taskStore.ts"
 import {useCallback, useEffect, useState} from "react"
-import {
-    ActionIcon,
-    Button,
-    Group, Loader,
-    Pagination,
-    Stack,
-    Table,
-    Title,
-} from "@mantine/core"
+import {ActionIcon, Button, Group, Loader, Pagination, Stack, Table, Title,} from "@mantine/core"
 import {useCategoryStore} from "../../stores/categoryStore.ts"
 import {format, formatDuration, secondsToHours, secondsToMinutes} from "date-fns"
 import CategoryBadge from "../category/CategoryBadge.tsx"
@@ -62,60 +54,60 @@ export default function HistoryTaskTable() {
 
             <Table verticalSpacing={"md"} striped={true}>
                 <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Category</th>
-                        <th>Duration</th>
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Duration</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {tasks.map((task) => (
-                        <tr key={task.id}>
-                            <td>{task.name}</td>
-                            <td>
-                                <CategoryBadge
-                                    name={categories.find(c => c.id === task.categoryId)?.name ?? ""}
-                                    color={categories.find(c => c.id === task.categoryId)?.color ?? ""}/>
-                            </td>
-                            <td>
-                                {formatDuration({
-                                    hours: secondsToHours(task.duration),
-                                    minutes: secondsToMinutes(task.duration) - (secondsToHours(task.duration) * 60),
-                                    seconds: task.duration - (secondsToMinutes(task.duration) * 60)
-                                })}
-                            </td>
-                            <td>{format(new Date(task.startTime), dateTimeFormat)}</td>
-                            <td>{task.endTime ? format(new Date(task.endTime), dateTimeFormat) : "In Progress"}</td>
-                            <td>
-                                <Group>
-                                    <ActionIcon onClick={() => modals.openContextModal({
-                                        modal: "taskFormModal",
-                                        title: <Title order={5}>Update Task</Title>,
-                                        innerProps: {
-                                            mode: "update",
-                                            task: task,
-                                            onActionSuccess: () => fetchPage()
-                                        }
-                                    })}>
-                                        <IconPencil />
-                                    </ActionIcon>
-                                    <ActionIcon onClick={() => modals.openContextModal({
-                                        modal: "taskDeleteModal",
-                                        title: <Title order={5}>Delete Task</Title>,
-                                        innerProps: {
-                                            task: task,
-                                            onActionSuccess: () => fetchPage()
-                                        }
-                                    })}>
-                                        <IconTrash />
-                                    </ActionIcon>
-                                </Group>
-                            </td>
-                        </tr>
-                    ))}
+                {tasks.map((task) => (
+                    <tr key={task.id}>
+                        <td>{task.name}</td>
+                        <td>
+                            <CategoryBadge
+                                name={categories.find(c => c.id === task.categoryId)?.name ?? ""}
+                                color={categories.find(c => c.id === task.categoryId)?.color ?? ""}/>
+                        </td>
+                        <td>
+                            {formatDuration({
+                                hours: secondsToHours(task.duration),
+                                minutes: secondsToMinutes(task.duration) - (secondsToHours(task.duration) * 60),
+                                seconds: task.duration - (secondsToMinutes(task.duration) * 60)
+                            })}
+                        </td>
+                        <td>{format(new Date(task.startTime), dateTimeFormat)}</td>
+                        <td>{task.endTime ? format(new Date(task.endTime), dateTimeFormat) : "In Progress"}</td>
+                        <td>
+                            <Group spacing={"xs"}>
+                                <ActionIcon onClick={() => modals.openContextModal({
+                                    modal: "taskFormModal",
+                                    title: <Title order={5}>Update Task</Title>,
+                                    innerProps: {
+                                        mode: "update",
+                                        task: task,
+                                        onActionSuccess: () => fetchPage()
+                                    }
+                                })}>
+                                    <IconPencil size={20}/>
+                                </ActionIcon>
+                                <ActionIcon onClick={() => modals.openContextModal({
+                                    modal: "taskDeleteModal",
+                                    title: <Title order={5}>Delete Task</Title>,
+                                    innerProps: {
+                                        task: task,
+                                        onActionSuccess: () => fetchPage()
+                                    }
+                                })}>
+                                    <IconTrash size={20}/>
+                                </ActionIcon>
+                            </Group>
+                        </td>
+                    </tr>
+                ))}
                 </tbody>
             </Table>
         </Stack>
