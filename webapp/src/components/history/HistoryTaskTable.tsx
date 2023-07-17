@@ -5,7 +5,7 @@ import {useCategoryStore} from "../../stores/categoryStore.ts"
 import {format, formatDuration, secondsToHours, secondsToMinutes} from "date-fns"
 import CategoryBadge from "../category/CategoryBadge.tsx"
 import {ListTaskDto} from "../../api/dto.ts"
-import {IconPencil, IconRefresh, IconTrash} from "@tabler/icons-react"
+import {IconPencil, IconPlus, IconRefresh, IconTrash} from "@tabler/icons-react"
 import {modals} from "@mantine/modals"
 
 const dateTimeFormat = "dd MMMM yyyy HH:mm"
@@ -40,13 +40,28 @@ export default function HistoryTaskTable() {
         <Stack>
             <Group position={"apart"}>
                 <Group>
-                    <Button color={"pink"}
+                    <Button color={"green"}
+                            variant={"outline"}
+                            leftIcon={<IconPlus size={18}/>}
+                            onClick={() => modals.openContextModal({
+                                modal: "taskFormModal",
+                                title: <Title order={5}>Add Task</Title>,
+                                innerProps: {
+                                    mode: "add",
+                                    onActionSuccess: () => fetchPage()
+                                }
+                            })}>
+                        Add
+                    </Button>
+
+                    <Button color={"blue"}
+                            variant={"outline"}
                             leftIcon={<IconRefresh size={18}/>}
                             onClick={() => fetchPage()}>
                         Refresh
                     </Button>
 
-                    {isLoading && <Loader color={"pink"}/>}
+                    {isLoading && <Loader color={"blue"}/>}
                 </Group>
 
                 <Pagination color={"pink"}  total={totalPages} value={page} onChange={setPage}/>

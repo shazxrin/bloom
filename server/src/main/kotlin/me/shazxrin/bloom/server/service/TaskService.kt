@@ -149,7 +149,7 @@ class DefaultTaskService @Autowired constructor(
             categoryId = categoryId,
             duration = duration,
             isPaused = false,
-            remainingDuration = duration,
+            remainingDuration = 0,
             startTime = startTime,
             lastStartTime = startTime,
             endTime = startTime.plusSeconds(duration)

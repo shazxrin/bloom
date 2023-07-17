@@ -82,7 +82,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/")
+    @PostMapping
     fun postAddTask(@Valid @RequestBody addTaskDto: AddTaskDto) {
         with(addTaskDto) {
             taskService.addTask(name, categoryId, duration, startTime)
