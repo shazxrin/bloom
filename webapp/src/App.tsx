@@ -14,6 +14,7 @@ import {ModalsProvider} from "@mantine/modals"
 import TaskFormModal from "./components/task/TaskFormModal.tsx"
 import CategoryFormModal from "./components/category/CategoryFormModal.tsx"
 import TaskDeleteModal from "./components/task/TaskDeleteModal.tsx"
+import Overview from "./app/overview/Overview.tsx"
 
 export default function App() {
     const theme = useMantineTheme()
@@ -64,6 +65,7 @@ export default function App() {
                 >
                     <Notifier/>
                     <Switch>
+                        <Route path={"/"} component={Overview}/>
                         <Route path={"/timer"} component={Timer}/>
                         <Route path={"/history"} component={History}/>
                     </Switch>
