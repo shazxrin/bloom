@@ -39,16 +39,17 @@ export default function HistoryTaskTable() {
     return (
         <Stack>
             <Group position={"apart"}>
-                <Pagination color={"pink"} total={totalPages} value={page} onChange={setPage}/>
-
                 <Group>
-                    {isLoading && <Loader color={"pink"}/>}
                     <Button color={"pink"}
                             leftIcon={<IconRefresh size={18}/>}
                             onClick={() => fetchPage()}>
                         Refresh
                     </Button>
+
+                    {isLoading && <Loader color={"pink"}/>}
                 </Group>
+
+                <Pagination color={"pink"}  total={totalPages} value={page} onChange={setPage}/>
             </Group>
 
 
