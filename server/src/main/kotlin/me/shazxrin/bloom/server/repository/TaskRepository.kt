@@ -1,23 +1,16 @@
 package me.shazxrin.bloom.server.repository
 
-import kotlinx.coroutines.flow.Flow
 import me.shazxrin.bloom.server.model.Task
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.data.repository.kotlin.CoroutineCrudRepository
-import java.time.LocalDateTime
+import org.springframework.data.repository.CrudRepository
 
-interface TaskRepository : CoroutineCrudRepository<Task, String> {
-    suspend fun findTasksByIdNotNullOrderByStartTimeDesc(pageable: Pageable): Flow<Task>
+interface TaskRepository : CrudRepository<Task, String> {
+    fun findTasksByIdNotNullOrderByStartTimeDesc(pageable: Pageable): Page<Task>
 
-    suspend fun countTasksByIdNotNull(): Int
+    fun findTasksByCategoryIdOrderByStartTimeDesc(categoryId: String, pageable: Pageable): Page<Task>
 
-    suspend fun findTasksByCategoryIdOrderByStartTimeDesc(categoryId: String, pageable: Pageable): Flow<Task>
+    fun findByEndTimeIsNull(): Task?
 
-    suspend fun countTasksByCategoryId(categoryId: String): Int
-
-    suspend fun findByEndTimeIsNull(): Task?
-
-    suspend fun existsByEndTimeIsNull(): Boolean
-
-    suspend fun findTasksByStartTimeBetween(fromLocalDateTime: LocalDateTime, endLocalDateTime: LocalDateTime): Flow<Task>
+    fun existsByEndTimeIsNull(): Boolean
 }

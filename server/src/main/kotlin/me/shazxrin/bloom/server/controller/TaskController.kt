@@ -16,7 +16,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/current/create")
-    suspend fun postCreateCurrentTask(@Valid @RequestBody createCurrentTaskDto: CreateCurrentTaskDto) {
+    fun postCreateCurrentTask(@Valid @RequestBody createCurrentTaskDto: CreateCurrentTaskDto) {
         with(createCurrentTaskDto) {
             taskService.createCurrentTask(name, categoryId, duration)
         }
@@ -24,24 +24,24 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/current/pause")
-    suspend fun postPauseCurrentTask() {
+    fun postPauseCurrentTask() {
         taskService.pauseCurrentTask()
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/current/resume")
-    suspend fun postResumeCurrentTask() {
+    fun postResumeCurrentTask() {
         taskService.resumeCurrentTask()
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/current/end")
-    suspend fun postEndCurrentTask() {
+    fun postEndCurrentTask() {
         taskService.endCurrentTask()
     }
 
     @GetMapping("/current")
-    suspend fun getCurrentTask(): ResponseEntity<CurrentTaskDto?> {
+    fun getCurrentTask(): ResponseEntity<CurrentTaskDto?> {
         val currentTask = taskService.getCurrentTask()
 
         return if (currentTask == null) {
@@ -69,7 +69,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    suspend fun getAllTasks(
+    fun getAllTasks(
         @RequestParam(required = true) page: Int,
         @RequestParam(required = false) categoryId: String?
     ): PagedListDto<ListTaskDto> {
@@ -77,13 +77,13 @@ class TaskController @Autowired constructor(private val taskService: TaskService
             if (categoryId != null) taskService.getAllTasksByCategoryId(categoryId, page) else taskService.getAllTasks(page)
 
         return pagedList.map {
-            ListTaskDto(it.id, it.name, it.categoryId, it.duration, it.startTime, it.endTime)
+            ListTaskDto(it.id ?: "", it.name, it.categoryId, it.duration, it.startTime, it.endTime)
         }
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/")
-    suspend fun postAddTask(@Valid @RequestBody addTaskDto: AddTaskDto) {
+    fun postAddTask(@Valid @RequestBody addTaskDto: AddTaskDto) {
         with(addTaskDto) {
             taskService.addTask(name, categoryId, duration, startTime)
         }
@@ -91,7 +91,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{id}")
-    suspend fun patchUpdateTask(@PathVariable id: String, @Valid @RequestBody updateTaskDto: UpdateTaskDto) {
+    fun patchUpdateTask(@PathVariable id: String, @Valid @RequestBody updateTaskDto: UpdateTaskDto) {
         with(updateTaskDto) {
             taskService.updateTask(id, name, categoryId, duration, startTime)
         }
@@ -99,7 +99,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
-    suspend fun deleteTask(@PathVariable id: String) {
+    fun deleteTask(@PathVariable id: String) {
         taskService.deleteTask(id)
     }
 }

@@ -1,15 +1,19 @@
 package me.shazxrin.bloom.server.model
 
-import com.mongodb.lang.NonNull
-import org.bson.types.ObjectId
-import org.springframework.data.annotation.Id
-import org.springframework.data.mongodb.core.mapping.Document
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Table
+import org.springframework.lang.NonNull
 
-@Document
+@Table(name = "task_notification")
+@Entity
 class TaskNotification(
     @Id
-    val id: String = ObjectId.get().toString(),
+    @GeneratedValue(strategy = GenerationType.UUID)
+    val id: String?,
 
-    @field:NonNull
+    @NonNull
     val taskId: String
 ) : BaseEntity()

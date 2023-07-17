@@ -1,6 +1,5 @@
 package me.shazxrin.bloom.server.service
 
-import kotlinx.coroutines.flow.toList
 import me.shazxrin.bloom.server.exception.NotFoundException
 import me.shazxrin.bloom.server.exception.StateException
 import me.shazxrin.bloom.server.model.*
@@ -8,44 +7,31 @@ import me.shazxrin.bloom.server.repository.CategoryRepository
 import me.shazxrin.bloom.server.repository.TaskRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import java.time.DayOfWeek
 import java.time.Duration
 import java.time.LocalDateTime
-import java.time.Month
-import java.time.Year
-import java.time.temporal.IsoFields
-import java.time.temporal.TemporalAdjusters
-import kotlin.math.ceil
 
 interface TaskService {
-    suspend fun createCurrentTask(name: String, categoryId: String, duration: Long)
+    fun createCurrentTask(name: String, categoryId: String, duration: Long)
 
-    suspend fun pauseCurrentTask()
+    fun pauseCurrentTask()
 
-    suspend fun resumeCurrentTask()
+    fun resumeCurrentTask()
 
-    suspend fun endCurrentTask()
+    fun endCurrentTask()
 
-    suspend fun getCurrentTask(): Task?
+    fun getCurrentTask(): Task?
 
-    suspend fun getAllTasks(page: Int): PagedList<Task>
+    fun getAllTasks(page: Int): PagedList<Task>
 
-    suspend fun getAllTasksByCategoryId(categoryId: String, page: Int): PagedList<Task>
+    fun getAllTasksByCategoryId(categoryId: String, page: Int): PagedList<Task>
 
-    suspend fun addTask(name: String, categoryId: String, duration: Long, startTime: LocalDateTime)
+    fun addTask(name: String, categoryId: String, duration: Long, startTime: LocalDateTime)
 
-    suspend fun deleteTask(id: String)
+    fun deleteTask(id: String)
 
-    suspend fun updateTask(id: String, name: String?, categoryId: String?, duration: Long?, startTime: LocalDateTime?)
-
-    suspend fun getTasksOverviewDay(year: Int, month: Int, dayOfMonth: Int): TaskOverview
-
-    suspend fun getTasksOverviewWeek(week: Int, year: Int): TaskOverview
-
-    suspend fun getTasksOverviewMonth(month: Int, year: Int): TaskOverview
-
-    suspend fun getTasksOverviewYear(year: Int): TaskOverview
+    fun updateTask(id: String, name: String?, categoryId: String?, duration: Long?, startTime: LocalDateTime?)
 }
 
 @Service
@@ -54,7 +40,7 @@ class DefaultTaskService @Autowired constructor(
     private val categoryRepository: CategoryRepository
 ) : TaskService {
 
-    override suspend fun createCurrentTask(name: String, categoryId: String, duration: Long) {
+    override fun createCurrentTask(name: String, categoryId: String, duration: Long) {
         if (taskRepository.existsByEndTimeIsNull()) {
             throw StateException("Current task already exists!")
         }
@@ -64,6 +50,7 @@ class DefaultTaskService @Autowired constructor(
         }
 
         val newCurrentTask = Task(
+            id = null,
             name = name,
             categoryId = categoryId,
             duration = duration,
@@ -77,7 +64,7 @@ class DefaultTaskService @Autowired constructor(
         taskRepository.save(newCurrentTask)
     }
 
-    override suspend fun pauseCurrentTask() {
+    override fun pauseCurrentTask() {
         val currentTask = taskRepository.findByEndTimeIsNull()
                 ?: throw NotFoundException("Current task does not exist")
 
@@ -96,7 +83,7 @@ class DefaultTaskService @Autowired constructor(
         taskRepository.save(pausedCurrentTask)
     }
 
-    override suspend fun resumeCurrentTask() {
+    override fun resumeCurrentTask() {
         val currentTask = taskRepository.findByEndTimeIsNull()
             ?: throw NotFoundException("Current task does not exist")
 
@@ -112,7 +99,7 @@ class DefaultTaskService @Autowired constructor(
         taskRepository.save(pausedCurrentTask)
     }
 
-    override suspend fun endCurrentTask() {
+    override fun endCurrentTask() {
         val currentTask = taskRepository.findByEndTimeIsNull()
             ?: throw NotFoundException("Current task does not exist")
 
@@ -120,53 +107,44 @@ class DefaultTaskService @Autowired constructor(
         taskRepository.save(completedCurrentTask)
     }
 
-    override suspend fun getCurrentTask(): Task? {
+    override fun getCurrentTask(): Task? {
         return taskRepository.findByEndTimeIsNull()
     }
 
-    override suspend fun getAllTasks(page: Int): PagedList<Task> {
+    override fun getAllTasks(page: Int): PagedList<Task> {
         val pageable = PageRequest.of(page, 10)
 
         val items = taskRepository
             .findTasksByIdNotNullOrderByStartTimeDesc(pageable)
-            .toList()
-
-        val totalItems = taskRepository
-            .countTasksByIdNotNull()
-        val totalPages = ceil(totalItems.toDouble() / 10).toInt()
 
         return PagedList(
-            page,
-            totalPages,
-            items
+            items.number,
+            items.totalPages,
+            items.content
         )
     }
 
-    override suspend fun getAllTasksByCategoryId(categoryId: String, page: Int): PagedList<Task> {
+    override fun getAllTasksByCategoryId(categoryId: String, page: Int): PagedList<Task> {
         val pageable = PageRequest.of(page, 10)
 
         val items = taskRepository
             .findTasksByCategoryIdOrderByStartTimeDesc(categoryId, pageable)
-            .toList()
-
-        val totalItems = taskRepository
-            .countTasksByCategoryId(categoryId)
-        val totalPages = ceil(totalItems.toDouble() / 10).toInt()
 
         return PagedList(
-            page,
-            totalPages,
-            items
+            items.number,
+            items.totalPages,
+            items.content
         )
     }
 
-    override suspend fun addTask(
+    override fun addTask(
         name: String,
         categoryId: String,
         duration: Long,
         startTime: LocalDateTime
     ) {
         val taskToBeAdded = Task(
+            id = null,
             name = name,
             categoryId = categoryId,
             duration = duration,
@@ -180,18 +158,18 @@ class DefaultTaskService @Autowired constructor(
         taskRepository.save(taskToBeAdded)
     }
 
-    override suspend fun deleteTask(id: String) {
+    override fun deleteTask(id: String) {
         taskRepository.deleteById(id)
     }
 
-    override suspend fun updateTask(
+    override fun updateTask(
         id: String,
         name: String?,
         categoryId: String?,
         duration: Long?,
         startTime: LocalDateTime?
     ) {
-        val taskToBeUpdated = taskRepository.findById(id) ?: throw NotFoundException("Task not found")
+        val taskToBeUpdated = taskRepository.findByIdOrNull(id) ?: throw NotFoundException("Task not found")
 
         val updatedTask = taskToBeUpdated.copy(
             name = name ?: taskToBeUpdated.name,
@@ -201,130 +179,5 @@ class DefaultTaskService @Autowired constructor(
         )
 
         taskRepository.save(updatedTask)
-    }
-
-    override suspend fun getTasksOverviewDay(year: Int, month: Int, dayOfMonth: Int): TaskOverview {
-        val fromLocalDateTime = LocalDateTime.of(
-            year,
-            month,
-            dayOfMonth,
-            0,
-            0
-        )
-        val endLocalDateTime = LocalDateTime.of(
-            year,
-            month,
-            dayOfMonth,
-            23,
-            59
-        )
-
-        val dailyTasks =
-            taskRepository.findTasksByStartTimeBetween(fromLocalDateTime, endLocalDateTime).toList()
-        val totalDuration =
-            dailyTasks.sumOf { it.duration }
-        val categoriesDuration = dailyTasks
-                .groupBy({ it.categoryId }, { it.duration })
-                .mapValues { it.value.sum() }
-
-        return TaskOverview(
-            dailyTasks,
-            totalDuration,
-            categoriesDuration
-        )
-    }
-
-    override suspend fun getTasksOverviewWeek(week: Int, year: Int): TaskOverview {
-        val fromLocalDateTime = LocalDateTime.now()
-            .withYear(year)
-            .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, week.toLong())
-            .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
-            .withHour(0)
-            .withMinute(0)
-
-        val endLocalDateTime = LocalDateTime.now()
-            .withYear(year)
-            .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, week.toLong())
-            .with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY))
-            .withHour(23)
-            .withMinute(59)
-
-        val dailyTasks =
-            taskRepository.findTasksByStartTimeBetween(fromLocalDateTime, endLocalDateTime).toList()
-        val totalDuration =
-            dailyTasks.sumOf { it.duration }
-        val categoriesDuration = dailyTasks
-            .groupBy({ it.categoryId }, { it.duration })
-            .mapValues { it.value.sum() }
-
-        return TaskOverview(
-            dailyTasks,
-            totalDuration,
-            categoriesDuration
-        )
-    }
-
-    override suspend fun getTasksOverviewMonth(month: Int, year: Int): TaskOverview {
-        val fromLocalDateTime = LocalDateTime.of(
-            year,
-            month,
-            1,
-            0,
-            0
-        )
-
-        val endLocalDateTime = LocalDateTime.of(
-            year,
-            month,
-            Month.of(month).length(Year.of(year).isLeap),
-            0,
-            0
-        )
-
-        val dailyTasks =
-            taskRepository.findTasksByStartTimeBetween(fromLocalDateTime, endLocalDateTime).toList()
-        val totalDuration =
-            dailyTasks.sumOf { it.duration }
-        val categoriesDuration = dailyTasks
-            .groupBy({ it.categoryId }, { it.duration })
-            .mapValues { it.value.sum() }
-
-        return TaskOverview(
-            dailyTasks,
-            totalDuration,
-            categoriesDuration
-        )
-    }
-
-    override suspend fun getTasksOverviewYear(year: Int): TaskOverview {
-        val fromLocalDateTime = LocalDateTime.of(
-            year,
-            1,
-            1,
-            0,
-            0
-        )
-
-        val endLocalDateTime = LocalDateTime.of(
-            year,
-            12,
-            Month.of(12).length(Year.of(year).isLeap),
-            0,
-            0
-        )
-
-        val dailyTasks =
-            taskRepository.findTasksByStartTimeBetween(fromLocalDateTime, endLocalDateTime).toList()
-        val totalDuration =
-            dailyTasks.sumOf { it.duration }
-        val categoriesDuration = dailyTasks
-            .groupBy({ it.categoryId }, { it.duration })
-            .mapValues { it.value.sum() }
-
-        return TaskOverview(
-            dailyTasks,
-            totalDuration,
-            categoriesDuration
-        )
     }
 }

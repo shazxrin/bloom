@@ -1,6 +1,5 @@
 package me.shazxrin.bloom.server.schedule
 
-import kotlinx.coroutines.runBlocking
 import me.shazxrin.bloom.server.service.TaskNotificationService
 import me.shazxrin.bloom.server.service.TaskService
 import org.slf4j.Logger
@@ -21,18 +20,16 @@ class CurrentTaskCompletionSchedule @Autowired constructor(
 
     @Scheduled(fixedDelay = 10_000)
     fun checkCurrentTaskCompletion() {
-        runBlocking {
-            LOGGER.info("Running checkCurrentTaskCompletion scheduled task")
-            val currentTask = taskService.getCurrentTask() ?: return@runBlocking
+        LOGGER.info("Running checkCurrentTaskCompletion scheduled task")
+        val currentTask = taskService.getCurrentTask() ?: return
 
-            if (taskNotificationService.checkHasTaskCompletionNotified(currentTask.id)) {
-                return@runBlocking
-            }
+        if (currentTask.id != null && taskNotificationService.checkHasTaskCompletionNotified(currentTask.id)) {
+            return
+        }
 
-            if (LocalDateTime.now().isAfter(currentTask.lastStartTime.plusSeconds(currentTask.remainingDuration))) {
-                LOGGER.info("Notifying current task completion")
-                taskNotificationService.notifyCurrentTaskCompletion(currentTask)
-            }
+        if (LocalDateTime.now().isAfter(currentTask.lastStartTime.plusSeconds(currentTask.remainingDuration))) {
+            LOGGER.info("Notifying current task completion")
+            taskNotificationService.notifyCurrentTaskCompletion(currentTask)
         }
     }
 }

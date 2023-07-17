@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 interface TaskNotificationService {
-    suspend fun checkHasTaskCompletionNotified(taskId: String): Boolean
+    fun checkHasTaskCompletionNotified(taskId: String): Boolean
 
-    suspend fun notifyCurrentTaskCompletion(task: Task)
+    fun notifyCurrentTaskCompletion(task: Task)
 }
 
 @Service
@@ -22,13 +22,13 @@ class DefaultTaskNotificationService @Autowired constructor(
     @Value("\${bloom.mq.queue}")
     lateinit var queueName: String
 
-    override suspend fun checkHasTaskCompletionNotified(taskId: String): Boolean {
+    override fun checkHasTaskCompletionNotified(taskId: String): Boolean {
         return taskNotificationRepository.existsByTaskId(taskId)
     }
 
-    override suspend fun notifyCurrentTaskCompletion(task: Task) {
+    override fun notifyCurrentTaskCompletion(task: Task) {
         rabbitTemplate.convertAndSend(queueName, "<b>[Bloom] :: Timer Completed</b>\n\n${task.name} has been completed")
 
-        taskNotificationRepository.save(TaskNotification(taskId = task.id))
+        taskNotificationRepository.save(TaskNotification(id = null, taskId = task.id ?: ""))
     }
 }
