@@ -7,11 +7,15 @@
 
 ### Web Application
 
+In `webapp` folder, run:
+
 ```bash
-gradle npmInstall
+npm install
 ```
 
 ### Server
+
+In `server` folder, run:
 
 ```bash
 gradle build
@@ -21,11 +25,15 @@ gradle build
 
 ### Web Application
 
+In `webapp` folder, run:
+
 ```bash
-gradle devWebapp
+npm run dev
 ```
 
 ### Server
+
+In `server` folder, run:
 
 ```bash
 gradle bootRun
@@ -35,11 +43,15 @@ gradle bootRun
 
 ### Web Application
 
+In `server` folder, run:
+
 ```bash
 gradle bundleWebapp
 ```
 
 ### Server
+
+In `server` folder, run:
 
 ```bash
 gradle bootBuildImage
