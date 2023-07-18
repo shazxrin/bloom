@@ -20,6 +20,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+
     implementation("org.springframework.boot:spring-boot-starter-amqp")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -43,6 +45,7 @@ dependencies {
 
 tasks.register<Delete>("cleanWebapp") {
     delete(file("${projectDir}/src/main/resources/public"))
+    delete(file("${projectDir}/src/main/resources/templates"))
     delete(file("${projectDir}/../webapp/dist"))
 }
 
@@ -56,6 +59,7 @@ tasks.register<Copy>("bundleWebapp") {
     dependsOn(tasks.named("buildWebapp"))
     from(file("${projectDir}/../webapp/dist"))
     into(file("${projectDir}/src/main/resources/public"))
+    rename("index.html", "../templates/index.html")
 }
 
 tasks.withType<KotlinCompile> {
