@@ -24,7 +24,7 @@ export default function TimerClock() {
         currentTask: state.currentTask,
     }))
 
-    const [leftDuration, setLeftDuration] = useState(currentTask?.remainingDuration ?? 0)
+    const [leftDuration, setLeftDuration] = useState(0)
     const [hours, setHours] = useState(0)
     const [minutes, setMinutes] = useState(0)
     const [seconds, setSeconds] = useState(0)
@@ -45,7 +45,7 @@ export default function TimerClock() {
     }, [currentTask])
 
     useEffect(() => {
-        const leftDuration = currentTask ? currentTask.remainingDuration : 0
+        const leftDuration = currentTask ? currentTask.remainingDuration - differenceInSeconds(new Date(), new Date(currentTask.lastStartTime)) : 0
 
         setLeftDuration(leftDuration)
     }, [currentTask])
