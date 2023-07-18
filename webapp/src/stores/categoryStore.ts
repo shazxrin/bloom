@@ -12,7 +12,7 @@ interface CategoryStore {
     createCategory: (name: string, color: string) => Promise<void>
 }
 
-export const useCategoryStore = create<CategoryStore>()(
+const useCategoryStore = create<CategoryStore>()(
     devtools(
         (set, get) => ({
             isLoading: false,
@@ -70,3 +70,5 @@ export const useCategoryStore = create<CategoryStore>()(
         })
     )
 )
+
+export default useCategoryStore

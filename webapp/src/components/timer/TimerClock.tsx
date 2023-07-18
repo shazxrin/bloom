@@ -2,7 +2,7 @@ import {useEffect, useState} from "react"
 import {differenceInSeconds} from "date-fns"
 import {Group, Text, useMantineTheme} from "@mantine/core"
 import useMobile from "../../hooks/useMobile.ts"
-import {useTaskStore} from "../../stores/taskStore.ts"
+import useCurrentTaskStore from "../../stores/currentTaskStore.ts"
 
 interface TimerClockTextProps {
     color: string
@@ -20,7 +20,7 @@ function TimerClockText({color, value}: TimerClockTextProps) {
 }
 
 export default function TimerClock() {
-    const {currentTask} = useTaskStore((state) => ({
+    const {currentTask} = useCurrentTaskStore((state) => ({
         currentTask: state.currentTask,
     }))
 

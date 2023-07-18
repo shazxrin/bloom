@@ -1,20 +1,16 @@
 import {ContextModalProps} from "@mantine/modals"
 import {Box, Button, Group, Text} from "@mantine/core"
 import {ListTaskDto} from "../../api/dto.ts"
-import {useTaskStore} from "../../stores/taskStore.ts"
 import {IconTrash} from "@tabler/icons-react"
+import useHistoryTaskStore from "../../stores/taskHistoryStore.ts"
 
 interface TaskDeleteModalProps {
     task: ListTaskDto
     onActionSuccess: () => void
 }
 
-export default function TaskDeleteModal({
-                                            context,
-                                            id,
-                                            innerProps
-                                        }: ContextModalProps<TaskDeleteModalProps>) {
-    const {deleteTask} = useTaskStore((state) => ({
+export default function TaskDeleteModal({context, id, innerProps}: ContextModalProps<TaskDeleteModalProps>) {
+    const {deleteTask} = useHistoryTaskStore((state) => ({
         deleteTask: state.deleteTask
     }))
 

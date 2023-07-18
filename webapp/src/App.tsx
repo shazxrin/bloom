@@ -2,8 +2,6 @@ import {AppShell, MantineProvider, useMantineTheme} from "@mantine/core"
 import "./App.css"
 import {Notifications} from "@mantine/notifications"
 import {useEffect, useState} from "react"
-import {useTaskStore} from "./stores/taskStore.ts"
-import {useCategoryStore} from "./stores/categoryStore.ts"
 import AppNavBar from "./components/shell/AppNavbar.tsx"
 import AppHeader from "./components/shell/AppHeader.tsx"
 import Notifier from "./components/notification/Notifier.tsx"
@@ -15,6 +13,8 @@ import TaskFormModal from "./components/task/TaskFormModal.tsx"
 import CategoryFormModal from "./components/category/CategoryFormModal.tsx"
 import TaskDeleteModal from "./components/task/TaskDeleteModal.tsx"
 import Overview from "./app/overview/Overview.tsx"
+import useCurrentTaskStore from "./stores/currentTaskStore.ts"
+import useCategoryStore from "./stores/categoryStore.ts"
 
 export default function App() {
     const theme = useMantineTheme()
@@ -22,7 +22,7 @@ export default function App() {
 
     const {
         fetchCurrentTask
-    } = useTaskStore((state) => ({
+    } = useCurrentTaskStore((state) => ({
         fetchCurrentTask: state.fetchCurrentTask,
     }))
     const {

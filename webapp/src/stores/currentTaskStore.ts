@@ -1,9 +1,9 @@
 import {create} from "zustand"
 import {devtools} from "zustand/middleware"
 import API from "../api/api.ts"
-import {CurrentTaskDto, ListTaskDto, PagedListDto} from "../api/dto.ts"
+import {CurrentTaskDto} from "../api/dto.ts"
 
-interface TaskStore {
+interface CurrentTaskStore {
     isLoading: boolean
     loadedDetails: string | null
     errorDetails: string | null
@@ -13,19 +13,14 @@ interface TaskStore {
     pauseCurrentTask: () => Promise<void>
     resumeCurrentTask: () => Promise<void>
     endCurrentTask: () => Promise<void>
-    getAllTasks: (page: number) => Promise<PagedListDto<ListTaskDto> | null>
-    addTask: (name: string, categoryId: string, duration: number, startTime: string) => Promise<void>
-    updateTask: (id: string, name?: string | undefined, categoryId?: string | undefined, duration?: number | undefined, startTime?: string | undefined) => Promise<void>
-    deleteTask: (id: string) => Promise<void>
 }
 
-export const useTaskStore = create<TaskStore>()(
+const useCurrentTaskStore = create<CurrentTaskStore>()(
     devtools(
         (set, get) => ({
             isLoading: false,
             loadedDetails: null,
             errorDetails: null,
-            categories: [],
             currentTask: null,
             fetchCurrentTask: async () => {
                 set((state) => ({...state, isLoading: true}))
@@ -144,105 +139,9 @@ export const useTaskStore = create<TaskStore>()(
                 }
 
                 await get().fetchCurrentTask()
-            },
-            getAllTasks: async (page: number) => {
-                set((state) => ({...state, isLoading: true}))
-
-                try {
-                    const pagedList = await API.tasks.getAll(page)
-
-                    set((state) => ({
-                        ...state,
-                        loadedDetails: null,
-                        errorDetails: null,
-                        isLoading: false
-                    }))
-
-                    return pagedList
-                } catch (err) {
-                    set((state) => ({
-                        ...state,
-                        loadedDetails: null,
-                        errorDetails: "Failed to fetch all tasks",
-                        isLoading: false
-                    }))
-
-                    return null
-                }
-            },
-            addTask: async (name: string, categoryId: string, duration: number, startTime: string) => {
-                set((state) => ({...state, isLoading: true}))
-
-                try {
-                    await API.tasks.post({
-                        name: name,
-                        categoryId: categoryId,
-                        duration: duration,
-                        startTime: startTime
-                    })
-
-                    set((state) => ({
-                        ...state,
-                        loadedDetails: "Successfully added task",
-                        errorDetails: null,
-                        isLoading: false
-                    }))
-                } catch (err) {
-                    set((state) => ({
-                        ...state,
-                        loadedDetails: null,
-                        errorDetails: "Failed to add task",
-                        isLoading: false
-                    }))
-                }
-            },
-            updateTask: async (id: string, name?: string | undefined, categoryId?: string | undefined, duration?: number | undefined, startTime?: string | undefined) => {
-                set((state) => ({...state, isLoading: true}))
-
-                try {
-                    await API.tasks.patch(id, {
-                        name: name,
-                        categoryId: categoryId,
-                        duration: duration,
-                        startTime: startTime
-                    })
-
-                    set((state) => ({
-                        ...state,
-                        loadedDetails: "Successfully updated task",
-                        errorDetails: null,
-                        isLoading: false
-                    }))
-                } catch (err) {
-                    set((state) => ({
-                        ...state,
-                        loadedDetails: null,
-                        errorDetails: "Failed to update task",
-                        isLoading: false
-                    }))
-                }
-            },
-            deleteTask: async (id: string) => {
-                set((state) => ({...state, isLoading: true}))
-
-                try {
-                    await API.tasks.delete(id)
-
-                    set((state) => ({
-                        ...state,
-                        loadedDetails: "Successfully deleted task",
-                        errorDetails: null,
-                        isLoading: false
-                    }))
-                } catch (err) {
-                    set((state) => ({
-                        ...state,
-                        loadedDetails: null,
-                        errorDetails: "Failed to delete task",
-                        isLoading: false
-                    }))
-                }
             }
         })
     )
 )
+
+export default useCurrentTaskStore

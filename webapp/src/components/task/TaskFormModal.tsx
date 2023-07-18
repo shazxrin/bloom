@@ -15,10 +15,11 @@ import {isInRange, isNotEmpty, useForm} from "@mantine/form"
 import {IconPencil, IconPlayerPlay, IconPlus, IconSparkles} from "@tabler/icons-react"
 import {ListTaskDto} from "../../api/dto.ts"
 import {ContextModalProps, modals} from "@mantine/modals"
-import {useTaskStore} from "../../stores/taskStore.ts"
-import {useCategoryStore} from "../../stores/categoryStore.ts"
+import useCurrentTaskStore from "../../stores/currentTaskStore.ts"
+import useCategoryStore from "../../stores/categoryStore.ts"
 import {DateTimePicker} from "@mantine/dates"
 import {format} from "date-fns"
+import useHistoryTaskStore from "../../stores/taskHistoryStore.ts"
 
 interface CategorySelectItemProps extends React.ComponentPropsWithoutRef<'div'> {
     label: string
@@ -75,16 +76,14 @@ interface TaskFormValues {
 interface TaskFormModalProps {
     mode: "create" | "add" | "update"
     task?: ListTaskDto | undefined
-    onActionSuccess?: () => void | undefined
 }
 
-export default function TaskFormModal({
-                                          context,
-                                          id,
-                                          innerProps
-                                      }: ContextModalProps<TaskFormModalProps>) {
-    const {createCurrentTask, addTask, updateTask} = useTaskStore((state) => ({
+export default function TaskFormModal({context, id, innerProps}: ContextModalProps<TaskFormModalProps>) {
+    const {createCurrentTask} = useCurrentTaskStore((state) => ({
         createCurrentTask: state.createCurrentTask,
+    }))
+
+    const {addTask, updateTask} = useHistoryTaskStore((state) => ({
         addTask: state.addTask,
         updateTask: state.updateTask
     }))
@@ -124,15 +123,12 @@ export default function TaskFormModal({
                 switch (innerProps.mode) {
                     case "create":
                         createCurrentTask(values.name, values.categoryId, duration)
-                            .then(innerProps.onActionSuccess)
                         break
                     case "add":
                         addTask(values.name, values.categoryId, duration, format(values.startTime, "yyyy-MM-dd'T'HH:mm:ss"))
-                            .then(innerProps.onActionSuccess)
                         break
                     case "update":
                         updateTask(innerProps.task?.id ?? "", values.name, values.categoryId, duration, format(values.startTime, "yyyy-MM-dd'T'HH:mm:ss"))
-                            .then(innerProps.onActionSuccess)
                         break
                 }
 

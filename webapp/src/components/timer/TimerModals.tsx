@@ -1,12 +1,10 @@
 import {Button, Center, Title} from "@mantine/core"
 import {IconSparkles} from "@tabler/icons-react"
-import {useTaskStore} from "../../stores/taskStore.ts"
 import {modals} from "@mantine/modals"
+import useCurrentTaskStore from "../../stores/currentTaskStore.ts"
 
 export default function TimerModals() {
-    const {
-        currentTask,
-    } = useTaskStore((state) => ({
+    const {currentTask} = useCurrentTaskStore((state) => ({
         currentTask: state.currentTask,
     }))
 

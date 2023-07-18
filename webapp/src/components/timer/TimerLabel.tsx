@@ -1,11 +1,11 @@
 import {Center, Group, Text, useMantineTheme} from "@mantine/core"
 import {IconArrowRight} from "@tabler/icons-react"
-import {useTaskStore} from "../../stores/taskStore.ts"
-import {useCategoryStore} from "../../stores/categoryStore.ts"
 import CategoryBadge from "../category/CategoryBadge.tsx"
+import useCurrentTaskStore from "../../stores/currentTaskStore.ts"
+import useCategoryStore from "../../stores/categoryStore.ts"
 
 export default function TimerLabel() {
-    const {currentTask} = useTaskStore((state) => ({
+    const {currentTask} = useCurrentTaskStore((state) => ({
         currentTask: state.currentTask,
     }))
 

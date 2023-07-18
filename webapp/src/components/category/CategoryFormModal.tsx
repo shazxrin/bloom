@@ -1,7 +1,7 @@
 import {isNotEmpty, useForm} from "@mantine/form"
 import {Box, Button, ColorInput, TextInput} from "@mantine/core"
 import {IconSparkles} from "@tabler/icons-react"
-import {useCategoryStore} from "../../stores/categoryStore.ts"
+import useCategoryStore from "../../stores/categoryStore.ts"
 import {ContextModalProps} from "@mantine/modals"
 
 interface CategoryFormValues {

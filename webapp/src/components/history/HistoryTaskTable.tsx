@@ -1,22 +1,20 @@
-import {useTaskStore} from "../../stores/taskStore.ts"
 import {useCallback, useEffect, useState} from "react"
-import {ActionIcon, Button, Group, Loader, Pagination, Stack, Table, Title,} from "@mantine/core"
-import {useCategoryStore} from "../../stores/categoryStore.ts"
+import {ActionIcon, Button, Group, Pagination, Stack, Table, Title,} from "@mantine/core"
+import useCategoryStore from "../../stores/categoryStore.ts"
 import {format, formatDuration, secondsToHours, secondsToMinutes} from "date-fns"
 import CategoryBadge from "../category/CategoryBadge.tsx"
-import {ListTaskDto} from "../../api/dto.ts"
 import {IconPencil, IconPlus, IconRefresh, IconTrash} from "@tabler/icons-react"
 import {modals} from "@mantine/modals"
+import useHistoryTaskStore from "../../stores/taskHistoryStore.ts"
 
 const dateTimeFormat = "dd MMMM yyyy HH:mm"
 
 export default function HistoryTaskTable() {
-    const [isLoading, setIsLoading] = useState(true)
-    const [page, setPage] = useState(1)
-    const [totalPages, setTotalPages] = useState(1)
-    const [tasks, setTasks] = useState<Array<ListTaskDto>>([])
+    const [page, setPage] = useState(0)
 
-    const {getAllTasks} = useTaskStore((state) => ({
+    const {tasks, totalPages, getAllTasks} = useHistoryTaskStore((state) => ({
+        tasks: state.tasks,
+        totalPages: state.totalPages,
         getAllTasks: state.getAllTasks
     }))
 
@@ -24,12 +22,8 @@ export default function HistoryTaskTable() {
         categories: state.categories
     }))
 
-    const fetchPage = useCallback(async () => {
-        setIsLoading(true)
-        const pagedList = await getAllTasks(page - 1)
-        setTasks(pagedList?.items ?? [])
-        setTotalPages(pagedList?.totalPages ?? 0)
-        setIsLoading(false)
+    const fetchPage = useCallback(() => {
+        getAllTasks(page)
     }, [page])
 
     useEffect(() => {
@@ -48,7 +42,6 @@ export default function HistoryTaskTable() {
                                 title: <Title order={5}>Add Task</Title>,
                                 innerProps: {
                                     mode: "add",
-                                    onActionSuccess: () => fetchPage()
                                 }
                             })}>
                         Add
@@ -60,11 +53,9 @@ export default function HistoryTaskTable() {
                             onClick={() => fetchPage()}>
                         Refresh
                     </Button>
-
-                    {isLoading && <Loader color={"blue"}/>}
                 </Group>
 
-                <Pagination color={"pink"}  total={totalPages} value={page} onChange={setPage}/>
+                <Pagination color={"pink"} total={totalPages} value={page} onChange={setPage}/>
             </Group>
 
 
@@ -105,7 +96,6 @@ export default function HistoryTaskTable() {
                                     innerProps: {
                                         mode: "update",
                                         task: task,
-                                        onActionSuccess: () => fetchPage()
                                     }
                                 })}>
                                     <IconPencil size={20}/>
@@ -115,7 +105,6 @@ export default function HistoryTaskTable() {
                                     title: <Title order={5}>Delete Task</Title>,
                                     innerProps: {
                                         task: task,
-                                        onActionSuccess: () => fetchPage()
                                     }
                                 })}>
                                     <IconTrash size={20}/>
