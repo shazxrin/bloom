@@ -3,6 +3,7 @@ import useOverviewStore from "../../stores/overviewStore.ts"
 import {useEffect} from "react"
 import DailyOverview from "../../components/overview/DailyOverview.tsx"
 import YearlyOverview from "../../components/overview/YearlyOverview.tsx"
+import useMobile from "../../hooks/useMobile.ts"
 
 export default function Overview() {
     const {getDailyOverview, getYearlyOverview} = useOverviewStore((state) => ({
@@ -15,8 +16,10 @@ export default function Overview() {
         getYearlyOverview()
     }, [])
 
+    const isMobile = useMobile()
+
     return (
-        <Stack w={"100%"} h={"100%"} p={16}>
+        <Stack w={"100%"} h={"100%"} px={isMobile ? 4 : 16} py={16}>
             <Title order={1} mb={16}>Overview</Title>
 
             <DailyOverview />

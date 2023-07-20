@@ -19,8 +19,11 @@ export default function YearlyOverview() {
         <>
             <Title order={2} color={theme.colors.gray[5]}>This Year</Title>
 
-            <Paper withBorder={true} px={16} py={isMobile ? 4 : 16} bg={theme.colors.dark[8]}>
-                <Box h={240} w={"100%"}>
+            <Paper withBorder={true} px={16} py={isMobile ? 4 : 16} bg={theme.colors.dark[8]} style={{
+                overflowX: "auto",
+                overflowY: "hidden"
+            }}>
+                <Box h={240} w={isMobile ? 960 : "100%"}>
                     <ResponsiveCalendar
                         data={yearlyOverview.map(dateTotalDurationDto => ({
                             day: dateTotalDurationDto.date,
