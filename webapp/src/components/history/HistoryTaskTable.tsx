@@ -81,7 +81,7 @@ export default function HistoryTaskTable() {
                 overflowX: "auto",
                 overflowY: "hidden"
             }}>
-                <Table verticalSpacing={"md"} striped={true} miw={960}>
+                <Table verticalSpacing={"md"} striped={true} miw={720}>
                     <thead>
                     <tr>
                         <th>Name</th>
