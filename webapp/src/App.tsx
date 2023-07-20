@@ -42,6 +42,7 @@ export default function App() {
             withNormalizeCSS
             theme={{
                 colorScheme: "dark",
+                primaryColor: "pink",
                 fontFamily: "DM Sans, san-serif",
                 fontFamilyMonospace: "DM Mono, monospace"
             }}
