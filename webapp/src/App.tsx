@@ -15,7 +15,7 @@ import TaskDeleteModal from "./components/task/TaskDeleteModal.tsx"
 import Overview from "./app/overview/Overview.tsx"
 import useCurrentTaskStore from "./stores/currentTaskStore.ts"
 import useCategoryStore from "./stores/categoryStore.ts"
-import {useTransition, animated} from "@react-spring/web"
+import {animated, useTransition} from "@react-spring/web"
 
 export default function App() {
     const theme = useMantineTheme()
@@ -40,9 +40,10 @@ export default function App() {
     const [location] = useLocation()
 
     const transitions = useTransition(location, {
-        from: { opacity: 0, width: "100%", height: "100%" },
-        enter: { opacity: 1, width: "100%", height: "100%" },
-        leave: { opacity: 0, width: "100%", height: "100%" },
+        config: {duration: 150},
+        from: {opacity: 0, width: "100%", height: "100%"},
+        enter: {opacity: 1, width: "100%", height: "100%"},
+        leave: {opacity: 0, width: "100%", height: "100%"},
         exitBeforeEnter: true
     })
 
@@ -61,23 +62,25 @@ export default function App() {
                 "taskFormModal": TaskFormModal,
                 "taskDeleteModal": TaskDeleteModal,
                 "categoryFormModal": CategoryFormModal
-            }} >
+            }}>
                 <Notifications/>
                 <AppShell
                     styles={{
                         main: {
-                            background:theme.colors.dark[8]
+                            background: theme.colors.dark[8]
                         },
                     }}
                     navbarOffsetBreakpoint="sm"
                     asideOffsetBreakpoint="sm"
-                    navbar={<AppNavBar isNavBarOpened={isNavBarOpened} closeNavBar={() => setIsNavBarOpened((o) => !o)}/>}
-                    header={<AppHeader isNavBarOpened={isNavBarOpened} closeNavBar={() => setIsNavBarOpened((o) => !o)}/>}
+                    navbar={<AppNavBar isNavBarOpened={isNavBarOpened}
+                                       closeNavBar={() => setIsNavBarOpened((o) => !o)}/>}
+                    header={<AppHeader isNavBarOpened={isNavBarOpened}
+                                       closeNavBar={() => setIsNavBarOpened((o) => !o)}/>}
                 >
                     <Notifier/>
                     {
                         transitions((style, location) => (
-                            <animated.div style={style} >
+                            <animated.div style={style}>
                                 <Switch location={location}>
                                     <Route path={"/"} component={Overview}/>
                                     <Route path={"/timer"} component={Timer}/>
