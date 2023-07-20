@@ -1,5 +1,5 @@
 import {
-    AddTaskDto,
+    AddTaskDto, CategoryTotalDurationDto,
     CreateCategoryDto,
     CreateCurrentTaskDto,
     CurrentTaskDto,
@@ -44,6 +44,10 @@ interface CategoriesApi {
     patch(id: string, updateCategoryDto: UpdateCategoryDto): Promise<void>
 
     delete(id: string): Promise<void>
+}
+
+interface OverviewsApi {
+    getDaily(): Promise<Array<CategoryTotalDurationDto>>
 }
 
 const tasksApi: TasksApi = {
@@ -164,9 +168,22 @@ const categoriesApi: CategoriesApi = {
     }
 }
 
+const overviewsApi: OverviewsApi = {
+    getDaily: async () => {
+        try {
+            const response = await axios.get<Array<CategoryTotalDurationDto>>("/api/overviews/daily")
+
+            return response.data
+        } catch (err) {
+            throw new ApiError()
+        }
+    }
+}
+
 const API = {
     tasks: tasksApi,
-    categories: categoriesApi
+    categories: categoriesApi,
+    overviews: overviewsApi
 }
 
 export default API

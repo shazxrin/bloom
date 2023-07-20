@@ -58,3 +58,8 @@ export interface UpdateTaskDto {
     duration?: number | undefined
     startTime?: string | undefined
 }
+
+export interface CategoryTotalDurationDto {
+    categoryId: string
+    totalDuration: number
+}
