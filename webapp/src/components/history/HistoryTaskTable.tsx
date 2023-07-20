@@ -10,7 +10,7 @@ import useHistoryTaskStore from "../../stores/taskHistoryStore.ts"
 const dateTimeFormat = "dd MMMM yyyy HH:mm"
 
 export default function HistoryTaskTable() {
-    const [page, setPage] = useState(0)
+    const [page, setPage] = useState(1)
 
     const {tasks, totalPages, getAllTasks} = useHistoryTaskStore((state) => ({
         tasks: state.tasks,
@@ -23,7 +23,7 @@ export default function HistoryTaskTable() {
     }))
 
     const fetchPage = useCallback(() => {
-        getAllTasks(page)
+        getAllTasks(page - 1)
     }, [page])
 
     useEffect(() => {
