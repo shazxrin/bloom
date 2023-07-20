@@ -5,7 +5,7 @@ import {useEffect, useState} from "react"
 import AppNavBar from "./components/shell/AppNavbar.tsx"
 import AppHeader from "./components/shell/AppHeader.tsx"
 import Notifier from "./components/notification/Notifier.tsx"
-import {Route, Switch} from "wouter"
+import {Route, Switch, useLocation} from "wouter"
 import Timer from "./app/timer/Timer.tsx"
 import History from "./app/history/History.tsx"
 import {ModalsProvider} from "@mantine/modals"
@@ -15,6 +15,7 @@ import TaskDeleteModal from "./components/task/TaskDeleteModal.tsx"
 import Overview from "./app/overview/Overview.tsx"
 import useCurrentTaskStore from "./stores/currentTaskStore.ts"
 import useCategoryStore from "./stores/categoryStore.ts"
+import {useTransition, animated} from "@react-spring/web"
 
 export default function App() {
     const theme = useMantineTheme()
@@ -35,6 +36,15 @@ export default function App() {
         fetchCategories()
         fetchCurrentTask()
     }, [])
+
+    const [location] = useLocation()
+
+    const transitions = useTransition(location, {
+        from: { opacity: 0, width: "100%", height: "100%" },
+        enter: { opacity: 1, width: "100%", height: "100%" },
+        leave: { opacity: 0, width: "100%", height: "100%" },
+        exitBeforeEnter: true
+    })
 
     return (
         <MantineProvider
@@ -65,11 +75,17 @@ export default function App() {
                     header={<AppHeader isNavBarOpened={isNavBarOpened} closeNavBar={() => setIsNavBarOpened((o) => !o)}/>}
                 >
                     <Notifier/>
-                    <Switch>
-                        <Route path={"/"} component={Overview}/>
-                        <Route path={"/timer"} component={Timer}/>
-                        <Route path={"/history"} component={History}/>
-                    </Switch>
+                    {
+                        transitions((style, location) => (
+                            <animated.div style={style} >
+                                <Switch location={location}>
+                                    <Route path={"/"} component={Overview}/>
+                                    <Route path={"/timer"} component={Timer}/>
+                                    <Route path={"/history"} component={History}/>
+                                </Switch>
+                            </animated.div>
+                        ))
+                    }
                 </AppShell>
             </ModalsProvider>
         </MantineProvider>
