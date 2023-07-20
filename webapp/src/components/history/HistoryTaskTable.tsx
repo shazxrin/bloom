@@ -1,9 +1,16 @@
 import {useCallback, useEffect, useState} from "react"
-import {ActionIcon, Button, Group, Pagination, Stack, Table, Title,} from "@mantine/core"
+import {ActionIcon, Group, Pagination, Stack, Table, Title, Tooltip,} from "@mantine/core"
 import useCategoryStore from "../../stores/categoryStore.ts"
 import {format, formatDuration, secondsToHours, secondsToMinutes} from "date-fns"
 import CategoryBadge from "../category/CategoryBadge.tsx"
-import {IconPencil, IconPlus, IconRefresh, IconTrash} from "@tabler/icons-react"
+import {
+    IconArrowLeft,
+    IconArrowRight,
+    IconPencil,
+    IconPlus,
+    IconRefresh,
+    IconTrash
+} from "@tabler/icons-react"
 import {modals} from "@mantine/modals"
 import useHistoryTaskStore from "../../stores/taskHistoryStore.ts"
 
@@ -33,10 +40,22 @@ export default function HistoryTaskTable() {
     return (
         <Stack>
             <Group position={"apart"}>
-                <Group>
-                    <Button color={"green"}
-                            variant={"outline"}
-                            leftIcon={<IconPlus size={18}/>}
+                <Group spacing={"xs"}>
+                    <Tooltip label={"Refresh"}>
+                        <ActionIcon
+                            size={"lg"}
+                            color={"blue"}
+                            variant={"light"}
+                            onClick={() => fetchPage()}>
+                            <IconRefresh size={18}/>
+                        </ActionIcon>
+                    </Tooltip>
+
+                    <Tooltip label={"Add"}>
+                        <ActionIcon
+                            size={"lg"}
+                            color={"green"}
+                            variant={"light"}
                             onClick={() => modals.openContextModal({
                                 modal: "taskFormModal",
                                 title: <Title order={5}>Add Task</Title>,
@@ -44,18 +63,18 @@ export default function HistoryTaskTable() {
                                     mode: "add",
                                 }
                             })}>
-                        Add
-                    </Button>
-
-                    <Button color={"blue"}
-                            variant={"outline"}
-                            leftIcon={<IconRefresh size={18}/>}
-                            onClick={() => fetchPage()}>
-                        Refresh
-                    </Button>
+                            <IconPlus size={18}/>
+                        </ActionIcon>
+                    </Tooltip>
                 </Group>
 
-                <Pagination color={"pink"} total={totalPages} value={page} onChange={setPage}/>
+                <Pagination
+                    color={"pink"}
+                    total={totalPages}
+                    value={page}
+                    onChange={setPage}
+                    nextIcon={IconArrowRight}
+                    previousIcon={IconArrowLeft}/>
             </Group>
 
 
