@@ -1,6 +1,7 @@
 package me.shazxrin.bloom.server.repository
 
 import me.shazxrin.bloom.server.model.CategoryTotalDuration
+import me.shazxrin.bloom.server.model.DateTotalDuration
 import me.shazxrin.bloom.server.model.Task
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
@@ -17,4 +18,14 @@ interface OverviewRepository : CrudRepository<Task, String> {
         @Param("from") fromLocalDateTime: LocalDateTime,
         @Param("to") toLocalDateTime: LocalDateTime
     ): Iterable<CategoryTotalDuration>
+
+    @Query(
+        "SELECT new me.shazxrin.bloom.server.model.DateTotalDuration(EXTRACT(DAY FROM t.startTime), EXTRACT(MONTH FROM t.startTime), EXTRACT(YEAR FROM t.startTime), sum(t.duration)) " +
+            "FROM Task AS t " +
+            "WHERE t.startTime BETWEEN :from AND :to " +
+            "GROUP BY EXTRACT(YEAR FROM t.startTime), EXTRACT(MONTH FROM t.startTime), EXTRACT(DAY FROM t.startTime)")
+    fun findTasksGroupByDate(
+        @Param("from") fromLocalDateTime: LocalDateTime,
+        @Param("to") toLocalDateTime: LocalDateTime
+    ): Iterable<DateTotalDuration>
 }

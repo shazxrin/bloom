@@ -2,7 +2,7 @@ import {
     AddTaskDto, CategoryTotalDurationDto,
     CreateCategoryDto,
     CreateCurrentTaskDto,
-    CurrentTaskDto,
+    CurrentTaskDto, DateTotalDurationDto,
     ListCategoryDto,
     ListTaskDto,
     PagedListDto,
@@ -48,6 +48,8 @@ interface CategoriesApi {
 
 interface OverviewsApi {
     getDaily(): Promise<Array<CategoryTotalDurationDto>>
+
+    getYearly(): Promise<Array<DateTotalDurationDto>>
 }
 
 const tasksApi: TasksApi = {
@@ -172,6 +174,15 @@ const overviewsApi: OverviewsApi = {
     getDaily: async () => {
         try {
             const response = await axios.get<Array<CategoryTotalDurationDto>>("/api/overviews/daily")
+
+            return response.data
+        } catch (err) {
+            throw new ApiError()
+        }
+    },
+    getYearly: async () => {
+        try {
+            const response = await axios.get<Array<DateTotalDurationDto>>("/api/overviews/yearly")
 
             return response.data
         } catch (err) {

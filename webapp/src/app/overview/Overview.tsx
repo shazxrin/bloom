@@ -1,15 +1,18 @@
-import {Stack, Title} from "@mantine/core"
+import {Space, Stack, Title} from "@mantine/core"
 import useOverviewStore from "../../stores/overviewStore.ts"
 import {useEffect} from "react"
 import DailyOverview from "../../components/overview/DailyOverview.tsx"
+import YearlyOverview from "../../components/overview/YearlyOverview.tsx"
 
 export default function Overview() {
-    const {getDailyOverview} = useOverviewStore((state) => ({
-        getDailyOverview: state.getDailyOverview
+    const {getDailyOverview, getYearlyOverview} = useOverviewStore((state) => ({
+        getDailyOverview: state.getDailyOverview,
+        getYearlyOverview: state.getYearlyOverview
     }))
 
     useEffect(() => {
         getDailyOverview()
+        getYearlyOverview()
     }, [])
 
     return (
@@ -17,6 +20,8 @@ export default function Overview() {
             <Title order={1} mb={16}>Overview</Title>
 
             <DailyOverview />
+            <Space mt={8}/>
+            <YearlyOverview />
         </Stack>
     )
 }

@@ -63,3 +63,8 @@ export interface CategoryTotalDurationDto {
     categoryId: string
     totalDuration: number
 }
+
+export interface DateTotalDurationDto {
+    date: string
+    totalDuration: number
+}
