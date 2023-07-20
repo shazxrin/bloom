@@ -81,7 +81,7 @@ export default function HistoryTaskTable() {
                 overflowX: "auto",
                 overflowY: "hidden"
             }}>
-                <Table verticalSpacing={"md"} striped={true}>
+                <Table verticalSpacing={"md"} striped={true} miw={960}>
                     <thead>
                     <tr>
                         <th>Name</th>
@@ -112,25 +112,36 @@ export default function HistoryTaskTable() {
                             <td>{task.endTime ? format(new Date(task.endTime), dateTimeFormat) : "In Progress"}</td>
                             <td>
                                 <Group spacing={"xs"}>
-                                    <ActionIcon onClick={() => modals.openContextModal({
-                                        modal: "taskFormModal",
-                                        title: <Title order={5}>Update Task</Title>,
-                                        innerProps: {
-                                            mode: "update",
-                                            task: task,
-                                        }
-                                    })}>
-                                        <IconPencil size={20}/>
-                                    </ActionIcon>
-                                    <ActionIcon onClick={() => modals.openContextModal({
-                                        modal: "taskDeleteModal",
-                                        title: <Title order={5}>Delete Task</Title>,
-                                        innerProps: {
-                                            task: task,
-                                        }
-                                    })}>
-                                        <IconTrash size={20}/>
-                                    </ActionIcon>
+                                    <Tooltip label={"Edit"}>
+                                        <ActionIcon
+                                            variant={"light"}
+                                            color={"orange"}
+                                            onClick={() => modals.openContextModal({
+                                                modal: "taskFormModal",
+                                                title: <Title order={5}>Update Task</Title>,
+                                                innerProps: {
+                                                    mode: "update",
+                                                    task: task,
+                                                }
+                                            })}>
+                                            <IconPencil size={20}/>
+                                        </ActionIcon>
+                                    </Tooltip>
+
+                                    <Tooltip label={"Delete"}>
+                                        <ActionIcon
+                                            variant={"light"}
+                                            color={"red"}
+                                            onClick={() => modals.openContextModal({
+                                                modal: "taskDeleteModal",
+                                                title: <Title order={5}>Delete Task</Title>,
+                                                innerProps: {
+                                                    task: task,
+                                                }
+                                            })}>
+                                            <IconTrash size={20}/>
+                                        </ActionIcon>
+                                    </Tooltip>
                                 </Group>
                             </td>
                         </tr>
