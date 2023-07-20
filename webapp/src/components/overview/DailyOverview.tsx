@@ -81,8 +81,8 @@ function DailyOverviewSummary() {
 
             <Group spacing={"xl"}>
                 {dailyOverview.map(categoryTotalDuration => (
-                    <Stack spacing={4}>
-                        <Group key={categoryTotalDuration.categoryId} spacing={"xs"}>
+                    <Stack key={categoryTotalDuration.categoryId} spacing={4}>
+                        <Group spacing={"xs"}>
                             <ColorSwatch size={16}
                                          color={categories.find(c => c.id === categoryTotalDuration.categoryId)?.color ?? theme.colors.gray[9]}/>
                             <Text color={theme.colors.gray[5]} weight={"bold"} size={"sm"}>
