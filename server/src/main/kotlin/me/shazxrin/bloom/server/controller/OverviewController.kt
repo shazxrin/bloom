@@ -21,6 +21,14 @@ class OverviewController @Autowired constructor(private val overviewService: Ove
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/weekly")
+    fun getWeeklyOverview(): List<DateTotalDurationDto> {
+        return overviewService.getWeeklyOverview().map {
+            DateTotalDurationDto(LocalDate.of(it.year, it.month, it.dayOfMonth), it.totalDuration)
+        }
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/yearly")
     fun getYearlyOverview(): List<DateTotalDurationDto> {
         return overviewService.getYearlyOverview().map {

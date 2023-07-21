@@ -104,7 +104,7 @@ export default function DailyOverview() {
     const theme = useMantineTheme()
 
     return (
-        <>
+        <Stack>
             <Title order={2} color={theme.colors.gray[5]}>Today</Title>
 
             <Paper withBorder={true} p={32} bg={theme.colors.dark[8]}>
@@ -121,6 +121,6 @@ export default function DailyOverview() {
                     </Group>
                 }
             </Paper>
-        </>
+        </Stack>
     )
 }
