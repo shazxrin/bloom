@@ -39,7 +39,7 @@ export default function App() {
 
     const [location] = useLocation()
 
-    const transitions = useTransition(location, {
+    const transition = useTransition(location, {
         config: {duration: 150},
         from: {opacity: 0, width: "100%", height: "100%"},
         enter: {opacity: 1, width: "100%", height: "100%"},
@@ -79,7 +79,7 @@ export default function App() {
                 >
                     <Notifier/>
                     {
-                        transitions((style, location) => (
+                        transition((style, location) => (
                             <animated.div style={style}>
                                 <Switch location={location}>
                                     <Route path={"/"} component={Overview}/>

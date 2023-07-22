@@ -1,14 +1,9 @@
-import {
-    Group,
-    Navbar,
-    ThemeIcon,
-    UnstyledButton,
-    Text,
-    useMantineTheme,
-} from "@mantine/core"
-import {IconHourglass, IconHistory, IconHome} from "@tabler/icons-react"
+import {Group, Navbar, Text, ThemeIcon, UnstyledButton, useMantineTheme,} from "@mantine/core"
 import {Link} from "wouter"
 import React from "react"
+import {animated, useTransition} from "@react-spring/web"
+import {IconHistory, IconHome, IconHourglass} from "@tabler/icons-react"
+import useMobile from "../../hooks/useMobile.ts"
 
 interface MainLinkProps {
     icon: React.ReactNode
@@ -45,12 +40,12 @@ function MainLink({icon, color, label, link, onClick}: MainLinkProps) {
     )
 }
 
-interface AppNavBarProps {
+interface NavBarProps {
     isNavBarOpened: boolean
     closeNavBar: () => void
 }
 
-export default function AppNavBar({isNavBarOpened, closeNavBar}: AppNavBarProps) {
+function NavBar({isNavBarOpened, closeNavBar}: NavBarProps) {
     const theme = useMantineTheme()
 
     const backgroundColor = theme.colors.pink[5]
@@ -86,5 +81,36 @@ export default function AppNavBar({isNavBarOpened, closeNavBar}: AppNavBarProps)
                 onClick={closeNavBar}
             />
         </Navbar>
+    )
+}
+
+interface AppNavBarProps {
+    isNavBarOpened: boolean
+    closeNavBar: () => void
+}
+
+export default function AppNavBar({isNavBarOpened, closeNavBar}: AppNavBarProps) {
+    const isMobile = useMobile()
+
+    const transition = useTransition(isNavBarOpened, {
+        config: {duration: 150},
+        from: {opacity: 0},
+        enter: {opacity: 1},
+        leave: {opacity: 0},
+        exitBeforeEnter: true
+    })
+
+    return (
+        <>
+            {
+                isMobile ?
+                    transition((style, isNavBarOpened) => (
+                        <animated.div style={style}>
+                            <NavBar isNavBarOpened={isNavBarOpened} closeNavBar={closeNavBar}/>
+                        </animated.div>
+                    )) :
+                    <NavBar isNavBarOpened={isNavBarOpened} closeNavBar={closeNavBar}/>
+            }
+        </>
     )
 }
