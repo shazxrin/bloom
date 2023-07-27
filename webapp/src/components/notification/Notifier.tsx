@@ -6,6 +6,30 @@ import useCurrentTaskStore from "../../stores/currentTaskStore.ts"
 import useCategoryStore from "../../stores/categoryStore.ts"
 import useHistoryTaskStore from "../../stores/taskHistoryStore.ts"
 
+const showLoadedNotification = (iconColor: string, message: string) => {
+    notifications.show({
+        title: "Action successful",
+        message: message,
+        withCloseButton: true,
+        withBorder: true,
+        icon: <IconCircleCheck color={iconColor}/>,
+        color: "green",
+        radius: "md"
+    })
+}
+
+const showErrorNotification = (iconColor: string, message: string) => {
+    notifications.show({
+        title: "An error has occurred",
+        message: message,
+        withCloseButton: true,
+        withBorder: true,
+        icon: <IconExclamationCircle color={iconColor}/>,
+        color: "red",
+        radius: "md"
+    })
+}
+
 export default function Notifier() {
     const theme = useMantineTheme()
     const iconColor = theme.colors.gray[9]
@@ -34,77 +58,27 @@ export default function Notifier() {
 
     useEffect(() => {
         if (currentTaskStoreLoadedDetails) {
-            notifications.show({
-                title: "Action successful",
-                message: currentTaskStoreLoadedDetails,
-                withCloseButton: true,
-                withBorder: true,
-                icon: <IconCircleCheck color={iconColor}/>,
-                color: "green",
-                radius: "md"
-            })
+            showLoadedNotification(iconColor, currentTaskStoreLoadedDetails)
         }
 
         if (currentTaskStoreErrorDetails) {
-            notifications.show({
-                title: "An error has occurred",
-                message: currentTaskStoreLoadedDetails,
-                withCloseButton: true,
-                withBorder: true,
-                icon: <IconExclamationCircle color={iconColor}/>,
-                color: "red",
-                radius: "md"
-            })
+            showErrorNotification(iconColor, currentTaskStoreErrorDetails)
         }
 
         if (categoryStoreLoadedDetails) {
-            notifications.show({
-                title: "Action successful",
-                message: categoryStoreLoadedDetails,
-                withCloseButton: true,
-                withBorder: true,
-                icon: <IconCircleCheck color={iconColor}/>,
-                color: "green",
-                radius: "md"
-            })
+            showLoadedNotification(iconColor, categoryStoreLoadedDetails)
         }
 
-
         if (categoryStoreErrorDetails) {
-            notifications.show({
-                title: "An error has occurred",
-                message: categoryStoreErrorDetails,
-                withCloseButton: true,
-                withBorder: true,
-                icon: <IconExclamationCircle color={iconColor}/>,
-                color: "red",
-                radius: "md"
-            })
+            showErrorNotification(iconColor, categoryStoreErrorDetails)
         }
 
         if (historyTaskStoreLoadedDetails) {
-            notifications.show({
-                title: "Action successful",
-                message: historyTaskStoreLoadedDetails,
-                withCloseButton: true,
-                withBorder: true,
-                icon: <IconCircleCheck color={iconColor}/>,
-                color: "green",
-                radius: "md"
-            })
+            showLoadedNotification(iconColor, historyTaskStoreLoadedDetails)
         }
 
-
         if (historyTaskStoreErrorDetails) {
-            notifications.show({
-                title: "An error has occurred",
-                message: historyTaskStoreErrorDetails,
-                withCloseButton: true,
-                withBorder: true,
-                icon: <IconExclamationCircle color={iconColor}/>,
-                color: "red",
-                radius: "md"
-            })
+            showErrorNotification(iconColor, historyTaskStoreErrorDetails)
         }
     }, [
         currentTaskStoreLoadedDetails,
