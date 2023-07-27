@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useState} from "react"
-import {ActionIcon, Box, Group, Pagination, Stack, Table, Title, Tooltip,} from "@mantine/core"
+import {ActionIcon, Box, Group, Pagination, Stack, Table, Tooltip, Text} from "@mantine/core"
 import useCategoryStore from "../../stores/categoryStore.ts"
 import {format, formatDuration, secondsToHours, secondsToMinutes} from "date-fns"
 import CategoryBadge from "../category/CategoryBadge.tsx"
@@ -58,7 +58,7 @@ export default function HistoryTaskTable() {
                             variant={"light"}
                             onClick={() => modals.openContextModal({
                                 modal: "taskFormModal",
-                                title: <Title order={5}>Add Task</Title>,
+                                title: <Text size={"lg"}>Add Task</Text>,
                                 innerProps: {
                                     mode: "add",
                                 }
@@ -118,7 +118,7 @@ export default function HistoryTaskTable() {
                                             color={"orange"}
                                             onClick={() => modals.openContextModal({
                                                 modal: "taskFormModal",
-                                                title: <Title order={5}>Update Task</Title>,
+                                                title: <Text size={"lg"}>Update Task</Text>,
                                                 innerProps: {
                                                     mode: "update",
                                                     task: task,
@@ -134,7 +134,7 @@ export default function HistoryTaskTable() {
                                             color={"red"}
                                             onClick={() => modals.openContextModal({
                                                 modal: "taskDeleteModal",
-                                                title: <Title order={5}>Delete Task</Title>,
+                                                title: <Text size={"lg"}>Delete Task</Text>,
                                                 innerProps: {
                                                     task: task,
                                                 }

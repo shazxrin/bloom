@@ -8,8 +8,7 @@ import {
     Select,
     Stack,
     Text,
-    TextInput,
-    Title
+    TextInput
 } from "@mantine/core"
 import {isInRange, isNotEmpty, useForm} from "@mantine/form"
 import {IconPencil, IconPlayerPlay, IconPlus, IconSparkles} from "@tabler/icons-react"
@@ -157,7 +156,7 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                             variant={"outline"}
                             onClick={() => modals.openContextModal({
                                 modal: "categoryFormModal",
-                                title: <Title order={5}>Create Category</Title>,
+                                title: <Text size={"lg"}>Create Category</Text>,
                                 innerProps: {}
                             })}>
                         Create new category
