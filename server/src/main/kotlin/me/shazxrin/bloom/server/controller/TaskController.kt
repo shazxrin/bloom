@@ -93,7 +93,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
     @PatchMapping("/{id}")
     fun patchUpdateTask(@PathVariable id: String, @Valid @RequestBody updateTaskDto: UpdateTaskDto) {
         with(updateTaskDto) {
-            taskService.updateTask(id, name, categoryId, duration, startTime)
+            taskService.updateTask(id, name, categoryId, duration, startTime, endTime)
         }
     }
 

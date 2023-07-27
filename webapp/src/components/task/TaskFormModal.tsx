@@ -71,6 +71,7 @@ interface TaskFormValues {
     seconds: number
     categoryId: string
     startTime: Date
+    endTime: Date
 }
 
 interface TaskFormModalProps {
@@ -104,7 +105,8 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
             minutes: minutes,
             seconds: seconds,
             categoryId: innerProps.task?.categoryId ?? "",
-            startTime: innerProps.task?.startTime ? new Date(innerProps.task.startTime) : new Date()
+            startTime: innerProps.task?.startTime ? new Date(innerProps.task.startTime) : new Date(),
+            endTime: innerProps.task?.endTime ? new Date(innerProps.task.endTime) : new Date()
         },
         validate: {
             name: isNotEmpty("Please enter a task name"),
@@ -128,7 +130,14 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                         addTask(values.name, values.categoryId, duration, format(values.startTime, "yyyy-MM-dd'T'HH:mm:ss"))
                         break
                     case "update":
-                        updateTask(innerProps.task?.id ?? "", values.name, values.categoryId, duration, format(values.startTime, "yyyy-MM-dd'T'HH:mm:ss"))
+                        updateTask(
+                            innerProps.task?.id ?? "",
+                            values.name,
+                            values.categoryId,
+                            duration,
+                            format(values.startTime, "yyyy-MM-dd'T'HH:mm:ss"),
+                            format(values.endTime, "yyyy-MM-dd'T'HH:mm:ss"),
+                        )
                         break
                 }
 
@@ -184,9 +193,17 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                                 mb={"sm"}
                                 disabled={innerProps.mode === "create"}/>
 
+                <DateTimePicker {...form.getInputProps("endTime")}
+                                label={"End Time"}
+                                dropdownType="modal"
+                                modalProps={{
+                                    zIndex: 1000,
+                                    centered: true
+                                }}
+                                mb={"sm"}
+                                disabled={innerProps.mode !== "update"}/>
                 <TaskFormSubmitButton mode={innerProps.mode}/>
             </form>
-
         </Box>
     )
 }

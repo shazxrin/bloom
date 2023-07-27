@@ -31,7 +31,7 @@ interface TaskService {
 
     fun deleteTask(id: String)
 
-    fun updateTask(id: String, name: String?, categoryId: String?, duration: Long?, startTime: LocalDateTime?)
+    fun updateTask(id: String, name: String?, categoryId: String?, duration: Long?, startTime: LocalDateTime?, endTime: LocalDateTime?)
 }
 
 @Service
@@ -167,7 +167,8 @@ class DefaultTaskService @Autowired constructor(
         name: String?,
         categoryId: String?,
         duration: Long?,
-        startTime: LocalDateTime?
+        startTime: LocalDateTime?,
+        endTime: LocalDateTime?
     ) {
         val taskToBeUpdated = taskRepository.findByIdOrNull(id) ?: throw NotFoundException("Task not found")
 
@@ -175,7 +176,8 @@ class DefaultTaskService @Autowired constructor(
             name = name ?: taskToBeUpdated.name,
             categoryId = categoryId ?: taskToBeUpdated.categoryId,
             duration = duration ?: taskToBeUpdated.duration,
-            startTime = startTime ?: taskToBeUpdated.startTime
+            startTime = startTime ?: taskToBeUpdated.startTime,
+            endTime = endTime ?: taskToBeUpdated.endTime
         )
 
         taskRepository.save(updatedTask)
