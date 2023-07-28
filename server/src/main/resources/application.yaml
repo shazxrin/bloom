@@ -15,6 +15,9 @@ server:
   error:
     include-stacktrace: never
     include-message: always
+logging:
+  level:
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
 bloom:
   mq:
     queue: whistle
