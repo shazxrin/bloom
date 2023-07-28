@@ -126,7 +126,13 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                         createCurrentTask(values.name, values.categoryId, duration)
                         break
                     case "add":
-                        addTask(values.name, values.categoryId, duration, format(values.startTime, "yyyy-MM-dd'T'HH:mm:ss"))
+                        addTask(
+                            values.name,
+                            values.categoryId,
+                            duration,
+                            format(values.startTime, "yyyy-MM-dd'T'HH:mm:ss"),
+                            format(values.endTime, "yyyy-MM-dd'T'HH:mm:ss")
+                        )
                         break
                     case "update":
                         updateTask(
@@ -135,7 +141,7 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                             values.categoryId,
                             duration,
                             format(values.startTime, "yyyy-MM-dd'T'HH:mm:ss"),
-                            format(values.endTime, "yyyy-MM-dd'T'HH:mm:ss"),
+                            format(values.endTime, "yyyy-MM-dd'T'HH:mm:ss")
                         )
                         break
                 }

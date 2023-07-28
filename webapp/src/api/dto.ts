@@ -50,6 +50,7 @@ export interface AddTaskDto {
     categoryId: string
     duration: number
     startTime: string
+    endTime: string
 }
 
 export interface UpdateTaskDto {

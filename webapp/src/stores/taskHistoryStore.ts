@@ -11,7 +11,7 @@ interface HistoryTaskStore {
     page: number
     totalPages: number
     getAllTasks: (page: number) => Promise<void>
-    addTask: (name: string, categoryId: string, duration: number, startTime: string) => Promise<void>
+    addTask: (name: string, categoryId: string, duration: number, startTime: string, endTime: string) => Promise<void>
     updateTask: (id: string, name?: string | undefined, categoryId?: string | undefined, duration?: number | undefined, startTime?: string | undefined, endTime?: string | undefined) => Promise<void>
     deleteTask: (id: string) => Promise<void>
 }
@@ -49,7 +49,7 @@ const useHistoryTaskStore = create<HistoryTaskStore>()(
                     }))
                 }
             },
-            addTask: async (name: string, categoryId: string, duration: number, startTime: string) => {
+            addTask: async (name: string, categoryId: string, duration: number, startTime: string, endTime: string) => {
                 set((state) => ({...state, isLoading: true}))
 
                 try {
@@ -57,7 +57,8 @@ const useHistoryTaskStore = create<HistoryTaskStore>()(
                         name: name,
                         categoryId: categoryId,
                         duration: duration,
-                        startTime: startTime
+                        startTime: startTime,
+                        endTime: endTime
                     })
 
                     set((state) => ({
