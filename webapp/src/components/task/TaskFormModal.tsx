@@ -185,7 +185,7 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                                  }}
                                  label={"Hours"}
                                  withAsterisk={true}
-                                 hideControls/>
+                                 max={23}/>
                     <NumberInput {...form.getInputProps("minutes")}
                                  onChange={(value) => {
                                      if (typeof value !== "string") {
@@ -196,7 +196,7 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                                  }}
                                  label={"Minutes"}
                                  withAsterisk={true}
-                                 hideControls/>
+                                 max={59}/>
                     <NumberInput {...form.getInputProps("seconds")}
                                  onChange={(value) => {
                                      if (typeof value !== "string") {
@@ -207,7 +207,7 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                                  }}
                                  label={"Seconds"}
                                  withAsterisk={true}
-                                 hideControls/>
+                                 max={59}/>
                 </Group>
 
                 <DateTimePicker {...form.getInputProps("startTime")}
@@ -229,6 +229,7 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                                 }}
                                 mb={"sm"}
                                 withAsterisk={true}
+                                withSeconds={true}
                                 maxDate={new Date()}
                                 disabled={innerProps.mode === "create"}/>
 
@@ -241,6 +242,7 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                                 }}
                                 mb={"sm"}
                                 withAsterisk={true}
+                                withSeconds={true}
                                 maxDate={new Date()}
                                 disabled={innerProps.mode === "create"}/>
                 <TaskFormSubmitButton mode={innerProps.mode}/>
