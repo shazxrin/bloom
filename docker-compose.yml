@@ -4,7 +4,7 @@ networks:
 services:
   server:
     container_name: app-bloom
-    image: bloom:1.2
+    image: bloom:1.3-SNAPSHOT
     ports:
       - "30100:8080"
     expose:
