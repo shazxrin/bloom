@@ -149,7 +149,7 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                         placeholder="Select a category"
                         itemComponent={CategorySelectItem}
                         data={categories.map(c => ({value: c.id, label: c.name, color: c.color}))}
-                        withAsterisk
+                        withAsterisk={true}
                         onChange={value => form.setFieldValue("categoryId", value ?? "")}
                     />
                     <Button leftIcon={<IconSparkles size={18}/>}
@@ -166,19 +166,20 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                 <TextInput {...form.getInputProps("name")}
                            label={"Task Name"}
                            placeholder={"Enter name of task"}
-                           withAsterisk mb={"sm"}/>
+                           withAsterisk={true}
+                           mb={"sm"}/>
                 <Group grow mb={"sm"}>
                     <NumberInput {...form.getInputProps("hours")}
                                  label={"Hours"}
-                                 withAsterisk
+                                 withAsterisk={true}
                                  hideControls/>
                     <NumberInput {...form.getInputProps("minutes")}
                                  label={"Minutes"}
-                                 withAsterisk
+                                 withAsterisk={true}
                                  hideControls/>
                     <NumberInput {...form.getInputProps("seconds")}
                                  label={"Seconds"}
-                                 withAsterisk
+                                 withAsterisk={true}
                                  hideControls/>
                 </Group>
 
@@ -190,6 +191,8 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                                     centered: true
                                 }}
                                 mb={"sm"}
+                                withAsterisk={true}
+                                maxDate={new Date()}
                                 disabled={innerProps.mode === "create"}/>
 
                 <DateTimePicker {...form.getInputProps("endTime")}
@@ -200,6 +203,8 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                                     centered: true
                                 }}
                                 mb={"sm"}
+                                withAsterisk={true}
+                                maxDate={new Date()}
                                 disabled={innerProps.mode !== "update"}/>
                 <TaskFormSubmitButton mode={innerProps.mode}/>
             </form>
