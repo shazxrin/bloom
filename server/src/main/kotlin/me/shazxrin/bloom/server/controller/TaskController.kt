@@ -85,7 +85,7 @@ class TaskController @Autowired constructor(private val taskService: TaskService
     @PostMapping
     fun postAddTask(@Valid @RequestBody addTaskDto: AddTaskDto) {
         with(addTaskDto) {
-            taskService.addTask(name, categoryId, duration, startTime)
+            taskService.addTask(name, categoryId, duration, startTime, endTime)
         }
     }
 

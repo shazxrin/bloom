@@ -7,5 +7,6 @@ data class AddTaskDto(
     @field:NotEmpty val name: String,
     @field:NotEmpty val categoryId: String,
     val duration: Long,
-    val startTime: LocalDateTime
+    val startTime: LocalDateTime,
+    val endTime: LocalDateTime
 )

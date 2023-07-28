@@ -27,7 +27,7 @@ interface TaskService {
 
     fun getAllTasksByCategoryId(categoryId: String, page: Int): PagedList<Task>
 
-    fun addTask(name: String, categoryId: String, duration: Long, startTime: LocalDateTime)
+    fun addTask(name: String, categoryId: String, duration: Long, startTime: LocalDateTime, endTime: LocalDateTime)
 
     fun deleteTask(id: String)
 
@@ -141,7 +141,8 @@ class DefaultTaskService @Autowired constructor(
         name: String,
         categoryId: String,
         duration: Long,
-        startTime: LocalDateTime
+        startTime: LocalDateTime,
+        endTime: LocalDateTime
     ) {
         val taskToBeAdded = Task(
             id = null,
@@ -152,7 +153,7 @@ class DefaultTaskService @Autowired constructor(
             remainingDuration = 0,
             startTime = startTime,
             lastStartTime = startTime,
-            endTime = startTime.plusSeconds(duration)
+            endTime = endTime
         )
 
         taskRepository.save(taskToBeAdded)

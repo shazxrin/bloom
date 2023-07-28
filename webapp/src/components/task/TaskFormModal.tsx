@@ -17,7 +17,7 @@ import {ContextModalProps, modals} from "@mantine/modals"
 import useCurrentTaskStore from "../../stores/currentTaskStore.ts"
 import useCategoryStore from "../../stores/categoryStore.ts"
 import {DateTimePicker} from "@mantine/dates"
-import {format} from "date-fns"
+import {addHours, addMinutes, addSeconds, format} from "date-fns"
 import useHistoryTaskStore from "../../stores/taskHistoryStore.ts"
 
 interface CategorySelectItemProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -170,20 +170,51 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                            mb={"sm"}/>
                 <Group grow mb={"sm"}>
                     <NumberInput {...form.getInputProps("hours")}
+                                 onChange={(value) => {
+                                     if (typeof value !== "string") {
+                                        const newDate = addHours(form.values.startTime, value)
+                                        form.setFieldValue("endTime", newDate)
+                                     }
+                                     form.getInputProps("hours").onChange(value)
+                                 }}
                                  label={"Hours"}
                                  withAsterisk={true}
                                  hideControls/>
                     <NumberInput {...form.getInputProps("minutes")}
+                                 onChange={(value) => {
+                                     if (typeof value !== "string") {
+                                         const newDate = addMinutes(form.values.startTime, value)
+                                         form.setFieldValue("endTime", newDate)
+                                     }
+                                     form.getInputProps("minutes").onChange(value)
+                                 }}
                                  label={"Minutes"}
                                  withAsterisk={true}
                                  hideControls/>
                     <NumberInput {...form.getInputProps("seconds")}
+                                 onChange={(value) => {
+                                     if (typeof value !== "string") {
+                                         const newDate = addSeconds(form.values.startTime, value)
+                                         form.setFieldValue("endTime", newDate)
+                                     }
+                                     form.getInputProps("seconds").onChange(value)
+                                 }}
                                  label={"Seconds"}
                                  withAsterisk={true}
                                  hideControls/>
                 </Group>
 
                 <DateTimePicker {...form.getInputProps("startTime")}
+                                onChange={(value) => {
+                                    if (value !== null) {
+                                        let newDate = addHours(value, form.values.hours)
+                                        newDate = addMinutes(newDate, form.values.minutes)
+                                        newDate = addSeconds(newDate, form.values.seconds)
+                                        form.setFieldValue("endTime", newDate)
+
+                                        form.getInputProps("startTime").onChange(value)
+                                    }
+                                }}
                                 label={"Start Time"}
                                 dropdownType="modal"
                                 modalProps={{
@@ -205,7 +236,7 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                                 mb={"sm"}
                                 withAsterisk={true}
                                 maxDate={new Date()}
-                                disabled={innerProps.mode !== "update"}/>
+                                disabled={innerProps.mode === "create"}/>
                 <TaskFormSubmitButton mode={innerProps.mode}/>
             </form>
         </Box>
