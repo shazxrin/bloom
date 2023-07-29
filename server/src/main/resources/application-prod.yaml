@@ -3,7 +3,7 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:postgresql://db-postgres:5432/bloom-testing
+    url: jdbc:postgresql://db-postgres:5432/bloom
     username: postgres
     password: password
   rabbitmq:
