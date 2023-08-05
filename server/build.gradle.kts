@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "me.shazxrin"
-version = "1.3"
+version = "1.4-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
