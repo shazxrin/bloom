@@ -32,7 +32,7 @@ export default function TimerClock() {
     const [timerIntervalId, setTimerIntervalId] = useState(0)
     useEffect(() => {
         if (currentTask && !currentTask.isPaused) {
-            const id = setInterval(() => {
+            const id = window.setInterval(() => {
                 setLeftDuration(currentTask.remainingDuration - differenceInSeconds(new Date(), new Date(currentTask.lastStartTime)))
             }, 1000)
 

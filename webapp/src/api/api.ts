@@ -1,12 +1,15 @@
 import {
-    AddTaskDto, CategoryTotalDurationDto,
+    AddTaskDto,
+    CategoryTotalDurationDto,
     CreateCategoryDto,
     CreateCurrentTaskDto,
-    CurrentTaskDto, DateTotalDurationDto,
+    CurrentTaskDto,
+    DateTotalDurationDto,
     ListCategoryDto,
     ListTaskDto,
     PagedListDto,
-    UpdateCategoryDto, UpdateTaskDto
+    UpdateCategoryDto,
+    UpdateTaskDto
 } from "./dto.ts"
 import axios, {HttpStatusCode} from "axios"
 
