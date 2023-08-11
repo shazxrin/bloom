@@ -16,7 +16,7 @@ export default function CategoryManageModal() {
                     <Group key={category.id} position={"apart"}>
                         <Group>
                             <ColorSwatch color={category.color}/>
-                            <Text>{category.name}</Text>
+                            <Text maw={150} truncate={"end"}>{category.name}</Text>
                         </Group>
                         <Group>
                             <Group spacing={"xs"}>

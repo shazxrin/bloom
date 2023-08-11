@@ -85,7 +85,7 @@ function DailyOverviewSummary() {
                         <Group spacing={"xs"}>
                             <ColorSwatch size={16}
                                          color={categories.find(c => c.id === categoryTotalDuration.categoryId)?.color ?? theme.colors.gray[9]}/>
-                            <Text color={theme.colors.gray[5]} weight={"bold"} size={"sm"}>
+                            <Text color={theme.colors.gray[5]} weight={"bold"} size={"sm"} maw={150} truncate={"end"}>
                                 {categories.find(c => c.id === categoryTotalDuration.categoryId)?.name ?? "Unknown"}
                             </Text>
                         </Group>

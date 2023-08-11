@@ -30,7 +30,7 @@ const CategorySelectItem = forwardRef<HTMLDivElement, CategorySelectItemProps>(
         <div ref={ref} {...others}>
             <Group>
                 <ColorSwatch color={color}></ColorSwatch>
-                <Text>{label}</Text>
+                <Text maw={150} truncate={"end"}>{label}</Text>
             </Group>
         </div>
     )

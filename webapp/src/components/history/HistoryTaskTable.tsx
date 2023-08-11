@@ -95,7 +95,9 @@ export default function HistoryTaskTable() {
                     <tbody>
                     {tasks.map((task) => (
                         <tr key={task.id}>
-                            <td>{task.name}</td>
+                            <td>
+                                <Text w={150} truncate={"end"}>{task.name}</Text>
+                            </td>
                             <td>
                                 <CategoryBadge
                                     name={categories.find(c => c.id === task.categoryId)?.name ?? ""}
