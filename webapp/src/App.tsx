@@ -16,6 +16,7 @@ import Overview from "./app/overview/Overview.tsx"
 import useCurrentTaskStore from "./stores/currentTaskStore.ts"
 import useCategoryStore from "./stores/categoryStore.ts"
 import {animated, useTransition} from "@react-spring/web"
+import CategoryManageModal from "./components/category/CategoryManageModal.tsx"
 
 export default function App() {
     const theme = useMantineTheme()
@@ -61,7 +62,8 @@ export default function App() {
             <ModalsProvider modalProps={{centered: true}} modals={{
                 "taskFormModal": TaskFormModal,
                 "taskDeleteModal": TaskDeleteModal,
-                "categoryFormModal": CategoryFormModal
+                "categoryFormModal": CategoryFormModal,
+                "categoryManageModal": CategoryManageModal
             }}>
                 <Notifications/>
                 <AppShell

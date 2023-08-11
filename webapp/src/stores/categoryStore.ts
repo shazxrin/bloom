@@ -10,6 +10,8 @@ interface CategoryStore {
     categories: ListCategoryDto[]
     fetchCategories: () => Promise<void>
     createCategory: (name: string, color: string) => Promise<void>
+    updateCategory: (id: string, name: string, color: string) => Promise<void>
+    deleteCategory: (id: string) => Promise<void>
 }
 
 const useCategoryStore = create<CategoryStore>()(
@@ -66,7 +68,56 @@ const useCategoryStore = create<CategoryStore>()(
                 }
 
                 await get().fetchCategories()
-            }
+            },
+            updateCategory: async (id: string, name: string, color: string) => {
+                set((state) => ({...state, isLoading: true}))
+
+                try {
+                    await API.categories.patch(id,{
+                        name: name,
+                        color: color
+                    })
+
+                    set((state) => ({
+                        ...state,
+                        loadedDetails: "Successfully updated category",
+                        errorDetails: null,
+                        isLoading: false
+                    }))
+                } catch (err) {
+                    set((state) => ({
+                        ...state,
+                        loadedDetails: null,
+                        errorDetails: "Failed to update category",
+                        isLoading: false
+                    }))
+                }
+
+                await get().fetchCategories()
+            },
+            deleteCategory: async (id: string) => {
+                set((state) => ({...state, isLoading: true}))
+
+                try {
+                    await API.categories.delete(id)
+
+                    set((state) => ({
+                        ...state,
+                        loadedDetails: "Successfully deleted category",
+                        errorDetails: null,
+                        isLoading: false
+                    }))
+                } catch (err) {
+                    set((state) => ({
+                        ...state,
+                        loadedDetails: null,
+                        errorDetails: "Failed to delete category",
+                        isLoading: false
+                    }))
+                }
+
+                await get().fetchCategories()
+            },
         })
     )
 )

@@ -1,23 +1,55 @@
 import {isNotEmpty, useForm} from "@mantine/form"
 import {Box, Button, ColorInput, TextInput} from "@mantine/core"
-import {IconSparkles} from "@tabler/icons-react"
+import {IconPencil, IconPlus} from "@tabler/icons-react"
 import useCategoryStore from "../../stores/categoryStore.ts"
 import {ContextModalProps} from "@mantine/modals"
+import {ListCategoryDto} from "../../api/dto.ts"
+
+interface CategoryFormSubmitButtonProps {
+    mode: "create" | "update"
+}
+
+const CategoryFormSubmitButton = ({mode}: CategoryFormSubmitButtonProps) => {
+    const color = {
+        "create": "teal",
+        "update": "yellow"
+    }
+    const icon = {
+        "create": <IconPlus size={18}/>,
+        "update": <IconPencil size={18}/>
+    }
+
+    return (
+        <Button leftIcon={icon[mode]}
+                color={color[mode]}
+                fullWidth
+                type={"submit"}
+                mt={"xl"}>
+            {mode[0].toUpperCase() + mode.slice(1)}
+        </Button>
+    )
+}
+
+interface CategoryManageModalProps {
+    mode: "create" | "update"
+    category?: ListCategoryDto | undefined
+}
 
 interface CategoryFormValues {
     name: string
     color: string
 }
 
-export default function CategoryFormModal({context, id}: ContextModalProps) {
-    const {createCategory} = useCategoryStore((state) => ({
-       createCategory: state.createCategory
+export default function CategoryFormModal({context, id, innerProps}: ContextModalProps<CategoryManageModalProps>) {
+    const {createCategory, updateCategory} = useCategoryStore((state) => ({
+        createCategory: state.createCategory,
+        updateCategory: state.updateCategory
     }))
 
     const form = useForm<CategoryFormValues>({
         initialValues: {
-            name: "",
-            color: ""
+            name: innerProps.category?.name ?? "",
+            color: innerProps.category?.color ?? ""
         },
         validate: {
             name: isNotEmpty("Please enter a name"),
@@ -28,22 +60,27 @@ export default function CategoryFormModal({context, id}: ContextModalProps) {
     return (
         <Box py={8}>
             <form onSubmit={form.onSubmit((values) => {
-                createCategory(values.name, values.color)
+                switch (innerProps.mode) {
+                    case "create":
+                        createCategory(values.name, values.color)
+                        break
+                    case "update":
+                        updateCategory(innerProps.category?.id ?? "", values.name, values.color)
+                        break
+                }
 
                 context.closeModal(id)
             })}>
                 <TextInput {...form.getInputProps("name")}
                            label={"Category Name"}
-                           placeholder={"Enter name of categoty"}
+                           placeholder={"Enter name of category"}
                            withAsterisk
                            mb={"sm"}/>
                 <ColorInput {...form.getInputProps("color")}
                             label={"Color"}
                             withAsterisk
                             mb={"xl"}/>
-                <Button leftIcon={<IconSparkles size={18}/>} fullWidth type={"submit"}>
-                    Create
-                </Button>
+                <CategoryFormSubmitButton mode={innerProps.mode} />
             </form>
         </Box>
     )

@@ -11,7 +11,7 @@ import {
     TextInput
 } from "@mantine/core"
 import {isInRange, isNotEmpty, useForm} from "@mantine/form"
-import {IconPencil, IconPlayerPlay, IconPlus, IconSparkles} from "@tabler/icons-react"
+import {IconList, IconPencil, IconPlayerPlay, IconPlus} from "@tabler/icons-react"
 import {ListTaskDto} from "../../api/dto.ts"
 import {ContextModalProps, modals} from "@mantine/modals"
 import useCurrentTaskStore from "../../stores/currentTaskStore.ts"
@@ -158,14 +158,14 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                         withAsterisk={true}
                         onChange={value => form.setFieldValue("categoryId", value ?? "")}
                     />
-                    <Button leftIcon={<IconSparkles size={18}/>}
+                    <Button leftIcon={<IconList size={18}/>}
                             variant={"outline"}
                             onClick={() => modals.openContextModal({
-                                modal: "categoryFormModal",
-                                title: <Text size={"lg"}>Create Category</Text>,
+                                modal: "categoryManageModal",
+                                title: <Text size={"lg"}>Manage categories</Text>,
                                 innerProps: {}
                             })}>
-                        Create new category
+                        Manage categories
                     </Button>
                 </Stack>
 
