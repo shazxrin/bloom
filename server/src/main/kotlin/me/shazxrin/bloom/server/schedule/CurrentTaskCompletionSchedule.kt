@@ -27,6 +27,10 @@ class CurrentTaskCompletionSchedule @Autowired constructor(
             return
         }
 
+        if (currentTask.isPaused) {
+            return
+        }
+
         if (LocalDateTime.now().isAfter(currentTask.lastStartTime.plusSeconds(currentTask.remainingDuration))) {
             LOGGER.info("Notifying current task completion")
             taskNotificationService.notifyCurrentTaskCompletion(currentTask)
