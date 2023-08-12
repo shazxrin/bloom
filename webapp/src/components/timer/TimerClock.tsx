@@ -45,9 +45,15 @@ export default function TimerClock() {
     }, [currentTask])
 
     useEffect(() => {
-        const leftDuration = currentTask ? currentTask.remainingDuration - differenceInSeconds(new Date(), new Date(currentTask.lastStartTime)) : 0
+        if (currentTask) {
+            const leftDuration = currentTask.isPaused ?
+                currentTask.remainingDuration :
+                currentTask.remainingDuration - differenceInSeconds(new Date(), new Date(currentTask.lastStartTime))
 
-        setLeftDuration(leftDuration)
+            setLeftDuration(leftDuration)
+        } else {
+            setLeftDuration(0)
+        }
     }, [currentTask])
 
     useEffect(() => {
