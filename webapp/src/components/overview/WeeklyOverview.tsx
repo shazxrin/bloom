@@ -95,6 +95,10 @@ export default function WeeklyOverview() {
                             }))
                         }]}
                         colors={{ datum: "color" }}
+                        theme={{
+                            fontFamily: "DM Sans",
+                            textColor: theme.colors.gray[6]
+                        }}
                         enableArea={true}
                         enableGridX={false}
                         enableGridY={false}

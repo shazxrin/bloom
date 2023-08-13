@@ -17,7 +17,7 @@ export default function YearlyOverview() {
 
     return (
         <>
-            <Title order={2} color={theme.colors.gray[5]}>This Year</Title>
+            <Title order={2} color={theme.colors.gray[5]}>Yearly</Title>
 
             <Paper withBorder={true} px={16} py={isMobile ? 4 : 16} bg={theme.colors.dark[8]} style={{
                 overflowX: "auto",
@@ -29,11 +29,15 @@ export default function YearlyOverview() {
                             day: dateTotalDurationDto.date,
                             value: dateTotalDurationDto.totalDuration
                         }))}
-                        margin={{top: 10, right: 10, bottom: 10, left: 10}}
+                        margin={{top: 0, right: 20, bottom: 0, left: 20}}
                         from={startOfYear(new Date())}
                         to={endOfYear(new Date())}
                         emptyColor={theme.colors.gray[8]}
-                        monthBorderWidth={3}
+                        theme={{
+                            fontFamily: "DM Sans",
+                            textColor: theme.colors.gray[6]
+                        }}
+                        isInteractive={false}
                         maxValue={MAX_HOURS * 3600}
                         colors={theme.colors.pink.slice(2)}
                     />
