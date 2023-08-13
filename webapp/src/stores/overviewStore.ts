@@ -9,7 +9,9 @@ interface OverviewStore {
     loadedDetails: string | null
     errorDetails: string | null
     dailyOverviewDate: Date
+    weeklyOverviewDate: Date
     setDailyOverviewDate: (date: Date) => Promise<void>
+    setWeeklyOverviewDate: (date: Date) => Promise<void>
     dailyOverview: Array<CategoryTotalDurationDto>
     weeklyOverview: Array<DateTotalDurationDto>
     yearlyOverview: Array<DateTotalDurationDto>
@@ -25,10 +27,16 @@ const useOverviewStore = create<OverviewStore>()(
             loadedDetails: null,
             errorDetails: null,
             dailyOverviewDate: getTodayDate(),
+            weeklyOverviewDate: getTodayDate(),
             setDailyOverviewDate: async (date: Date) => {
                 set((state) => ({...state, dailyOverviewDate: date}))
 
                 await get().getDailyOverview()
+            },
+            setWeeklyOverviewDate: async (date: Date) => {
+                set((state) => ({...state, weeklyOverviewDate: date}))
+
+                await get().getWeeklyOverview()
             },
             dailyOverview: [],
             weeklyOverview: [],
@@ -50,7 +58,7 @@ const useOverviewStore = create<OverviewStore>()(
                     set((state) => ({
                         ...state,
                         loadedDetails: null,
-                        errorDetails: "Failed to fetch categories",
+                        errorDetails: "Failed to fetch daily overview",
                         isLoading: false
                     }))
                 }
@@ -59,7 +67,7 @@ const useOverviewStore = create<OverviewStore>()(
                 set((state) => ({...state, isLoading: true}))
 
                 try {
-                    const weeklyOverview = await API.overviews.getWeekly()
+                    const weeklyOverview = await API.overviews.getWeekly(formatDate(get().weeklyOverviewDate))
 
                     set((state) => ({
                         ...state,
@@ -72,7 +80,7 @@ const useOverviewStore = create<OverviewStore>()(
                     set((state) => ({
                         ...state,
                         loadedDetails: null,
-                        errorDetails: "Failed to fetch categories",
+                        errorDetails: "Failed to fetch weekly overview",
                         isLoading: false
                     }))
                 }
@@ -94,7 +102,7 @@ const useOverviewStore = create<OverviewStore>()(
                     set((state) => ({
                         ...state,
                         loadedDetails: null,
-                        errorDetails: "Failed to fetch categories",
+                        errorDetails: "Failed to fetch yearly overview",
                         isLoading: false
                     }))
                 }

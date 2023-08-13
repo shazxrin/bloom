@@ -13,7 +13,7 @@ import java.time.LocalTime
 interface OverviewService {
     fun getDailyOverview(date: LocalDate): Iterable<CategoryTotalDuration>
 
-    fun getWeeklyOverview(): Iterable<DateTotalDuration>
+    fun getWeeklyOverview(date: LocalDate): Iterable<DateTotalDuration>
 
     fun getYearlyOverview(): Iterable<DateTotalDuration>
 }
@@ -29,17 +29,16 @@ class DefaultOverviewService @Autowired constructor(
         return overviewRepository.findTasksGroupByCategoryId(fromLocalDateTime, toLocalDateTime)
     }
 
-    override fun getWeeklyOverview(): Iterable<DateTotalDuration> {
-        val today = LocalDate.now()
-        val firstDayOfWeekDiff = today.dayOfWeek.value - DayOfWeek.MONDAY.value
-        val lastDayOfWeekDiff = DayOfWeek.SUNDAY.value - today.dayOfWeek.value
+    override fun getWeeklyOverview(date: LocalDate): Iterable<DateTotalDuration> {
+        val firstDayOfWeekDiff = date.dayOfWeek.value - DayOfWeek.MONDAY.value
+        val lastDayOfWeekDiff = DayOfWeek.SUNDAY.value - date.dayOfWeek.value
 
         val fromLocalDateTime = LocalDateTime.of(
-            today.minusDays(firstDayOfWeekDiff.toLong()),
+            date.minusDays(firstDayOfWeekDiff.toLong()),
             LocalTime.MIN
         )
         val toLocalDateTime = LocalDateTime.of(
-            LocalDate.now().plusDays(lastDayOfWeekDiff.toLong()),
+            date.plusDays(lastDayOfWeekDiff.toLong()),
             LocalTime.MAX
         )
 

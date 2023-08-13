@@ -52,7 +52,7 @@ interface CategoriesApi {
 interface OverviewsApi {
     getDaily(date: string): Promise<Array<CategoryTotalDurationDto>>
 
-    getWeekly(): Promise<Array<DateTotalDurationDto>>
+    getWeekly(date: string): Promise<Array<DateTotalDurationDto>>
 
     getYearly(): Promise<Array<DateTotalDurationDto>>
 }
@@ -192,9 +192,16 @@ const overviewsApi: OverviewsApi = {
             throw new ApiError()
         }
     },
-    getWeekly: async () => {
+    getWeekly: async (date: string) => {
         try {
-            const response = await axios.get<Array<DateTotalDurationDto>>("/api/overviews/weekly")
+            const response = await axios.get<Array<DateTotalDurationDto>>(
+                "/api/overviews/weekly",
+                {
+                    params: {
+                        date: date
+                    }
+                }
+            )
 
             return response.data
         } catch (err) {

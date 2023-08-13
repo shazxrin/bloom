@@ -1,19 +1,24 @@
 import useOverviewStore from "../../stores/overviewStore.ts"
 import useMobile from "../../hooks/useMobile.ts"
-import {Box, Paper, Stack, Title, useMantineTheme} from "@mantine/core"
+import {ActionIcon, Box, Group, Paper, Stack, Title, useMantineTheme} from "@mantine/core"
 import {useEffect, useState} from "react"
 import {DateTotalDurationDto} from "../../api/dto.ts"
-import {addDays, format, startOfWeek} from "date-fns"
+import {addDays, addWeeks, format, isEqual, startOfWeek, subWeeks} from "date-fns"
 import {ResponsiveLine} from "@nivo/line"
+import {DatePickerInput} from "@mantine/dates"
+import {getTodayDate} from "../../utils/dateTimeUtils.ts"
+import {IconArrowLeft, IconArrowRight} from "@tabler/icons-react"
 
 export default function WeeklyOverview() {
-    const {weeklyOverview} = useOverviewStore((state) => ({
-        weeklyOverview: state.weeklyOverview
+    const {weeklyOverview, weeklyOverviewDate, setWeeklyOverviewDate} = useOverviewStore((state) => ({
+        weeklyOverview: state.weeklyOverview,
+        weeklyOverviewDate: state.weeklyOverviewDate,
+        setWeeklyOverviewDate: state.setWeeklyOverviewDate
     }))
 
     const [fullWeeklyOverview, setFullWeeklyOverview] = useState<DateTotalDurationDto[]>([])
     useEffect(() => {
-        const firstDayOfWeek = startOfWeek(new Date(), {weekStartsOn: 1})
+        const firstDayOfWeek = startOfWeek(weeklyOverviewDate, {weekStartsOn: 1})
         const days = new Map<string, number>()
         const noOfDays = [...Array(7).keys()]
         noOfDays.forEach(v => {
@@ -33,7 +38,7 @@ export default function WeeklyOverview() {
         }
 
         setFullWeeklyOverview(newWeeklyOverview)
-    }, [weeklyOverview])
+    }, [weeklyOverviewDate, weeklyOverview])
 
     const isMobile = useMobile()
 
@@ -41,13 +46,44 @@ export default function WeeklyOverview() {
 
     return (
         <Stack>
-            <Title order={2} color={theme.colors.gray[5]}>This Week</Title>
+            <Group position={"apart"}>
+                <Title order={2} color={theme.colors.gray[5]}>Weekly</Title>
+                <Group spacing={"xs"}>
+                    <DatePickerInput value={weeklyOverviewDate} onChange={setWeeklyOverviewDate} maxDate={getTodayDate()}/>
+                    <ActionIcon
+                        size={"lg"}
+                        variant={"light"}
+                        onClick={() => {
+                            const newOverviewDate = startOfWeek(subWeeks(weeklyOverviewDate, 1), {weekStartsOn: 1})
+                            setWeeklyOverviewDate(newOverviewDate)
+                        }}
+                    >
+                        <IconArrowLeft size={20}/>
+                    </ActionIcon>
+                    <ActionIcon
+                        size={"lg"}
+                        variant={"light"}
+                        disabled={isEqual(startOfWeek(getTodayDate(), {weekStartsOn: 1}), startOfWeek(weeklyOverviewDate, {weekStartsOn: 1}))}
+                        onClick={() => {
+                            const newOverviewDate = startOfWeek(addWeeks(weeklyOverviewDate, 1), {weekStartsOn: 1})
+                            setWeeklyOverviewDate(newOverviewDate)
+                        }}
+                    >
+                        <IconArrowRight size={20}/>
+                    </ActionIcon>
+                </Group>
+            </Group>
 
-            <Paper withBorder={true} px={16} py={isMobile ? 4 : 16} bg={theme.colors.dark[8]}
-                   style={{
-                       overflowX: "auto",
-                       overflowY: "hidden"
-                   }}>
+            <Paper
+                withBorder={true}
+                px={16}
+                py={isMobile ? 4 : 16}
+                bg={theme.colors.dark[8]}
+               style={{
+                   overflowX: "auto",
+                   overflowY: "hidden"
+               }}
+            >
                 <Box h={360} w={isMobile ? 640 : "100%"}>
                     <ResponsiveLine
                         data={[{
