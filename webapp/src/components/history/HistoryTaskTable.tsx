@@ -14,7 +14,7 @@ import {
 import {modals} from "@mantine/modals"
 import useHistoryTaskStore from "../../stores/taskHistoryStore.ts"
 
-const dateTimeFormat = "dd MMMM yyyy HH:mm"
+const dateTimeFormat = "dd/MM/yyyy HH:mm"
 
 export default function HistoryTaskTable() {
     const [page, setPage] = useState(1)
@@ -81,7 +81,7 @@ export default function HistoryTaskTable() {
                 overflowX: "auto",
                 overflowY: "hidden"
             }}>
-                <Table verticalSpacing={"md"} striped={true} miw={720}>
+                <Table verticalSpacing={"md"} striped={true} miw={840}>
                     <thead>
                     <tr>
                         <th>Name</th>
@@ -104,14 +104,24 @@ export default function HistoryTaskTable() {
                                     color={categories.find(c => c.id === task.categoryId)?.color ?? ""}/>
                             </td>
                             <td>
-                                {formatDuration({
-                                    hours: secondsToHours(task.duration),
-                                    minutes: secondsToMinutes(task.duration) - (secondsToHours(task.duration) * 60),
-                                    seconds: task.duration - (secondsToMinutes(task.duration) * 60)
-                                })}
+                                <Text w={120}>
+                                    {formatDuration({
+                                        hours: secondsToHours(task.duration),
+                                        minutes: secondsToMinutes(task.duration) - (secondsToHours(task.duration) * 60),
+                                        seconds: task.duration - (secondsToMinutes(task.duration) * 60)
+                                    })}
+                                </Text>
                             </td>
-                            <td>{format(new Date(task.startTime), dateTimeFormat)}</td>
-                            <td>{task.endTime ? format(new Date(task.endTime), dateTimeFormat) : "In Progress"}</td>
+                            <td>
+                                <Text w={120} truncate={"end"}>
+                                    {format(new Date(task.startTime), dateTimeFormat)}
+                                </Text>
+                            </td>
+                            <td>
+                                <Text w={120} truncate={"end"}>
+                                    {task.endTime ? format(new Date(task.endTime), dateTimeFormat) : "In Progress"}
+                                </Text>
+                            </td>
                             <td>
                                 <Group spacing={"xs"}>
                                     <Tooltip label={"Edit"}>
