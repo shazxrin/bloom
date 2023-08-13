@@ -1,6 +1,7 @@
 import {ResponsivePie} from "@nivo/pie"
 import useOverviewStore from "../../stores/overviewStore.ts"
 import {
+    ActionIcon,
     Box,
     Center,
     ColorSwatch,
@@ -14,7 +15,10 @@ import {
 import useCategoryStore from "../../stores/categoryStore.ts"
 import {useEffect, useState} from "react"
 import useMobile from "../../hooks/useMobile.ts"
-import {formatDurationString} from "../../utils/dateTimeUtils.ts"
+import {formatDurationString, getTodayDate} from "../../utils/dateTimeUtils.ts"
+import {IconArrowLeft, IconArrowRight} from "@tabler/icons-react"
+import {addDays, isToday, subDays} from "date-fns"
+import {DatePickerInput} from "@mantine/dates"
 
 function DailyOverviewPieChart() {
     const {categories} = useCategoryStore((state) => ({
@@ -99,13 +103,52 @@ function DailyOverviewSummary() {
     )
 }
 
+function DailyOverviewTitle() {
+    const theme = useMantineTheme()
+
+    const {dailyOverviewDate, setDailyOverviewDate} = useOverviewStore((state) => ({
+        dailyOverviewDate: state.dailyOverviewDate,
+        setDailyOverviewDate: state.setDailyOverviewDate
+    }))
+
+    return (
+        <Group position={"apart"}>
+            <Title order={2} color={theme.colors.gray[5]}>Daily</Title>
+            <Group spacing={"xs"}>
+                <DatePickerInput value={dailyOverviewDate} onChange={setDailyOverviewDate} maxDate={getTodayDate()}/>
+                <ActionIcon
+                    size={"lg"}
+                    variant={"light"}
+                    onClick={() => {
+                        const newOverviewDate = subDays(dailyOverviewDate, 1)
+                        setDailyOverviewDate(newOverviewDate)
+                    }}
+                >
+                    <IconArrowLeft size={20}/>
+                </ActionIcon>
+                <ActionIcon
+                    size={"lg"}
+                    variant={"light"}
+                    disabled={isToday(dailyOverviewDate)}
+                    onClick={() => {
+                        const newOverviewDate = addDays(dailyOverviewDate, 1)
+                        setDailyOverviewDate(newOverviewDate)
+                    }}
+                >
+                    <IconArrowRight size={20}/>
+                </ActionIcon>
+            </Group>
+        </Group>
+    )
+}
+
 export default function DailyOverview() {
     const isMobile = useMobile()
     const theme = useMantineTheme()
 
     return (
         <Stack>
-            <Title order={2} color={theme.colors.gray[5]}>Today</Title>
+            <DailyOverviewTitle />
 
             <Paper withBorder={true} p={32} bg={theme.colors.dark[8]}>
                 {isMobile ?

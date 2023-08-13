@@ -2,7 +2,6 @@ package me.shazxrin.bloom.server.controller
 
 import me.shazxrin.bloom.server.dto.overview.CategoryTotalDurationDto
 import me.shazxrin.bloom.server.dto.overview.DateTotalDurationDto
-import me.shazxrin.bloom.server.dto.task.*
 import me.shazxrin.bloom.server.service.OverviewService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -14,8 +13,8 @@ import java.time.LocalDate
 class OverviewController @Autowired constructor(private val overviewService: OverviewService) {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/daily")
-    fun getDailyOverview(): List<CategoryTotalDurationDto> {
-        return overviewService.getDailyOverview().map {
+    fun getDailyOverview(@RequestParam("date") date: LocalDate?): List<CategoryTotalDurationDto> {
+        return overviewService.getDailyOverview(date ?: LocalDate.now()).map {
             CategoryTotalDurationDto(it.category.id ?: "", it.totalDuration)
         }
     }

@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 
 interface OverviewService {
-    fun getDailyOverview(): Iterable<CategoryTotalDuration>
+    fun getDailyOverview(date: LocalDate): Iterable<CategoryTotalDuration>
 
     fun getWeeklyOverview(): Iterable<DateTotalDuration>
 
@@ -22,9 +22,9 @@ interface OverviewService {
 class DefaultOverviewService @Autowired constructor(
     private val overviewRepository: OverviewRepository
 ) : OverviewService {
-    override fun getDailyOverview(): Iterable<CategoryTotalDuration> {
-        val fromLocalDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN)
-        val toLocalDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.MAX)
+    override fun getDailyOverview(date: LocalDate): Iterable<CategoryTotalDuration> {
+        val fromLocalDateTime = LocalDateTime.of(date, LocalTime.MIN)
+        val toLocalDateTime = LocalDateTime.of(date, LocalTime.MAX)
 
         return overviewRepository.findTasksGroupByCategoryId(fromLocalDateTime, toLocalDateTime)
     }

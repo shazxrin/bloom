@@ -2,11 +2,14 @@ import {CategoryTotalDurationDto, DateTotalDurationDto} from "../api/dto.ts"
 import API from "../api/api.ts"
 import {create} from "zustand"
 import {devtools} from "zustand/middleware"
+import {formatDate, getTodayDate} from "../utils/dateTimeUtils.ts"
 
 interface OverviewStore {
     isLoading: boolean
     loadedDetails: string | null
     errorDetails: string | null
+    dailyOverviewDate: Date
+    setDailyOverviewDate: (date: Date) => Promise<void>
     dailyOverview: Array<CategoryTotalDurationDto>
     weeklyOverview: Array<DateTotalDurationDto>
     yearlyOverview: Array<DateTotalDurationDto>
@@ -17,10 +20,16 @@ interface OverviewStore {
 
 const useOverviewStore = create<OverviewStore>()(
     devtools(
-        (set) => ({
+        (set, get) => ({
             isLoading: false,
             loadedDetails: null,
             errorDetails: null,
+            dailyOverviewDate: getTodayDate(),
+            setDailyOverviewDate: async (date: Date) => {
+                set((state) => ({...state, dailyOverviewDate: date}))
+
+                await get().getDailyOverview()
+            },
             dailyOverview: [],
             weeklyOverview: [],
             yearlyOverview: [],
@@ -28,7 +37,7 @@ const useOverviewStore = create<OverviewStore>()(
                 set((state) => ({...state, isLoading: true}))
 
                 try {
-                    const dailyOverview = await API.overviews.getDaily()
+                    const dailyOverview = await API.overviews.getDaily(formatDate(get().dailyOverviewDate))
 
                     set((state) => ({
                         ...state,
