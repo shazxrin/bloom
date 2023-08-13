@@ -1,10 +1,10 @@
 import useOverviewStore from "../../stores/overviewStore.ts"
 import useMobile from "../../hooks/useMobile.ts"
 import {Box, Paper, Stack, Title, useMantineTheme} from "@mantine/core"
-import {ResponsiveBar} from "@nivo/bar"
 import {useEffect, useState} from "react"
 import {DateTotalDurationDto} from "../../api/dto.ts"
 import {addDays, format, startOfWeek} from "date-fns"
+import {ResponsiveLine} from "@nivo/line"
 
 export default function WeeklyOverview() {
     const {weeklyOverview} = useOverviewStore((state) => ({
@@ -48,15 +48,21 @@ export default function WeeklyOverview() {
                        overflowX: "auto",
                        overflowY: "hidden"
                    }}>
-                <Box h={240} w={isMobile ? 640 : "100%"}>
-                    <ResponsiveBar
-                        data={fullWeeklyOverview.map(dateTotalDuration => ({
-                            id: dateTotalDuration.date,
-                            value: dateTotalDuration.totalDuration / 3600
-                        }))}
-                        margin={{top: 40, right: 40, bottom: 40, left: 40}}
-                        enableLabel={false}
-                        colors={{scheme: "purple_red"}}/>
+                <Box h={360} w={isMobile ? 640 : "100%"}>
+                    <ResponsiveLine
+                        data={[{
+                            id: "default",
+                            color: theme.colors.pink[4],
+                            data: fullWeeklyOverview.map(dateTotalDuration => ({
+                                x: dateTotalDuration.date,
+                                y: dateTotalDuration.totalDuration / 3600
+                            }))
+                        }]}
+                        colors={{ datum: "color" }}
+                        enableArea={true}
+                        enableGridX={false}
+                        enableGridY={false}
+                        margin={{top: 40, right: 40, bottom: 40, left: 40}}/>
                 </Box>
             </Paper>
         </Stack>
