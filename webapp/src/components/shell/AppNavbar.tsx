@@ -1,5 +1,5 @@
 import {Group, Navbar, Text, ThemeIcon, UnstyledButton, useMantineTheme,} from "@mantine/core"
-import {Link} from "wouter"
+import {Link, useLocation} from "wouter"
 import React from "react"
 import {animated, useTransition} from "@react-spring/web"
 import {IconHistory, IconHome, IconHourglass} from "@tabler/icons-react"
@@ -14,6 +14,8 @@ interface MainLinkProps {
 }
 
 function MainLink({icon, color, label, link, onClick}: MainLinkProps) {
+    const [location] = useLocation()
+
     return (
         <Link to={link} style={{textDecoration: 'none'}} onClick={onClick}>
             <UnstyledButton
@@ -23,6 +25,7 @@ function MainLink({icon, color, label, link, onClick}: MainLinkProps) {
                     padding: theme.spacing.xs,
                     borderRadius: theme.radius.sm,
                     color: theme.colors.dark[0],
+                    backgroundColor: location === link ? theme.colors.dark[6] : theme.colors.dark[8],
                     "&:hover": {
                         backgroundColor: theme.colors.dark[6]
                     },
@@ -58,6 +61,9 @@ function NavBar({isNavBarOpened, closeNavBar}: NavBarProps) {
             hiddenBreakpoint="sm"
             hidden={!isNavBarOpened}
             width={{sm: 200, lg: 300}}
+            sx={{
+                backgroundColor: theme.colors.dark[8]
+            }}
         >
             <MainLink
                 icon={<IconHome color={iconColor} size={iconSize}/>}

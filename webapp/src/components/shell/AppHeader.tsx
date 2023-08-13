@@ -10,7 +10,9 @@ export default function AppHeader({isNavBarOpened, closeNavBar}: AppHeaderProps)
     const theme = useMantineTheme()
 
     return (
-        <Header height={{base: 60}} p="md">
+        <Header height={{base: 60}} p="md" sx={{
+            backgroundColor: theme.colors.dark[8]
+        }}>
             <Group position={"apart"}>
                 <div style={{display: "flex", alignItems: "center", height: "100%"}}>
                     <MediaQuery largerThan="sm" styles={{display: "none"}}>

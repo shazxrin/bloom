@@ -69,7 +69,7 @@ export default function App() {
                 <AppShell
                     styles={{
                         main: {
-                            background: theme.colors.dark[8]
+                            background: theme.colors.dark[9]
                         },
                     }}
                     navbarOffsetBreakpoint="sm"
