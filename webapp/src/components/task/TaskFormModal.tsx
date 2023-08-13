@@ -178,8 +178,10 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                     <NumberInput {...form.getInputProps("hours")}
                                  onChange={(value) => {
                                      if (typeof value !== "string") {
-                                        const newDate = addHours(form.values.startTime, value)
-                                        form.setFieldValue("endTime", newDate)
+                                         let newDate = addHours(form.values.startTime, value)
+                                         newDate = addMinutes(newDate, form.values.minutes)
+                                         newDate = addSeconds(newDate, form.values.seconds)
+                                         form.setFieldValue("endTime", newDate)
                                      }
                                      form.getInputProps("hours").onChange(value)
                                  }}
@@ -189,7 +191,9 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                     <NumberInput {...form.getInputProps("minutes")}
                                  onChange={(value) => {
                                      if (typeof value !== "string") {
-                                         const newDate = addMinutes(form.values.startTime, value)
+                                         let newDate = addHours(form.values.startTime, form.values.hours)
+                                         newDate = addMinutes(newDate, value)
+                                         newDate = addSeconds(newDate, form.values.seconds)
                                          form.setFieldValue("endTime", newDate)
                                      }
                                      form.getInputProps("minutes").onChange(value)
@@ -200,7 +204,9 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                     <NumberInput {...form.getInputProps("seconds")}
                                  onChange={(value) => {
                                      if (typeof value !== "string") {
-                                         const newDate = addSeconds(form.values.startTime, value)
+                                         let newDate = addHours(form.values.startTime, form.values.hours)
+                                         newDate = addMinutes(newDate, form.values.minutes)
+                                         newDate = addSeconds(newDate, value)
                                          form.setFieldValue("endTime", newDate)
                                      }
                                      form.getInputProps("seconds").onChange(value)
