@@ -6,7 +6,7 @@ import {DateTotalDurationDto} from "../../api/dto.ts"
 import {addDays, addWeeks, format, isEqual, startOfWeek, subWeeks} from "date-fns"
 import {ResponsiveLine} from "@nivo/line"
 import {DatePickerInput} from "@mantine/dates"
-import {getTodayDate} from "../../utils/dateTimeUtils.ts"
+import {formatDayOfWeek, getTodayDate, parseDate} from "../../utils/dateTimeUtils.ts"
 import {IconArrowLeft, IconArrowRight} from "@tabler/icons-react"
 
 export default function WeeklyOverview() {
@@ -90,7 +90,7 @@ export default function WeeklyOverview() {
                             id: "default",
                             color: theme.colors.pink[4],
                             data: fullWeeklyOverview.map(dateTotalDuration => ({
-                                x: dateTotalDuration.date,
+                                x: formatDayOfWeek(parseDate(dateTotalDuration.date)),
                                 y: dateTotalDuration.totalDuration / 3600
                             }))
                         }]}
