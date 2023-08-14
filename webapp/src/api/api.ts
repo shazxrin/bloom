@@ -9,7 +9,7 @@ import {
     ListTaskDto,
     PagedListDto,
     UpdateCategoryDto,
-    UpdateTaskDto
+    UpdateTaskDto, WeeklyOverviewDto
 } from "./dto.ts"
 import axios, {HttpStatusCode} from "axios"
 
@@ -52,7 +52,7 @@ interface CategoriesApi {
 interface OverviewsApi {
     getDaily(date: string): Promise<Array<CategoryTotalDurationDto>>
 
-    getWeekly(date: string): Promise<Array<DateTotalDurationDto>>
+    getWeekly(date: string): Promise<WeeklyOverviewDto>
 
     getYearly(): Promise<Array<DateTotalDurationDto>>
 }
@@ -194,7 +194,7 @@ const overviewsApi: OverviewsApi = {
     },
     getWeekly: async (date: string) => {
         try {
-            const response = await axios.get<Array<DateTotalDurationDto>>(
+            const response = await axios.get<WeeklyOverviewDto>(
                 "/api/overviews/weekly",
                 {
                     params: {

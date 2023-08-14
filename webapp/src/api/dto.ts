@@ -70,3 +70,8 @@ export interface DateTotalDurationDto {
     date: string
     totalDuration: number
 }
+
+export interface WeeklyOverviewDto {
+    categories: Array<CategoryTotalDurationDto>
+    dates: Array<DateTotalDurationDto>
+}

@@ -2,6 +2,7 @@ package me.shazxrin.bloom.server.service
 
 import me.shazxrin.bloom.server.model.CategoryTotalDuration
 import me.shazxrin.bloom.server.model.DateTotalDuration
+import me.shazxrin.bloom.server.model.WeeklyOverview
 import me.shazxrin.bloom.server.repository.OverviewRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -13,7 +14,7 @@ import java.time.LocalTime
 interface OverviewService {
     fun getDailyOverview(date: LocalDate): Iterable<CategoryTotalDuration>
 
-    fun getWeeklyOverview(date: LocalDate): Iterable<DateTotalDuration>
+    fun getWeeklyOverview(date: LocalDate): WeeklyOverview
 
     fun getYearlyOverview(): Iterable<DateTotalDuration>
 }
@@ -29,7 +30,7 @@ class DefaultOverviewService @Autowired constructor(
         return overviewRepository.findTasksGroupByCategoryId(fromLocalDateTime, toLocalDateTime)
     }
 
-    override fun getWeeklyOverview(date: LocalDate): Iterable<DateTotalDuration> {
+    override fun getWeeklyOverview(date: LocalDate): WeeklyOverview {
         val firstDayOfWeekDiff = date.dayOfWeek.value - DayOfWeek.MONDAY.value
         val lastDayOfWeekDiff = DayOfWeek.SUNDAY.value - date.dayOfWeek.value
 
@@ -42,7 +43,10 @@ class DefaultOverviewService @Autowired constructor(
             LocalTime.MAX
         )
 
-        return overviewRepository.findTasksGroupByDate(fromLocalDateTime, toLocalDateTime)
+        return WeeklyOverview(
+            categories = overviewRepository.findTasksGroupByCategoryId(fromLocalDateTime, toLocalDateTime),
+            dates = overviewRepository.findTasksGroupByDate(fromLocalDateTime, toLocalDateTime)
+        )
     }
 
     override fun getYearlyOverview(): Iterable<DateTotalDuration> {
