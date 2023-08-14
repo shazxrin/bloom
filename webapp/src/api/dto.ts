@@ -71,7 +71,15 @@ export interface DateTotalDurationDto {
     totalDuration: number
 }
 
+export interface DailyOverviewDto {
+    categories: Array<CategoryTotalDurationDto>
+}
+
 export interface WeeklyOverviewDto {
     categories: Array<CategoryTotalDurationDto>
+    dates: Array<DateTotalDurationDto>
+}
+
+export interface YearlyOverviewDto {
     dates: Array<DateTotalDurationDto>
 }

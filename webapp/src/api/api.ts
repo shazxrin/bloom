@@ -1,15 +1,15 @@
 import {
     AddTaskDto,
-    CategoryTotalDurationDto,
     CreateCategoryDto,
     CreateCurrentTaskDto,
-    CurrentTaskDto,
-    DateTotalDurationDto,
+    CurrentTaskDto, DailyOverviewDto,
     ListCategoryDto,
     ListTaskDto,
     PagedListDto,
     UpdateCategoryDto,
-    UpdateTaskDto, WeeklyOverviewDto
+    UpdateTaskDto,
+    WeeklyOverviewDto,
+    YearlyOverviewDto
 } from "./dto.ts"
 import axios, {HttpStatusCode} from "axios"
 
@@ -50,11 +50,11 @@ interface CategoriesApi {
 }
 
 interface OverviewsApi {
-    getDaily(date: string): Promise<Array<CategoryTotalDurationDto>>
+    getDaily(date: string): Promise<DailyOverviewDto>
 
     getWeekly(date: string): Promise<WeeklyOverviewDto>
 
-    getYearly(): Promise<Array<DateTotalDurationDto>>
+    getYearly(): Promise<YearlyOverviewDto>
 }
 
 const tasksApi: TasksApi = {
@@ -178,7 +178,7 @@ const categoriesApi: CategoriesApi = {
 const overviewsApi: OverviewsApi = {
     getDaily: async (date: string) => {
         try {
-            const response = await axios.get<Array<CategoryTotalDurationDto>>(
+            const response = await axios.get<DailyOverviewDto>(
                 "/api/overviews/daily",
                 {
                     params: {
@@ -210,7 +210,7 @@ const overviewsApi: OverviewsApi = {
     },
     getYearly: async () => {
         try {
-            const response = await axios.get<Array<DateTotalDurationDto>>("/api/overviews/yearly")
+            const response = await axios.get<YearlyOverviewDto>("/api/overviews/yearly")
 
             return response.data
         } catch (err) {

@@ -34,7 +34,7 @@ function DailyOverviewPieChart() {
     return (
         <Box h={200} w={200}>
             <ResponsivePie
-                data={dailyOverview.map(categoryTotalDuration => ({
+                data={dailyOverview.categories.map(categoryTotalDuration => ({
                     id: categoryTotalDuration.categoryId,
                     label: categories.find(c => c.id === categoryTotalDuration.categoryId)?.name ?? "Unknown",
                     value: categoryTotalDuration.totalDuration,
@@ -66,6 +66,7 @@ function DailyOverviewSummary() {
     useEffect(() => {
         setSumTotalDuration(
             dailyOverview
+                .categories
                 .map(categoryTotalDuration => categoryTotalDuration.totalDuration)
                 .reduce((sum, totalDuration) => sum + totalDuration, 0)
         )
@@ -84,7 +85,7 @@ function DailyOverviewSummary() {
             </Text>
 
             <Group spacing={"xl"}>
-                {dailyOverview.map(categoryTotalDuration => (
+                {dailyOverview.categories.map(categoryTotalDuration => (
                     <Stack key={categoryTotalDuration.categoryId} spacing={4}>
                         <Group spacing={"xs"}>
                             <ColorSwatch size={16}

@@ -1,8 +1,6 @@
 package me.shazxrin.bloom.server.controller
 
-import me.shazxrin.bloom.server.dto.overview.CategoryTotalDurationDto
-import me.shazxrin.bloom.server.dto.overview.DateTotalDurationDto
-import me.shazxrin.bloom.server.dto.overview.WeeklyOverviewDto
+import me.shazxrin.bloom.server.dto.overview.*
 import me.shazxrin.bloom.server.service.OverviewService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -14,10 +12,14 @@ import java.time.LocalDate
 class OverviewController @Autowired constructor(private val overviewService: OverviewService) {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/daily")
-    fun getDailyOverview(@RequestParam("date") date: LocalDate?): List<CategoryTotalDurationDto> {
-        return overviewService.getDailyOverview(date ?: LocalDate.now()).map {
-            CategoryTotalDurationDto(it.category.id ?: "", it.totalDuration)
-        }
+    fun getDailyOverview(@RequestParam("date") date: LocalDate?): DailyOverviewDto {
+        val dailyOverview = overviewService.getDailyOverview(date ?: LocalDate.now())
+
+        return DailyOverviewDto(
+            dailyOverview.categories.map {
+                CategoryTotalDurationDto(it.category.id ?: "", it.totalDuration)
+            }
+        )
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -43,9 +45,16 @@ class OverviewController @Autowired constructor(private val overviewService: Ove
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/yearly")
-    fun getYearlyOverview(): List<DateTotalDurationDto> {
-        return overviewService.getYearlyOverview().map {
-            DateTotalDurationDto(LocalDate.of(it.year, it.month, it.dayOfMonth), it.totalDuration)
-        }
+    fun getYearlyOverview(): YearlyOverviewDto {
+        val yearlyOverview = overviewService.getYearlyOverview()
+
+        return YearlyOverviewDto(
+            dates = yearlyOverview.dates.map {
+                DateTotalDurationDto(
+                    LocalDate.of(it.year, it.month, it.dayOfMonth),
+                    it.totalDuration
+                )
+            }
+        )
     }
 }

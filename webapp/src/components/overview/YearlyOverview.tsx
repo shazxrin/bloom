@@ -25,7 +25,7 @@ export default function YearlyOverview() {
             }}>
                 <Box h={240} w={isMobile ? 960 : "100%"}>
                     <ResponsiveCalendar
-                        data={yearlyOverview.map(dateTotalDurationDto => ({
+                        data={yearlyOverview.dates.map(dateTotalDurationDto => ({
                             day: dateTotalDurationDto.date,
                             value: dateTotalDurationDto.totalDuration
                         }))}

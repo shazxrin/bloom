@@ -1,4 +1,8 @@
-import {CategoryTotalDurationDto, DateTotalDurationDto, WeeklyOverviewDto} from "../api/dto.ts"
+import {
+    DailyOverviewDto,
+    WeeklyOverviewDto,
+    YearlyOverviewDto
+} from "../api/dto.ts"
 import API from "../api/api.ts"
 import {create} from "zustand"
 import {devtools} from "zustand/middleware"
@@ -12,9 +16,9 @@ interface OverviewStore {
     weeklyOverviewDate: Date
     setDailyOverviewDate: (date: Date) => Promise<void>
     setWeeklyOverviewDate: (date: Date) => Promise<void>
-    dailyOverview: Array<CategoryTotalDurationDto>
+    dailyOverview: DailyOverviewDto
     weeklyOverview: WeeklyOverviewDto
-    yearlyOverview: Array<DateTotalDurationDto>
+    yearlyOverview: YearlyOverviewDto
     getDailyOverview: () => Promise<void>
     getWeeklyOverview: () => Promise<void>
     getYearlyOverview: () => Promise<void>
@@ -38,9 +42,9 @@ const useOverviewStore = create<OverviewStore>()(
 
                 await get().getWeeklyOverview()
             },
-            dailyOverview: [],
+            dailyOverview: {categories: []},
             weeklyOverview: {categories: [], dates: []},
-            yearlyOverview: [],
+            yearlyOverview: {dates: []},
             getDailyOverview: async () => {
                 set((state) => ({...state, isLoading: true}))
 
