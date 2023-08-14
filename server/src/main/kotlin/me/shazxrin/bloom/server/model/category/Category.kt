@@ -1,10 +1,11 @@
-package me.shazxrin.bloom.server.model
+package me.shazxrin.bloom.server.model.category
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import me.shazxrin.bloom.server.model.BaseEntity
 
 @Table(name = "categories")
 @Entity

@@ -1,8 +1,8 @@
 package me.shazxrin.bloom.server.service
 
-import me.shazxrin.bloom.server.model.CategoryTotalDuration
-import me.shazxrin.bloom.server.model.DateTotalDuration
-import me.shazxrin.bloom.server.model.WeeklyOverview
+import me.shazxrin.bloom.server.model.overview.CategoryTotalDuration
+import me.shazxrin.bloom.server.model.overview.DateTotalDuration
+import me.shazxrin.bloom.server.model.overview.WeeklyOverview
 import me.shazxrin.bloom.server.repository.OverviewRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

@@ -1,4 +1,4 @@
-package me.shazxrin.bloom.server.model
+package me.shazxrin.bloom.server.model.paging
 
 data class PagedList<T>(
     val page: Int,

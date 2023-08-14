@@ -1,4 +1,4 @@
-package me.shazxrin.bloom.server.model
+package me.shazxrin.bloom.server.model.overview
 
 data class DateTotalDuration(
     val dayOfMonth: Int,

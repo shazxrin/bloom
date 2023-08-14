@@ -1,6 +1,6 @@
 package me.shazxrin.bloom.server.dto.paging
 
-import me.shazxrin.bloom.server.model.PagedList
+import me.shazxrin.bloom.server.model.paging.PagedList
 
 data class PagedListDto<T>(
     val page: Int,

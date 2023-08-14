@@ -1,7 +1,7 @@
 package me.shazxrin.bloom.server.service
 
 import me.shazxrin.bloom.server.exception.NotFoundException
-import me.shazxrin.bloom.server.model.Category
+import me.shazxrin.bloom.server.model.category.Category
 import me.shazxrin.bloom.server.repository.CategoryRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull

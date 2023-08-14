@@ -2,7 +2,8 @@ package me.shazxrin.bloom.server.service
 
 import me.shazxrin.bloom.server.exception.NotFoundException
 import me.shazxrin.bloom.server.exception.StateException
-import me.shazxrin.bloom.server.model.*
+import me.shazxrin.bloom.server.model.paging.PagedList
+import me.shazxrin.bloom.server.model.task.Task
 import me.shazxrin.bloom.server.repository.CategoryRepository
 import me.shazxrin.bloom.server.repository.TaskRepository
 import org.springframework.beans.factory.annotation.Autowired

@@ -1,6 +1,7 @@
-package me.shazxrin.bloom.server.model
+package me.shazxrin.bloom.server.model.task
 
 import jakarta.persistence.*
+import me.shazxrin.bloom.server.model.BaseEntity
 import java.time.LocalDateTime
 
 @Table(name = "tasks")

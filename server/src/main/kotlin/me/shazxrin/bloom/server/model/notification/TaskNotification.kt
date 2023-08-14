@@ -1,10 +1,11 @@
-package me.shazxrin.bloom.server.model
+package me.shazxrin.bloom.server.model.notification
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import me.shazxrin.bloom.server.model.BaseEntity
 import org.springframework.lang.NonNull
 
 @Table(name = "task_notification")
