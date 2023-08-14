@@ -1,8 +1,8 @@
 package me.shazxrin.bloom.server.controller
 
 import jakarta.validation.Valid
-import me.shazxrin.bloom.server.dto.common.PagedListDto
-import me.shazxrin.bloom.server.dto.common.map
+import me.shazxrin.bloom.server.dto.paging.PagedListDto
+import me.shazxrin.bloom.server.dto.paging.map
 import me.shazxrin.bloom.server.dto.task.*
 import me.shazxrin.bloom.server.service.TaskService
 import org.springframework.beans.factory.annotation.Autowired

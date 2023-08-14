@@ -1,4 +1,4 @@
-package me.shazxrin.bloom.server.dto.common
+package me.shazxrin.bloom.server.dto.paging
 
 import me.shazxrin.bloom.server.model.PagedList
 
