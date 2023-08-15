@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
 class WebAppController {
-    @RequestMapping(value = ["/", "/timer", "/history"])
+    @RequestMapping(value = ["/", "/index.html", "/timer", "/history"])
     fun webAppRoutes(): String {
         return "index"
     }
