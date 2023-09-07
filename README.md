@@ -3,55 +3,19 @@
   <i>personal time and habit tracker</i>
 </p>
 
-## Setup
-
-### Web Application
-
-In `webapp` folder, run:
-
-```bash
-npm install
-```
-
-### Server
-
-In `server` folder, run:
+### Setup
 
 ```bash
 gradle build
 ```
 
-## Development
-
-### Web Application
-
-In `webapp` folder, run:
-
-```bash
-npm run dev
-```
-
-### Server
-
-In `server` folder, run:
+### Development
 
 ```bash
 gradle bootRun
 ```
 
-## Building
-
-### Web Application
-
-In `server` folder, run:
-
-```bash
-gradle bundleWebapp
-```
-
-### Server
-
-In `server` folder, run:
+### Building
 
 ```bash
 gradle bootBuildImage
