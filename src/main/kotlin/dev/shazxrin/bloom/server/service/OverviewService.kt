@@ -51,11 +51,11 @@ class DefaultOverviewService @Autowired constructor(
 
     override fun getYearlyOverview(): YearlyOverview {
         val fromLocalDateTime = LocalDateTime.of(
-            LocalDate.now().withDayOfYear(1).withMonth(1),
+            LocalDate.now().withMonth(1).withDayOfYear(1),
             LocalTime.MIN
         )
         val toLocalDateTime = LocalDateTime.of(
-            LocalDate.now().withDayOfMonth(31).withMonth(12),
+            LocalDate.now().withMonth(12).withDayOfMonth(31),
             LocalTime.MAX
         )
 
