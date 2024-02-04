@@ -19,6 +19,10 @@ repositories {
     mavenCentral()
 }
 
+node {
+    nodeProjectDir.set(file("${projectDir}/webapp"))
+}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
@@ -44,21 +48,20 @@ dependencies {
 }
 
 tasks.register<Delete>("cleanWebapp") {
-    delete(file("${projectDir}/src/main/resources/public"))
-    delete(file("${projectDir}/src/main/resources/templates"))
-    delete(file("${projectDir}/../webapp/dist"))
+    delete(file("${projectDir}/build/resources/main/public"))
+    delete(file("${projectDir}/build/resources/main/templates"))
+    delete(file("${projectDir}/webapp/dist"))
 }
 
 tasks.register<NpmTask>("buildWebapp") {
     dependsOn(tasks.named("cleanWebapp"))
-    workingDir.set(file("${projectDir}/../webapp"))
     npmCommand.set(listOf("run", "build"))
 }
 
 tasks.register<Copy>("bundleWebapp") {
     dependsOn(tasks.named("buildWebapp"))
-    from(file("${projectDir}/../webapp/dist"))
-    into(file("${projectDir}/src/main/resources/public"))
+    from(file("${projectDir}/webapp/dist"))
+    into(file("${projectDir}/build/resources/main/public"))
     rename("index.html", "../templates/index.html")
 }
 
