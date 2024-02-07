@@ -2,18 +2,22 @@ import com.github.gradle.node.npm.task.NpmTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.1.0"
-    id("io.spring.dependency-management") version "1.1.0"
-    id("org.springdoc.openapi-gradle-plugin") version "1.6.0"
-    id("com.github.node-gradle.node") version "5.0.0"
-    kotlin("jvm") version "1.8.21"
-    kotlin("plugin.spring") version "1.8.21"
-    kotlin("plugin.jpa") version "1.8.21"
+    id("com.github.ben-manes.versions") version "0.51.0"
+    kotlin("jvm") version "1.9.22"
+    kotlin("plugin.spring") version "1.9.22"
+    kotlin("plugin.jpa") version "1.9.22"
+    id("org.springframework.boot") version "3.2.2"
+    id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
+    id("io.spring.dependency-management") version "1.1.4"
+    id("com.github.node-gradle.node") version "7.0.2"
 }
 
 group = "me.shazxrin"
 version = "1.8"
-java.sourceCompatibility = JavaVersion.VERSION_17
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+}
 
 repositories {
     mavenCentral()
@@ -40,7 +44,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
@@ -68,8 +72,12 @@ tasks.register<Copy>("bundleWebapp") {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
+}
+
+tasks.named("forkedSpringBootRun").configure {
+    doNotTrackState("Workaround!")
 }
 
 tasks.withType<Test> {
