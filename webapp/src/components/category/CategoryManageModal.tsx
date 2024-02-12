@@ -13,13 +13,13 @@ export default function CategoryManageModal() {
         <Stack py={8}>
             {
                 categories.map(category => (
-                    <Group key={category.id} position={"apart"}>
+                    <Group key={category.id} justify={"space-between"}>
                         <Group>
                             <ColorSwatch color={category.color}/>
                             <Text maw={150} truncate={"end"}>{category.name}</Text>
                         </Group>
                         <Group>
-                            <Group spacing={"xs"}>
+                            <Group gap={"xs"}>
                                 <ActionIcon
                                     size={"lg"}
                                     color={"orange"}
@@ -50,7 +50,7 @@ export default function CategoryManageModal() {
 
             <Button
                 mt={8}
-                leftIcon={<IconSparkles size={18}/>}
+                leftSection={<IconSparkles size={18}/>}
                 variant={"light"}
                 color={"green"}
                 onClick={() => modals.openContextModal({

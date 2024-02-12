@@ -35,7 +35,7 @@ export default function Timer() {
 
     return (
         <Center w={"100%"} h={"100%"}>
-            <Stack>
+            <Stack align="center">
                 <TimerLabel/>
                 <TimerClock/>
                 <TimerButtons/>

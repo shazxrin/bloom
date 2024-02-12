@@ -19,14 +19,14 @@ export default function TaskDeleteModal({context, id, innerProps}: ContextModalP
             <Text mb={16}>
                 Are you sure you want to delete <i>{innerProps.task.name}</i> ?
             </Text>
-            <Group position={"right"}>
+            <Group align={"right"}>
                 <Button color={"red"}
                         variant={"outline"}
                         onClick={() => context.closeModal(id)}>
                     Cancel
                 </Button>
 
-                <Button leftIcon={<IconTrash size={18}/>}
+                <Button leftSection={<IconTrash size={18}/>}
                         color={"red"}
                         onClick={() => {
                             deleteTask(innerProps.task.id)

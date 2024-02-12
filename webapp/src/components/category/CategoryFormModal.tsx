@@ -20,7 +20,7 @@ const CategoryFormSubmitButton = ({mode}: CategoryFormSubmitButtonProps) => {
     }
 
     return (
-        <Button leftIcon={icon[mode]}
+        <Button leftSection={icon[mode]}
                 color={color[mode]}
                 fullWidth
                 type={"submit"}

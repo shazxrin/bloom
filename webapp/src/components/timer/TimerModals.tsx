@@ -12,8 +12,8 @@ export default function TimerModals() {
         <>
             {!currentTask &&
                 <Center>
-                    <Button leftIcon={<IconSparkles/>}
-                        variant={"subtle"} w={"60%"}
+                    <Button leftSection={<IconSparkles/>}
+                        variant={"subtle"}
                         onClick={() => modals.openContextModal({
                             modal: "taskFormModal",
                             title: <Title order={5}>Create Current Task</Title>,

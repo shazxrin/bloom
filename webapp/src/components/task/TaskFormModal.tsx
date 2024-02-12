@@ -1,8 +1,6 @@
-import React, {forwardRef} from "react"
 import {
     Box,
     Button,
-    ColorSwatch,
     Group,
     NumberInput,
     Select,
@@ -19,22 +17,6 @@ import useCategoryStore from "../../stores/categoryStore.ts"
 import {DateTimePicker} from "@mantine/dates"
 import {addHours, addMinutes, addSeconds, format} from "date-fns"
 import useHistoryTaskStore from "../../stores/taskHistoryStore.ts"
-
-interface CategorySelectItemProps extends React.ComponentPropsWithoutRef<'div'> {
-    label: string
-    color: string
-}
-
-const CategorySelectItem = forwardRef<HTMLDivElement, CategorySelectItemProps>(
-    ({label, color, ...others}: CategorySelectItemProps, ref) => (
-        <div ref={ref} {...others}>
-            <Group>
-                <ColorSwatch color={color}></ColorSwatch>
-                <Text maw={150} truncate={"end"}>{label}</Text>
-            </Group>
-        </div>
-    )
-)
 
 interface TaskFormSubmitButtonProps {
     mode: "create" | "add" | "update"
@@ -53,7 +35,7 @@ const TaskFormSubmitButton = ({mode}: TaskFormSubmitButtonProps) => {
     }
 
     return (
-        <Button leftIcon={icon[mode]}
+        <Button leftSection={icon[mode]}
                 color={color[mode]}
                 fullWidth
                 type={"submit"}
@@ -153,12 +135,11 @@ export default function TaskFormModal({context, id, innerProps}: ContextModalPro
                         {...form.getInputProps("categoryId")}
                         label="Category"
                         placeholder="Select a category"
-                        itemComponent={CategorySelectItem}
-                        data={categories.map(c => ({value: c.id, label: c.name, color: c.color}))}
+                        data={categories.map(c => ({value: c.id, label: c.name }))}
                         withAsterisk={true}
                         onChange={value => form.setFieldValue("categoryId", value ?? "")}
                     />
-                    <Button leftIcon={<IconList size={18}/>}
+                    <Button leftSection={<IconList size={18}/>}
                             variant={"outline"}
                             onClick={() => modals.openContextModal({
                                 modal: "categoryManageModal",

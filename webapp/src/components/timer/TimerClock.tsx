@@ -13,7 +13,7 @@ function TimerClockText({color, value}: TimerClockTextProps) {
     const isMobile = useMobile()
 
     return (
-        <Text size={isMobile ? "5rem" : "8rem"} weight={"bold"} color={color} ff={"DM Mono"}>
+        <Text size={isMobile ? "5rem" : "8rem"} fw={"bold"} c={color} ff={"DM Mono"}>
             {String(value).padStart(2, "0")}
         </Text>
     )
@@ -89,7 +89,7 @@ export default function TimerClock() {
     }, [currentTask, leftDuration])
 
     return (
-        <Group spacing={"xl"}>
+        <Group gap={"xl"}>
             <TimerClockText color={timerColor} value={hours}/>
             <TimerClockText color={timerColor} value={minutes}/>
             <TimerClockText color={timerColor} value={seconds}/>

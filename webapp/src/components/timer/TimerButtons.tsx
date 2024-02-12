@@ -20,7 +20,7 @@ export default function TimerButtons() {
     return (
         <>
             {currentTask &&
-                <Group position={"center"}>
+                <Group align={"center"}>
                     <ActionIcon size={"xl"} variant={"default"} radius={"xl"}
                                 disabled={currentTask?.isPaused ?? true}
                                 onClick={pauseCurrentTask}>

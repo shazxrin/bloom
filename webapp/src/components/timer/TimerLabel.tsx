@@ -30,7 +30,7 @@ export default function TimerLabel() {
                 }
 
 
-                <Text color={theme.colors.gray[6]} size={"sm"} maw={150} truncate={"end"}>
+                <Text c={theme.colors.gray[6]} size={"sm"} maw={150} truncate={"end"}>
                     {currentTask?.name ?? "No current task"}
                 </Text>
             </Group>

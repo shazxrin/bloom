@@ -8,7 +8,7 @@ import WeeklyOverview from "../../components/overview/WeeklyOverview.tsx"
 import useShellStore from "../../stores/shellStore.ts"
 import useCategoryStore from "../../stores/categoryStore.ts"
 
-export default function Overview() {
+export default function Dashboard() {
     const {fetchCategories}  = useCategoryStore((state) => ({
         fetchCategories: state.fetchCategories
     }))
@@ -40,8 +40,8 @@ export default function Overview() {
     const isMobile = useMobile()
 
     return (
-        <Stack w={"100%"} h={"100%"} maw={960} mx={"auto"} px={isMobile ? 4 : 16} py={32}>
-            <Title order={1} mb={16}>Overview</Title>
+        <Stack w={"100%"} maw={960} mx={"auto"} px={isMobile ? 4 : 16} py={32}>
+            <Title order={1} mb={16}>Dashboard</Title>
 
             <DailyOverview/>
             <Space mt={8}/>

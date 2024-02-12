@@ -83,27 +83,27 @@ function WeeklyOverviewSummary() {
     const theme = useMantineTheme()
 
     return (
-        <Stack spacing={"md"}>
-            <Text color={theme.colors.gray[7]} weight={"bold"} size={"sm"}>
+        <Stack gap={"md"}>
+            <Text c={theme.colors.gray[7]} fw={"bold"} size={"sm"}>
                 SUMMARY
             </Text>
 
-            <Text color={theme.colors.gray[4]} weight={"bold"} size={32}>
+            <Text c={theme.colors.gray[4]} fw={"bold"} fz={32}>
                 {formatDurationString(sumTotalDuration)}
             </Text>
 
-            <Group spacing={"xl"}>
+            <Group gap={"xl"}>
                 {weeklyOverview.categories.map(categoryTotalDuration => (
-                    <Stack key={categoryTotalDuration.categoryId} spacing={4}>
-                        <Group spacing={"xs"}>
+                    <Stack key={categoryTotalDuration.categoryId} gap={4}>
+                        <Group gap={"xs"}>
                             <ColorSwatch size={16}
                                          color={categories.find(c => c.id === categoryTotalDuration.categoryId)?.color ?? theme.colors.gray[9]}/>
-                            <Text color={theme.colors.gray[5]} weight={"bold"} size={"sm"} maw={150}
+                            <Text c={theme.colors.gray[5]} fw={"bold"} size={"sm"} maw={150}
                                   truncate={"end"}>
                                 {categories.find(c => c.id === categoryTotalDuration.categoryId)?.name ?? "Unknown"}
                             </Text>
                         </Group>
-                        <Text color={theme.colors.gray[6]} size={"sm"}>
+                        <Text c={theme.colors.gray[6]} size={"sm"}>
                             {formatDurationString(categoryTotalDuration.totalDuration)}
                         </Text>
                     </Stack>
@@ -122,10 +122,10 @@ function WeeklyOverviewTitle() {
     const theme = useMantineTheme()
 
     return (
-        <Group position={"apart"}>
-            <Title order={2} color={theme.colors.gray[5]}>Weekly</Title>
-            <Group spacing={"xs"}>
-                <DatePickerInput value={weeklyOverviewDate} onChange={setWeeklyOverviewDate}
+        <Group justify={"space-between"}>
+            <Title order={2} c={theme.colors.gray[5]}>Weekly Overview</Title>
+            <Group gap={"xs"}>
+                <DatePickerInput value={weeklyOverviewDate} onDateChange={setWeeklyOverviewDate}
                                  maxDate={getTodayDate()}/>
                 <ActionIcon
                     size={"lg"}
@@ -199,8 +199,10 @@ function WeeklyOverviewLineChart() {
                 }]}
                 colors={{datum: "color"}}
                 theme={{
-                    fontFamily: "DM Sans",
-                    textColor: theme.colors.gray[6]
+                    text: {
+                        fontFamily: "DM Sans",
+                        color: theme.colors.gray[6]
+                    },
                 }}
                 enableArea={true}
                 enableGridX={false}

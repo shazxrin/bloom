@@ -1,5 +1,4 @@
-import {Badge, Text, useMantineTheme} from "@mantine/core"
-import tinycolor from "tinycolor2"
+import {Badge, Text} from "@mantine/core"
 
 
 interface CategoryBadgeProps {
@@ -8,14 +7,9 @@ interface CategoryBadgeProps {
 }
 
 export default function CategoryBadge({name, color}: CategoryBadgeProps) {
-    const theme = useMantineTheme()
-
     return (
-        <Badge sx={{
-            color: tinycolor(color).isLight() ? theme.colors.gray[8] : theme.colors.gray[3],
-            backgroundColor: color
-        }}>
-            <Text maw={75} truncate={"end"}>{name}</Text>
+        <Badge autoContrast color={color}>
+            <Text maw={75} truncate={"end"} size="sm">{name}</Text>
         </Badge>
     )
 }

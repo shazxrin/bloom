@@ -17,7 +17,7 @@ export default function YearlyOverview() {
 
     return (
         <>
-            <Title order={2} color={theme.colors.gray[5]}>Yearly</Title>
+            <Title order={2} c={theme.colors.gray[5]}>Yearly Overview</Title>
 
             <Paper withBorder={true} px={16} py={isMobile ? 4 : 16} bg={theme.colors.dark[8]} style={{
                 overflowX: "auto",
@@ -34,8 +34,10 @@ export default function YearlyOverview() {
                         to={endOfYear(new Date())}
                         emptyColor={theme.colors.gray[8]}
                         theme={{
-                            fontFamily: "DM Sans",
-                            textColor: theme.colors.gray[6]
+                            text: {
+                                fontFamily: "DM Sans",
+                                color: theme.colors.gray[6]
+                            }
                         }}
                         isInteractive={false}
                         maxValue={MAX_HOURS * 3600}
