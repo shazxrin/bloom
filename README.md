@@ -1,7 +1,9 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="/docs/banner_dark.webp" />
-  <img alt="" src="/docs/banner_light.webp" />
-</picture>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="/docs/banner_dark.webp" />
+    <img alt="Project Banner" width="256" src="/docs/banner_light.webp" />
+  </picture>
+</p>
 
 <p align="center">
   <i>Personal time tracking web application</i>
