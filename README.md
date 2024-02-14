@@ -1,22 +1,51 @@
-![bloom](https://github.com/shazxrin/bloom/assets/70547991/d1282eec-048f-4b73-8f0c-b88efafe0ae7)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="/docs/banner_dark.webp" />
+  <img alt="" src="/docs/banner_light.webp" />
+</picture>
+
 <p align="center">
-  <i>personal time and habit tracker</i>
+  <i>Personal time tracking web application</i>
 </p>
 
-### Setup
+## Screenshots
+
+#### Dashboard
+![Dashboard](/docs/ss_1.jpeg)
+
+#### Timer
+![Timer](/docs/ss_2.jpeg)
+
+## Setting up
+
+### Frontend
 
 ```bash
-gradle build
+cd ./webapp
+
+# Setup project
+pnpm install
+
+# Run development server
+pnpm run dev
 ```
 
-### Development
+### Backend
 
 ```bash
+# Setup project
+gradle build
+
+# Run development server
 gradle bootRun
 ```
 
-### Building
+## Building
 
+From the project directory, run the following command to build the container image:
 ```bash
-gradle bootBuildImage
+# Build container image
+gradle bundleWebapp bootBuildImage
 ```
+
+> [!IMPORTANT]
+> Remember to always bundle the web application before building the image.
