@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "generate-pwa-assets": "pwa-assets-generator"
+    "generate-pwa-assets": "pwa-assets-generator",
+    "generate-api": "openapi-typescript ../build/openapi.json -o ./src/api/schema.d.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -27,6 +28,7 @@
     "axios": "^1.6.7",
     "date-fns": "^3.3.1",
     "dayjs": "^1.11.10",
+    "openapi-fetch": "^0.9.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tinycolor2": "^1.6.0",
@@ -45,6 +47,7 @@
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "openapi-typescript": "^6.7.4",
     "typescript": "^5.3.3",
     "vite": "^5.1.1",
     "vite-plugin-pwa": "^0.18.1"

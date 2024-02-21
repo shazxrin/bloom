@@ -69,6 +69,11 @@ tasks.register<Copy>("bundleWebapp") {
     rename("index.html", "../templates/index.html")
 }
 
+tasks.register<NpmTask>("generateApi") {
+    dependsOn(tasks.named("generateOpenApiDocs"))
+    npmCommand.set(listOf("run", "generate-api"))
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
