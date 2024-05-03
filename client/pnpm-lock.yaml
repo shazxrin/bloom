@@ -20,6 +20,9 @@ dependencies:
   '@mantine/notifications':
     specifier: ^7.9.0
     version: 7.9.0(@mantine/core@7.9.0)(@mantine/hooks@7.9.0)(react-dom@18.3.1)(react@18.3.1)
+  '@mantine/nprogress':
+    specifier: ^7.9.0
+    version: 7.9.0(@mantine/core@7.9.0)(@mantine/hooks@7.9.0)(react-dom@18.3.1)(react@18.3.1)
   '@remix-run/node':
     specifier: ^2.9.1
     version: 2.9.1(typescript@5.4.5)
@@ -29,6 +32,9 @@ dependencies:
   '@remix-run/serve':
     specifier: ^2.9.1
     version: 2.9.1(typescript@5.4.5)
+  '@tabler/icons-react':
+    specifier: ^3.3.0
+    version: 3.3.0(react@18.3.1)
   dayjs:
     specifier: ^1.11.11
     version: 1.11.11
@@ -1076,6 +1082,21 @@ packages:
       react-transition-group: 4.4.5(react-dom@18.3.1)(react@18.3.1)
     dev: false
 
+  /@mantine/nprogress@7.9.0(@mantine/core@7.9.0)(@mantine/hooks@7.9.0)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-/hL0ve7J39aQQ/CPwflk5hI3XQZqov/vhw8shy5qCxiy9RKZVZBOJ3CN/vyZ7XQqRtkX+esiIUkiVzbK/ZW+1g==}
+    peerDependencies:
+      '@mantine/core': 7.9.0
+      '@mantine/hooks': 7.9.0
+      react: ^18.2.0
+      react-dom: ^18.2.0
+    dependencies:
+      '@mantine/core': 7.9.0(@mantine/hooks@7.9.0)(@types/react@18.3.1)(react-dom@18.3.1)(react@18.3.1)
+      '@mantine/hooks': 7.9.0(react@18.3.1)
+      '@mantine/store': 7.9.0(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    dev: false
+
   /@mantine/store@7.9.0(react@18.3.1):
     resolution: {integrity: sha512-FzZkjdpy3PEh9sS6WgQ4cTVl9MvUbPRQ1nov8PV3JWWMlGOJHFuHeG6IYYGMc9f1oxu38/lryiKIYk3jcRgTSQ==}
     peerDependencies:
@@ -1526,6 +1547,19 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@tabler/icons-react@3.3.0(react@18.3.1):
+    resolution: {integrity: sha512-Qn1Po+0gErh1zCWlaOdoVoGqeonWfSuiboYgwZBs6PIJNsj7yr3bIa4BkHmgJgtlXLT9LvCzt/RvwlgjxLfjjg==}
+    peerDependencies:
+      react: '>= 16'
+    dependencies:
+      '@tabler/icons': 3.3.0
+      react: 18.3.1
+    dev: false
+
+  /@tabler/icons@3.3.0:
+    resolution: {integrity: sha512-PLVe9d7b59sKytbx00KgeGhQG3N176Ezv8YMmsnSz4s0ifDzMWlp/h2wEfQZ0ZNe8e377GY2OW6kovUe3Rnd0g==}
+    dev: false
 
   /@types/acorn@4.0.6:
     resolution: {integrity: sha512-veQTnWP+1D/xbxVrPC3zHnCZRjSrKfhbMUlEA43iMZLu7EsnTtkJklIuwrCPbOi8YkvDQAiW05VQQFvvz9oieQ==}
