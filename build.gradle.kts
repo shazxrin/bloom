@@ -1,4 +1,4 @@
-import com.github.gradle.node.npm.task.NpmTask
+import com.github.gradle.node.pnpm.task.PnpmTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -24,7 +24,7 @@ repositories {
 }
 
 node {
-    nodeProjectDir.set(file("${projectDir}/webapp"))
+    nodeProjectDir.set(file("${projectDir}/client"))
 }
 
 dependencies {
@@ -51,27 +51,28 @@ dependencies {
     testImplementation("org.springframework.amqp:spring-rabbit-test")
 }
 
-tasks.register<Delete>("cleanWebapp") {
+tasks.register<Delete>("cleanClient") {
     delete(file("${projectDir}/build/resources/main/public"))
     delete(file("${projectDir}/build/resources/main/templates"))
     delete(file("${projectDir}/webapp/dist"))
 }
 
-tasks.register<NpmTask>("buildWebapp") {
-    dependsOn(tasks.named("cleanWebapp"))
-    npmCommand.set(listOf("run", "build"))
+tasks.register<PnpmTask>("buildClient") {
+    dependsOn(tasks.named("cleanClient"))
+    pnpmCommand.set(listOf("run", "build"))
 }
 
-tasks.register<Copy>("bundleWebapp") {
-    dependsOn(tasks.named("buildWebapp"))
-    from(file("${projectDir}/webapp/dist"))
+tasks.register<Copy>("bundleClient") {
+    dependsOn(tasks.named("buildClient"))
+    from(file("${projectDir}/client/dist"))
     into(file("${projectDir}/build/resources/main/public"))
     rename("index.html", "../templates/index.html")
 }
 
-tasks.register<NpmTask>("generateApi") {
+tasks.register<PnpmTask>("generateClientApi") {
     dependsOn(tasks.named("generateOpenApiDocs"))
-    npmCommand.set(listOf("run", "generate-api"))
+
+    pnpmCommand.set(listOf("run", "generateClientApi"))
 }
 
 tasks.withType<KotlinCompile> {
@@ -82,6 +83,7 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.named("forkedSpringBootRun").configure {
+    dependsOn(tasks.named("pnpmSetup"))
     doNotTrackState("Workaround!")
 }
 
