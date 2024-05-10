@@ -6,9 +6,9 @@ plugins {
     kotlin("jvm") version "1.9.22"
     kotlin("plugin.spring") version "1.9.22"
     kotlin("plugin.jpa") version "1.9.22"
-    id("org.springframework.boot") version "3.2.2"
+    id("org.springframework.boot") version "3.2.5"
     id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
-    id("io.spring.dependency-management") version "1.1.4"
+    id("io.spring.dependency-management") version "1.1.5"
     id("com.github.node-gradle.node") version "7.0.2"
 }
 
@@ -34,17 +34,17 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("org.postgresql:postgresql:42.7.3")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
