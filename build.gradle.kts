@@ -28,8 +28,6 @@ node {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-
     implementation("org.springframework.boot:spring-boot-starter-amqp")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -54,7 +52,7 @@ dependencies {
 tasks.register<Delete>("cleanClient") {
     delete(file("${projectDir}/build/resources/main/public"))
     delete(file("${projectDir}/build/resources/main/templates"))
-    delete(file("${projectDir}/webapp/dist"))
+    delete(file("${projectDir}/client/dist"))
 }
 
 tasks.register<PnpmTask>("buildClient") {
@@ -64,9 +62,8 @@ tasks.register<PnpmTask>("buildClient") {
 
 tasks.register<Copy>("bundleClient") {
     dependsOn(tasks.named("buildClient"))
-    from(file("${projectDir}/client/dist"))
+    from(file("${projectDir}/client/build/client"))
     into(file("${projectDir}/build/resources/main/public"))
-    rename("index.html", "../templates/index.html")
 }
 
 tasks.register<PnpmTask>("generateClientApi") {
