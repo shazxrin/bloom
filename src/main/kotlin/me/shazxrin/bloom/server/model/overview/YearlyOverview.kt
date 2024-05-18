@@ -1,5 +1,5 @@
 package me.shazxrin.bloom.server.model.overview
 
-data class YearlyOverview(
-    val dates: Iterable<DateTotalDuration>
+class YearlyOverview(
+    val sessionDateTotalDurations: List<SessionDateTotalDuration>
 )

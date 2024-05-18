@@ -22,11 +22,11 @@ class DefaultOverviewService @Autowired constructor(
     private val overviewRepository: OverviewRepository
 ) : OverviewService {
     override fun getDailyOverview(date: LocalDate): DailyOverview {
-        val fromLocalDateTime = LocalDateTime.of(date, LocalTime.MIN)
-        val toLocalDateTime = LocalDateTime.of(date, LocalTime.MAX)
+        val fromDateTime = LocalDateTime.of(date, LocalTime.MIN)
+        val toDateTime = LocalDateTime.of(date, LocalTime.MAX)
 
         return DailyOverview(
-            categories = overviewRepository.findTasksGroupByCategoryId(fromLocalDateTime, toLocalDateTime)
+            sessionTagTotalDurations = overviewRepository.findSessionsGroupByTag(fromDateTime, toDateTime)
         )
     }
 
@@ -34,33 +34,33 @@ class DefaultOverviewService @Autowired constructor(
         val firstDayOfWeekDiff = date.dayOfWeek.value - DayOfWeek.MONDAY.value
         val lastDayOfWeekDiff = DayOfWeek.SUNDAY.value - date.dayOfWeek.value
 
-        val fromLocalDateTime = LocalDateTime.of(
+        val fromDateTime = LocalDateTime.of(
             date.minusDays(firstDayOfWeekDiff.toLong()),
             LocalTime.MIN
         )
-        val toLocalDateTime = LocalDateTime.of(
+        val toDateTime = LocalDateTime.of(
             date.plusDays(lastDayOfWeekDiff.toLong()),
             LocalTime.MAX
         )
 
         return WeeklyOverview(
-            categories = overviewRepository.findTasksGroupByCategoryId(fromLocalDateTime, toLocalDateTime),
-            dates = overviewRepository.findTasksGroupByDate(fromLocalDateTime, toLocalDateTime)
+            sessionTagTotalDurations = overviewRepository.findSessionsGroupByTag(fromDateTime, toDateTime),
+            sessionDateTotalDurations = overviewRepository.findSessionsGroupByDate(fromDateTime, toDateTime)
         )
     }
 
     override fun getYearlyOverview(): YearlyOverview {
-        val fromLocalDateTime = LocalDateTime.of(
+        val fromDateTime = LocalDateTime.of(
             LocalDate.now().withMonth(1).withDayOfYear(1),
             LocalTime.MIN
         )
-        val toLocalDateTime = LocalDateTime.of(
+        val toDateTime = LocalDateTime.of(
             LocalDate.now().withMonth(12).withDayOfMonth(31),
             LocalTime.MAX
         )
 
         return YearlyOverview(
-            dates = overviewRepository.findTasksGroupByDate(fromLocalDateTime, toLocalDateTime)
+            sessionDateTotalDurations = overviewRepository.findSessionsGroupByDate(fromDateTime, toDateTime)
         )
     }
 }

@@ -1,6 +1,6 @@
 package me.shazxrin.bloom.server.model.overview
 
-data class DateTotalDuration(
+class SessionDateTotalDuration(
     val dayOfMonth: Int,
     val month: Int,
     val year: Int,

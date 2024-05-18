@@ -1,31 +1,43 @@
 package me.shazxrin.bloom.server.repository
 
-import me.shazxrin.bloom.server.model.overview.CategoryTotalDuration
-import me.shazxrin.bloom.server.model.overview.DateTotalDuration
-import me.shazxrin.bloom.server.model.task.Task
+import me.shazxrin.bloom.server.model.overview.SessionTagTotalDuration
+import me.shazxrin.bloom.server.model.overview.SessionDateTotalDuration
+import me.shazxrin.bloom.server.model.session.Session
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
 import java.time.LocalDateTime
 
-interface OverviewRepository : CrudRepository<Task, String> {
-    @Query("SELECT new me.shazxrin.bloom.server.model.overview.CategoryTotalDuration(c, sum(t.duration)) " +
-            "FROM Task AS t " +
-            "INNER JOIN Category AS c ON t.categoryId = c.id " +
-            "WHERE t.startTime BETWEEN :from AND :to " +
-            "GROUP BY c.id")
-    fun findTasksGroupByCategoryId(
-        @Param("from") fromLocalDateTime: LocalDateTime,
-        @Param("to") toLocalDateTime: LocalDateTime
-    ): Iterable<CategoryTotalDuration>
+interface OverviewRepository : CrudRepository<Session, String> {
+    @Query(
+        """
+        SELECT new me.shazxrin.bloom.server.model.overview.SessionTagTotalDuration(t, sum(s.totalDuration))
+        FROM Session AS s
+        INNER JOIN SessionTag AS t ON t.id = s.tag.id
+        WHERE s.startDateTime BETWEEN :from AND :to
+        GROUP BY t.id
+    """
+    )
+    fun findSessionsGroupByTag(
+        @Param("from") fromDateTime: LocalDateTime,
+        @Param("to") toDateTime: LocalDateTime
+    ): List<SessionTagTotalDuration>
 
     @Query(
-        "SELECT new me.shazxrin.bloom.server.model.overview.DateTotalDuration(EXTRACT(DAY FROM t.startTime), EXTRACT(MONTH FROM t.startTime), EXTRACT(YEAR FROM t.startTime), sum(t.duration)) " +
-            "FROM Task AS t " +
-            "WHERE t.startTime BETWEEN :from AND :to " +
-            "GROUP BY EXTRACT(YEAR FROM t.startTime), EXTRACT(MONTH FROM t.startTime), EXTRACT(DAY FROM t.startTime)")
-    fun findTasksGroupByDate(
-        @Param("from") fromLocalDateTime: LocalDateTime,
-        @Param("to") toLocalDateTime: LocalDateTime
-    ): Iterable<DateTotalDuration>
+        """
+        SELECT new me.shazxrin.bloom.server.model.overview.SessionDateTotalDuration(
+            EXTRACT(DAY FROM s.startDateTime),
+            EXTRACT(MONTH FROM s.startDateTime),
+            EXTRACT(YEAR FROM s.startDateTime),
+            sum(s.totalDuration)
+        )
+        FROM Session AS s
+        WHERE s.startDateTime BETWEEN :from AND :to
+        GROUP BY EXTRACT(YEAR FROM s.startDateTime), EXTRACT(MONTH FROM s.startDateTime), EXTRACT(DAY FROM s.startDateTime)
+    """
+    )
+    fun findSessionsGroupByDate(
+        @Param("from") fromDateTime: LocalDateTime,
+        @Param("to") toDateTime: LocalDateTime
+    ): List<SessionDateTotalDuration>
 }
