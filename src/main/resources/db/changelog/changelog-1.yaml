@@ -1,0 +1,116 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1716036674396-1
+      author: Shazrin
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_session_notification
+                  name: id
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: session_id
+                  type: VARCHAR(255)
+            tableName: session_notification
+  - changeSet:
+      id: 1716036674396-2
+      author: Shazrin
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_session_tags
+                  name: id
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: color
+                  type: VARCHAR(255)
+            tableName: session_tags
+  - changeSet:
+      id: 1716036674396-3
+      author: Shazrin
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_sessions
+                  name: id
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: tag_id
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: total_duration
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: remaining_duration
+                  type: BIGINT
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+              - column:
+                  name: start_date_time
+                  type: DATETIME
+              - column:
+                  name: end_date_time
+                  type: DATETIME
+            tableName: sessions
+  - changeSet:
+      id: 1716036674396-4
+      author: Shazrin
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: session_id
+            constraintName: uc_session_notification_session
+            tableName: session_notification
+  - changeSet:
+      id: 1716036674396-5
+      author: Shazrin
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: tag_id
+            baseTableName: sessions
+            constraintName: FK_SESSIONS_ON_TAG
+            referencedColumnNames: id
+            referencedTableName: session_tags
+  - changeSet:
+      id: 1716036674396-6
+      author: Shazrin
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: session_id
+            baseTableName: session_notification
+            constraintName: FK_SESSION_NOTIFICATION_ON_SESSION
+            referencedColumnNames: id
+            referencedTableName: sessions
+

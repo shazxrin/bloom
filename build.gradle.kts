@@ -32,6 +32,7 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.liquibase:liquibase-core")
     runtimeOnly("org.postgresql:postgresql:42.7.3")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
