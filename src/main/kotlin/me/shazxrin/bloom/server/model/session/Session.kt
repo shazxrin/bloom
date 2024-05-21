@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 class Session(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    var id: String?,
+    var id: String? = null,
 
     var name: String,
 

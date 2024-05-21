@@ -4,11 +4,11 @@ import me.shazxrin.bloom.server.model.overview.SessionTagTotalDuration
 import me.shazxrin.bloom.server.model.overview.SessionDateTotalDuration
 import me.shazxrin.bloom.server.model.session.Session
 import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.Repository
 import org.springframework.data.repository.query.Param
 import java.time.LocalDateTime
 
-interface OverviewRepository : CrudRepository<Session, String> {
+interface OverviewRepository : Repository<Session, String> {
     @Query(
         """
         SELECT new me.shazxrin.bloom.server.model.overview.SessionTagTotalDuration(t, sum(s.totalDuration))
@@ -18,7 +18,7 @@ interface OverviewRepository : CrudRepository<Session, String> {
         GROUP BY t.id
     """
     )
-    fun findSessionsGroupByTag(
+    fun findSessionsTotalDurationGroupByTag(
         @Param("from") fromDateTime: LocalDateTime,
         @Param("to") toDateTime: LocalDateTime
     ): List<SessionTagTotalDuration>
@@ -36,7 +36,7 @@ interface OverviewRepository : CrudRepository<Session, String> {
         GROUP BY EXTRACT(YEAR FROM s.startDateTime), EXTRACT(MONTH FROM s.startDateTime), EXTRACT(DAY FROM s.startDateTime)
     """
     )
-    fun findSessionsGroupByDate(
+    fun findSessionsTotalDurationGroupByDate(
         @Param("from") fromDateTime: LocalDateTime,
         @Param("to") toDateTime: LocalDateTime
     ): List<SessionDateTotalDuration>

@@ -26,7 +26,7 @@ class DefaultOverviewService @Autowired constructor(
         val toDateTime = LocalDateTime.of(date, LocalTime.MAX)
 
         return DailyOverview(
-            sessionTagTotalDurations = overviewRepository.findSessionsGroupByTag(fromDateTime, toDateTime)
+            sessionTagTotalDurations = overviewRepository.findSessionsTotalDurationGroupByTag(fromDateTime, toDateTime)
         )
     }
 
@@ -44,8 +44,8 @@ class DefaultOverviewService @Autowired constructor(
         )
 
         return WeeklyOverview(
-            sessionTagTotalDurations = overviewRepository.findSessionsGroupByTag(fromDateTime, toDateTime),
-            sessionDateTotalDurations = overviewRepository.findSessionsGroupByDate(fromDateTime, toDateTime)
+            sessionTagTotalDurations = overviewRepository.findSessionsTotalDurationGroupByTag(fromDateTime, toDateTime),
+            sessionDateTotalDurations = overviewRepository.findSessionsTotalDurationGroupByDate(fromDateTime, toDateTime)
         )
     }
 
@@ -60,7 +60,7 @@ class DefaultOverviewService @Autowired constructor(
         )
 
         return YearlyOverview(
-            sessionDateTotalDurations = overviewRepository.findSessionsGroupByDate(fromDateTime, toDateTime)
+            sessionDateTotalDurations = overviewRepository.findSessionsTotalDurationGroupByDate(fromDateTime, toDateTime)
         )
     }
 }

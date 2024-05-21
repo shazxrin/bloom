@@ -10,7 +10,7 @@ import org.springframework.lang.NonNull
 class SessionNotification(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    var id: String?,
+    var id: String? = null,
 
     @OneToOne(optional = false)
     @JoinColumn(name = "session_id", nullable = false)
