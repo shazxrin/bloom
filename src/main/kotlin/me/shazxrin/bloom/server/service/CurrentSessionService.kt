@@ -29,7 +29,6 @@ class DefaultCurrentSessionService @Autowired constructor(
     private val sessionRepository: SessionRepository,
     private val sessionTagRepository: SessionTagRepository
 ) : CurrentSessionService {
-
     override fun createCurrentSession(name: String, tagId: String, totalDuration: Long) {
         if (sessionRepository.existsByStatusIn(listOf(SessionStatus.RUNNING, SessionStatus.PAUSED))) {
             throw StateException("Current session already exists!")
@@ -43,8 +42,8 @@ class DefaultCurrentSessionService @Autowired constructor(
             name = name,
             tag = tag,
             totalDuration = totalDuration,
-            status = SessionStatus.RUNNING,
             remainingDuration = totalDuration,
+            status = SessionStatus.RUNNING,
             startDateTime = LocalDateTime.now(),
             endDateTime = null
         )
