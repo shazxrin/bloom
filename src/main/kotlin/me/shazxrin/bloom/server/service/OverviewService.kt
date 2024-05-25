@@ -18,7 +18,7 @@ interface OverviewService {
 }
 
 @Service
-class DefaultOverviewService @Autowired constructor(
+class MainOverviewService @Autowired constructor(
     private val overviewRepository: OverviewRepository
 ) : OverviewService {
     override fun getDailyOverview(date: LocalDate): DailyOverview {

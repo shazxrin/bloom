@@ -32,7 +32,7 @@ class SessionController @Autowired constructor(private val sessionService: Sessi
     @PostMapping
     fun postAddTask(@Valid @RequestBody addSessionDto: AddSessionDto) {
         with(addSessionDto) {
-            sessionService.addSession(name, tagId, totalDuration, startTime, endTime)
+            sessionService.createSession(name, tagId, totalDuration, startTime, endTime)
         }
     }
 

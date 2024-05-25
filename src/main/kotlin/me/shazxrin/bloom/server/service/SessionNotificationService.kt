@@ -15,7 +15,7 @@ interface SessionNotificationService {
 }
 
 @Service
-class DefaultSessionNotificationService @Autowired constructor(
+class MainSessionNotificationService @Autowired constructor(
     private val sessionNotificationRepository: SessionNotificationRepository,
     private val rabbitTemplate: RabbitTemplate
 ) : SessionNotificationService {

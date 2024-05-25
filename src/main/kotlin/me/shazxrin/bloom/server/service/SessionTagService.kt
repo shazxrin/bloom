@@ -18,13 +18,13 @@ interface SessionTagService {
 }
 
 @Service
-class DefaultSessionTagService @Autowired constructor(private val sessionTagRepository: SessionTagRepository) :
-    SessionTagService {
+class MainSessionTagService @Autowired constructor(
+    private val sessionTagRepository: SessionTagRepository
+) : SessionTagService {
     override fun createTag(name: String, color: String) {
         val newTag = SessionTag(
             name = name,
             color = color,
-            sessions = mutableListOf()
         )
 
         sessionTagRepository.save(newTag)

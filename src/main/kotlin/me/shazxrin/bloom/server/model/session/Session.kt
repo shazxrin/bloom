@@ -17,14 +17,18 @@ class Session(
     @JoinColumn(name = "tag_id", nullable = false)
     var tag: SessionTag,
 
+    @Enumerated(EnumType.STRING)
+    var status: SessionStatus,
+
     var totalDuration: Long,
 
     var remainingDuration: Long,
 
-    @Enumerated(EnumType.STRING)
-    var status: SessionStatus,
+    var usedDuration: Long = 0,
 
     var startDateTime: LocalDateTime,
 
-    var endDateTime: LocalDateTime?,
+    var resumeDateTime: LocalDateTime = startDateTime,
+
+    var endDateTime: LocalDateTime? = null,
 ) : BaseEntity()

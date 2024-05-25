@@ -17,7 +17,7 @@ interface SessionService {
 
     fun getAllSessionsByCategoryId(tagId: String, page: Int): PagedList<Session>
 
-    fun addSession(name: String, tagId: String, totalDuration: Long, startTime: LocalDateTime, endTime: LocalDateTime)
+    fun createSession(name: String, tagId: String, totalDuration: Long, startTime: LocalDateTime, endTime: LocalDateTime)
 
     fun deleteSession(id: String)
 
@@ -25,11 +25,10 @@ interface SessionService {
 }
 
 @Service
-class DefaultSessionService @Autowired constructor(
+class MainSessionService @Autowired constructor(
     private val sessionRepository: SessionRepository,
     private val sessionTagRepository: SessionTagRepository
 ) : SessionService {
-
     override fun getAllSessions(page: Int): PagedList<Session> {
         val pageable = PageRequest.of(page, 10)
 
@@ -56,7 +55,7 @@ class DefaultSessionService @Autowired constructor(
         )
     }
 
-    override fun addSession(
+    override fun createSession(
         name: String,
         tagId: String,
         totalDuration: Long,
@@ -67,12 +66,12 @@ class DefaultSessionService @Autowired constructor(
             throw NotFoundException("Tag does not exists")
 
         val newSession = Session(
-            id = null,
             name = name,
             tag = tag,
+            status = SessionStatus.COMPLETED,
             totalDuration = totalDuration,
             remainingDuration = 0,
-            status = SessionStatus.COMPLETED,
+            usedDuration = totalDuration,
             startDateTime = startTime,
             endDateTime = endTime
         )
@@ -97,6 +96,7 @@ class DefaultSessionService @Autowired constructor(
 
         updateSession.name = name ?: updateSession.name
         updateSession.totalDuration = totalDuration ?: updateSession.totalDuration
+        updateSession.usedDuration = totalDuration ?: updateSession.totalDuration
         updateSession.startDateTime = startTime ?: updateSession.startDateTime
         updateSession.endDateTime = endTime ?: updateSession.endDateTime
 

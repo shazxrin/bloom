@@ -25,7 +25,7 @@ interface CurrentSessionService {
 }
 
 @Service
-class DefaultCurrentSessionService @Autowired constructor(
+class MainCurrentSessionService @Autowired constructor(
     private val sessionRepository: SessionRepository,
     private val sessionTagRepository: SessionTagRepository
 ) : CurrentSessionService {
@@ -55,7 +55,9 @@ class DefaultCurrentSessionService @Autowired constructor(
         val currentSession = sessionRepository.findByStatus(SessionStatus.RUNNING)
                 ?: throw StateException("Current session does not exist or is already paused")
 
-        currentSession.remainingDuration -= Duration.between(currentSession.modifiedDateTime, LocalDateTime.now()).toSeconds()
+        val deltaDuration = Duration.between(currentSession.resumeDateTime, LocalDateTime.now()).toSeconds()
+        currentSession.remainingDuration -= deltaDuration
+        currentSession.usedDuration += deltaDuration
         currentSession.status = SessionStatus.PAUSED
 
         sessionRepository.save(currentSession)
@@ -65,6 +67,7 @@ class DefaultCurrentSessionService @Autowired constructor(
         val currentSession = sessionRepository.findByStatus(SessionStatus.PAUSED)
             ?: throw StateException("Current session does not exist or is already running")
 
+        currentSession.resumeDateTime = LocalDateTime.now()
         currentSession.status = SessionStatus.RUNNING
 
         sessionRepository.save(currentSession)
@@ -75,6 +78,12 @@ class DefaultCurrentSessionService @Autowired constructor(
             ?: throw NotFoundException("Current task does not exist")
 
         currentSession.remainingDuration = 0
+        // Update used duration if running only.
+        // Paused session has updated used duration already.
+        if (currentSession.status == SessionStatus.RUNNING) {
+            val deltaDuration = Duration.between(currentSession.resumeDateTime, LocalDateTime.now()).toSeconds()
+            currentSession.usedDuration += deltaDuration
+        }
         currentSession.status = SessionStatus.COMPLETED
 
         sessionRepository.save(currentSession)
