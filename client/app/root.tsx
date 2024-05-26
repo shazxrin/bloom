@@ -10,7 +10,7 @@ import {
   AppShell,
   Center,
   ColorSchemeScript,
-  Container,
+  Container, Divider,
   Image,
   Loader,
   MantineProvider,
@@ -69,15 +69,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             padding="md"
           >
             <AppShell.Navbar p="md">
-              <AppShell.Section my={16}>
+              <AppShell.Section mx={8} my={16}>
                 <Image
                   src="/bloom_full.svg"
                   alt="Bloom Logo"
-                  width="auto"
-                  height={48}
-                  fit="contain"
+                  w={"auto"}
+                  h={32}
                 />
               </AppShell.Section>
+
+              <Divider />
 
               <AppShell.Section grow my="md" component={ScrollArea}>
                 <Stack gap={4}>
