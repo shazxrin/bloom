@@ -5,3 +5,10 @@
 .label {
   margin-right: auto !important;
 }
+
+.wrapper {
+  border-left: solid color-mix(in srgb, var(--mantine-color-pink-3) 10%, transparent);
+  padding-left: 4px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}

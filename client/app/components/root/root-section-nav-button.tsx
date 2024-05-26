@@ -27,8 +27,12 @@ const RootSectionNavButton = ({ label, icon, children }: RootSectionNavButtonPro
       </Button>
 
       <Collapse in={ opened } ml={ "sm" } mt={ 4 }>
-        <Stack gap={ 4 }>
-          { children }
+        <Stack gap={ 0 }>
+          { children.map((child, index) => (
+            <Box className={classes.wrapper} key={index}>
+              { child }
+            </Box>
+          )) }
         </Stack>
       </Collapse>
     </Box>
