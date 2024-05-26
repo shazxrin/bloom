@@ -5,49 +5,49 @@
 
 
 export interface paths {
-  "/api/tasks": {
+  "/api/session": {
     post: operations["postAddTask"];
   };
-  "/api/tasks/current/resume": {
+  "/api/session/tag": {
+    post: operations["postCreateTag"];
+  };
+  "/api/session/current/resume": {
     post: operations["postResumeCurrentTask"];
   };
-  "/api/tasks/current/pause": {
+  "/api/session/current/pause": {
     post: operations["postPauseCurrentTask"];
   };
-  "/api/tasks/current/end": {
+  "/api/session/current/end": {
     post: operations["postEndCurrentTask"];
   };
-  "/api/tasks/current/create": {
+  "/api/session/current/create": {
     post: operations["postCreateCurrentTask"];
   };
-  "/api/categories": {
-    post: operations["postCreateCategory"];
-  };
-  "/api/tasks/{id}": {
+  "/api/session/{id}": {
     delete: operations["deleteTask"];
     patch: operations["patchUpdateTask"];
   };
-  "/api/categories/{id}": {
-    delete: operations["deleteCategory"];
-    patch: operations["patchUpdateCategory"];
+  "/api/session/tag/{id}": {
+    delete: operations["deleteTag"];
+    patch: operations["patchUpdateTag"];
   };
-  "/api/tasks/current": {
+  "/api/session/tag/all": {
+    get: operations["getAllTags"];
+  };
+  "/api/session/current": {
     get: operations["getCurrentTask"];
   };
-  "/api/tasks/all": {
+  "/api/session/all": {
     get: operations["getAllTasks"];
   };
-  "/api/overviews/yearly": {
+  "/api/overview/yearly": {
     get: operations["getYearlyOverview"];
   };
-  "/api/overviews/weekly": {
+  "/api/overview/weekly": {
     get: operations["getWeeklyOverview"];
   };
-  "/api/overviews/daily": {
+  "/api/overview/daily": {
     get: operations["getDailyOverview"];
-  };
-  "/api/categories/all": {
-    get: operations["getAllCategories"];
   };
 }
 
@@ -55,83 +55,76 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
-    ProblemDetail: {
-      /** Format: uri */
-      type?: string;
-      title?: string;
-      /** Format: int32 */
-      status?: number;
-      detail?: string;
-      /** Format: uri */
-      instance?: string;
-      properties?: {
-        [key: string]: Record<string, never>;
-      };
-    };
-    AddTaskDto: {
+    AddSessionDto: {
       name: string;
-      categoryId: string;
+      tagId: string;
       /** Format: int64 */
-      duration: number;
+      totalDuration: number;
       /** Format: date-time */
       startTime: string;
       /** Format: date-time */
       endTime: string;
     };
-    CreateCurrentTaskDto: {
-      name: string;
-      categoryId: string;
-      /** Format: int64 */
-      duration: number;
-    };
-    CreateCategoryDto: {
+    CreateTagDto: {
       name: string;
       color: string;
     };
-    UpdateTaskDto: {
+    CreateCurrentSessionDto: {
       name: string;
-      categoryId: string;
+      tagId: string;
       /** Format: int64 */
-      duration: number;
-      /** Format: date-time */
-      startTime: string;
-      /** Format: date-time */
-      endTime: string;
+      totalDuration: number;
     };
-    UpdateCategoryDto: {
+    UpdateSessionDto: {
+      name: string;
+      tagId: string;
+      /** Format: int64 */
+      totalDuration: number;
+      /** Format: date-time */
+      startDateTime: string;
+      /** Format: date-time */
+      endDateTime: string;
+    };
+    UpdateTagDto: {
       name: string;
       color: string;
     };
-    CurrentTaskDto: {
-      name: string;
-      categoryId: string;
-      /** Format: int64 */
-      duration: number;
-      /** Format: int64 */
-      remainingDuration: number;
-      isPaused: boolean;
-      /** Format: date-time */
-      startTime: string;
-      /** Format: date-time */
-      lastStartTime: string;
-    };
-    ListTaskDto: {
+    ListTagDto: {
       id: string;
       name: string;
-      categoryId: string;
-      /** Format: int64 */
-      duration: number;
-      /** Format: date-time */
-      startTime: string;
-      /** Format: date-time */
-      endTime?: string;
+      color: string;
     };
-    PagedListDtoListTaskDto: {
+    CurrentSessionDto: {
+      name: string;
+      tagId: string;
+      /** Format: int64 */
+      totalDuration: number;
+      /** Format: int64 */
+      remainingDuration: number;
+      /** @enum {string} */
+      status: "RUNNING" | "PAUSED" | "COMPLETED";
+      /** Format: date-time */
+      startDateTime: string;
+      /** Format: date-time */
+      modifiedDateTime: string;
+    };
+    ListSessionDto: {
+      id: string;
+      name: string;
+      tagId: string;
+      /** Format: int64 */
+      totalDuration: number;
+      /** Format: date-time */
+      startDateTime: string;
+      /** Format: date-time */
+      endDateTime?: string;
+    };
+    PagedListDtoListSessionDto: {
       /** Format: int32 */
       page: number;
       /** Format: int32 */
       totalPages: number;
-      items: components["schemas"]["ListTaskDto"][];
+      items: components["schemas"]["ListSessionDto"][];
     };
     DateTotalDurationDto: {
       /** Format: date */
@@ -154,11 +147,6 @@ export interface components {
     DailyOverviewDto: {
       categories: components["schemas"]["CategoryTotalDurationDto"][];
     };
-    ListCategoryDto: {
-      id: string;
-      name: string;
-      color: string;
-    };
   };
   responses: never;
   parameters: never;
@@ -176,7 +164,7 @@ export interface operations {
   postAddTask: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["AddTaskDto"];
+        "application/json": components["schemas"]["AddSessionDto"];
       };
     };
     responses: {
@@ -184,17 +172,18 @@ export interface operations {
       201: {
         content: never;
       };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
+    };
+  };
+  postCreateTag: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTagDto"];
       };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
+    };
+    responses: {
+      /** @description Created */
+      201: {
+        content: never;
       };
     };
   };
@@ -204,18 +193,6 @@ export interface operations {
       200: {
         content: never;
       };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
     };
   };
   postPauseCurrentTask: {
@@ -223,18 +200,6 @@ export interface operations {
       /** @description OK */
       200: {
         content: never;
-      };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
       };
     };
   };
@@ -244,67 +209,18 @@ export interface operations {
       200: {
         content: never;
       };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
     };
   };
   postCreateCurrentTask: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["CreateCurrentTaskDto"];
+        "application/json": components["schemas"]["CreateCurrentSessionDto"];
       };
     };
     responses: {
       /** @description Created */
       201: {
         content: never;
-      };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-    };
-  };
-  postCreateCategory: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateCategoryDto"];
-      };
-    };
-    responses: {
-      /** @description Created */
-      201: {
-        content: never;
-      };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
       };
     };
   };
@@ -319,18 +235,6 @@ export interface operations {
       200: {
         content: never;
       };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
     };
   };
   patchUpdateTask: {
@@ -341,7 +245,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UpdateTaskDto"];
+        "application/json": components["schemas"]["UpdateSessionDto"];
       };
     };
     responses: {
@@ -349,21 +253,9 @@ export interface operations {
       200: {
         content: never;
       };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
     };
   };
-  deleteCategory: {
+  deleteTag: {
     parameters: {
       path: {
         id: string;
@@ -374,21 +266,9 @@ export interface operations {
       200: {
         content: never;
       };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
     };
   };
-  patchUpdateCategory: {
+  patchUpdateTag: {
     parameters: {
       path: {
         id: string;
@@ -396,7 +276,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UpdateCategoryDto"];
+        "application/json": components["schemas"]["UpdateTagDto"];
       };
     };
     responses: {
@@ -404,16 +284,14 @@ export interface operations {
       200: {
         content: never;
       };
-      /** @description Bad Request */
-      400: {
+    };
+  };
+  getAllTags: {
+    responses: {
+      /** @description OK */
+      200: {
         content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
+          "*/*": components["schemas"]["ListTagDto"][];
         };
       };
     };
@@ -423,19 +301,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["CurrentTaskDto"];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
+          "*/*": components["schemas"]["CurrentSessionDto"];
         };
       };
     };
@@ -444,26 +310,14 @@ export interface operations {
     parameters: {
       query: {
         page: number;
-        categoryId?: string;
+        tagId?: string;
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["PagedListDtoListTaskDto"];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
+          "*/*": components["schemas"]["PagedListDtoListSessionDto"];
         };
       };
     };
@@ -474,18 +328,6 @@ export interface operations {
       200: {
         content: {
           "*/*": components["schemas"]["YearlyOverviewDto"];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
         };
       };
     };
@@ -503,18 +345,6 @@ export interface operations {
           "*/*": components["schemas"]["WeeklyOverviewDto"];
         };
       };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
     };
   };
   getDailyOverview: {
@@ -528,40 +358,6 @@ export interface operations {
       200: {
         content: {
           "*/*": components["schemas"]["DailyOverviewDto"];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-    };
-  };
-  getAllCategories: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["ListCategoryDto"][];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
-        };
-      };
-      /** @description Not Found */
-      404: {
-        content: {
-          "*/*": components["schemas"]["ProblemDetail"];
         };
       };
     };
