@@ -20,11 +20,12 @@ import {
 } from "@mantine/core"
 import { NavigationProgress, nprogress } from "@mantine/nprogress"
 import React, { useEffect } from "react"
-import { IconDashboard, IconHistory, IconHourglassEmpty, IconTags } from "@tabler/icons-react"
+import { IconDashboard, IconHistory, IconHourglassEmpty, IconTags, IconTimeline } from "@tabler/icons-react"
 import RootNavButton from "~/components/root/root-nav-button"
 import "@mantine/core/styles.css"
 import "@mantine/nprogress/styles.css"
 import "~/styles/fonts.css"
+import RootSectionNavButton from "~/components/root/root-section-nav-button"
 
 const meta: MetaFunction = () => {
   return [
@@ -81,9 +82,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               <AppShell.Section grow my="md" component={ScrollArea}>
                 <Stack gap={4}>
                   <RootNavButton to="/" icon={<IconDashboard size={20} />} label="Dashboard" />
-                  <RootNavButton to="/timer" icon={<IconHourglassEmpty size={20} />} label="Timer" />
-                  <RootNavButton to="/tags" icon={<IconTags size={20} />} label="Tags" />
-                  <RootNavButton to="/sessions" icon={<IconHistory size={20} />} label="Sessions" />
+                  <RootSectionNavButton label={"Session"} icon={<IconTimeline size={20} />}>
+                    <RootNavButton to="/timer" icon={<IconHourglassEmpty size={20} />} label="Timer" />
+                    <RootNavButton to="/tags" icon={<IconTags size={20} />} label="Tags" />
+                    <RootNavButton to="/history" icon={<IconHistory size={20} />} label="History" />
+                  </RootSectionNavButton>
                 </Stack>
               </AppShell.Section>
             </AppShell.Navbar>
