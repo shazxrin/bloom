@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 1716036674396-1
+      id: 1716720927535-1
       author: Shazrin
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -20,7 +20,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: session_notification
   - changeSet:
-      id: 1716036674396-2
+      id: 1716720927535-2
       author: Shazrin
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -41,7 +41,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
             tableName: session_tags
   - changeSet:
-      id: 1716036674396-3
+      id: 1716720927535-3
       author: Shazrin
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -63,6 +63,9 @@ databaseChangeLog:
                   name: tag_id
                   type: VARCHAR(255)
               - column:
+                  name: status
+                  type: VARCHAR(255)
+              - column:
                   constraints:
                     nullable: false
                   name: total_duration
@@ -73,17 +76,22 @@ databaseChangeLog:
                   name: remaining_duration
                   type: BIGINT
               - column:
-                  name: status
-                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                  name: used_duration
+                  type: BIGINT
               - column:
                   name: start_date_time
+                  type: DATETIME
+              - column:
+                  name: resume_date_time
                   type: DATETIME
               - column:
                   name: end_date_time
                   type: DATETIME
             tableName: sessions
   - changeSet:
-      id: 1716036674396-4
+      id: 1716720927535-4
       author: Shazrin
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -92,7 +100,7 @@ databaseChangeLog:
             constraintName: uc_session_notification_session
             tableName: session_notification
   - changeSet:
-      id: 1716036674396-5
+      id: 1716720927535-5
       author: Shazrin
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -103,7 +111,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: session_tags
   - changeSet:
-      id: 1716036674396-6
+      id: 1716720927535-6
       author: Shazrin
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
