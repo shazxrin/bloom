@@ -68,7 +68,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             navbar={{ width: 300, breakpoint: "sm" }}
             padding="md"
           >
-            <AppShell.Navbar p="md">
+            <AppShell.Navbar p="md" bg={"dark"}>
               <AppShell.Section mx={8} my={16}>
                 <Image
                   src="/bloom_full.svg"
