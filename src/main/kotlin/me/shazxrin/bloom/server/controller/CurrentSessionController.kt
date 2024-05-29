@@ -3,6 +3,7 @@ package me.shazxrin.bloom.server.controller
 import jakarta.validation.Valid
 import me.shazxrin.bloom.server.dto.session.current.CreateCurrentSessionDto
 import me.shazxrin.bloom.server.dto.session.current.CurrentSessionDto
+import me.shazxrin.bloom.server.dto.session.current.CurrentSessionTagDto
 import me.shazxrin.bloom.server.service.CurrentSessionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -51,12 +52,15 @@ class CurrentSessionController @Autowired constructor(private val sessionService
             val currentSessionDto = with(currentTask) {
                 CurrentSessionDto(
                     name,
-                    tag.id ?: "",
+                    CurrentSessionTagDto(
+                        tag.name,
+                        tag.color
+                    ),
                     totalDuration,
                     remainingDuration,
                     status,
                     startDateTime,
-                    modifiedDateTime
+                    resumeDateTime
                 )
             }
 
