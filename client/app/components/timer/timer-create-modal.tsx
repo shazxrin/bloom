@@ -5,7 +5,7 @@ import { clientAction } from "~/routes/timer"
 
 type TimerCreateModalProps = {
     tags: {
-        id: number
+        id: string
         name: string
         color: string
     }[]

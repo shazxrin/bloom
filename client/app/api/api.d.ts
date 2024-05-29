@@ -5,154 +5,158 @@
 
 
 export interface paths {
-    "/api/session": {
-        post: operations["postAddTask"];
-    };
-    "/api/session/tag": {
-        post: operations["postCreateTag"];
-    };
-    "/api/session/current/resume": {
-        post: operations["postResumeCurrentTask"];
-    };
-    "/api/session/current/pause": {
-        post: operations["postPauseCurrentTask"];
-    };
-    "/api/session/current/end": {
-        post: operations["postEndCurrentTask"];
-    };
-    "/api/session/current/create": {
-        post: operations["postCreateCurrentTask"];
-    };
-    "/api/session/{id}": {
-        delete: operations["deleteTask"];
-        patch: operations["patchUpdateTask"];
-    };
-    "/api/session/tag/{id}": {
-        delete: operations["deleteTag"];
-        patch: operations["patchUpdateTag"];
-    };
-    "/api/session/tag/all": {
-        get: operations["getAllTags"];
-    };
-    "/api/session/current": {
-        get: operations["getCurrentTask"];
-    };
-    "/api/session/all": {
-        get: operations["getAllTasks"];
-    };
-    "/api/overview/yearly": {
-        get: operations["getYearlyOverview"];
-    };
-    "/api/overview/weekly": {
-        get: operations["getWeeklyOverview"];
-    };
-    "/api/overview/daily": {
-        get: operations["getDailyOverview"];
-    };
+  "/api/session": {
+    post: operations["postAddTask"];
+  };
+  "/api/session/tag": {
+    post: operations["postCreateTag"];
+  };
+  "/api/session/current/resume": {
+    post: operations["postResumeCurrentTask"];
+  };
+  "/api/session/current/pause": {
+    post: operations["postPauseCurrentTask"];
+  };
+  "/api/session/current/end": {
+    post: operations["postEndCurrentTask"];
+  };
+  "/api/session/current/create": {
+    post: operations["postCreateCurrentTask"];
+  };
+  "/api/session/{id}": {
+    delete: operations["deleteTask"];
+    patch: operations["patchUpdateTask"];
+  };
+  "/api/session/tag/{id}": {
+    delete: operations["deleteTag"];
+    patch: operations["patchUpdateTag"];
+  };
+  "/api/session/tag/all": {
+    get: operations["getAllTags"];
+  };
+  "/api/session/current": {
+    get: operations["getCurrentTask"];
+  };
+  "/api/session/all": {
+    get: operations["getAllTasks"];
+  };
+  "/api/overview/yearly": {
+    get: operations["getYearlyOverview"];
+  };
+  "/api/overview/weekly": {
+    get: operations["getWeeklyOverview"];
+  };
+  "/api/overview/daily": {
+    get: operations["getDailyOverview"];
+  };
 }
 
 export type webhooks = Record<string, never>;
 
 export interface components {
-    schemas: {
-        AddSessionDto: {
-            name: string;
-            tagId: string;
-            /** Format: int64 */
-            totalDuration: number;
-            /** Format: date-time */
-            startTime: string;
-            /** Format: date-time */
-            endTime: string;
-        };
-        CreateTagDto: {
-            name: string;
-            color: string;
-        };
-        CreateCurrentSessionDto: {
-            name: string;
-            tagId: string;
-            /** Format: int64 */
-            totalDuration: number;
-        };
-        UpdateSessionDto: {
-            name: string;
-            tagId: string;
-            /** Format: int64 */
-            totalDuration: number;
-            /** Format: date-time */
-            startDateTime: string;
-            /** Format: date-time */
-            endDateTime: string;
-        };
-        UpdateTagDto: {
-            name: string;
-            color: string;
-        };
-        ListTagDto: {
-            id: string;
-            name: string;
-            color: string;
-        };
-        CurrentSessionDto: {
-            name: string;
-            tagId: string;
-            /** Format: int64 */
-            totalDuration: number;
-            /** Format: int64 */
-            remainingDuration: number;
-            /** @enum {string} */
-            status: "RUNNING" | "PAUSED" | "COMPLETED";
-            /** Format: date-time */
-            startDateTime: string;
-            /** Format: date-time */
-            modifiedDateTime: string;
-        };
-        ListSessionDto: {
-            id: string;
-            name: string;
-            tagId: string;
-            /** Format: int64 */
-            totalDuration: number;
-            /** Format: date-time */
-            startDateTime: string;
-            /** Format: date-time */
-            endDateTime?: string;
-        };
-        PagedListDtoListSessionDto: {
-            /** Format: int32 */
-            page: number;
-            /** Format: int32 */
-            totalPages: number;
-            items: components["schemas"]["ListSessionDto"][];
-        };
-        DateTotalDurationDto: {
-            /** Format: date */
-            date: string;
-            /** Format: int64 */
-            totalDuration: number;
-        };
-        YearlyOverviewDto: {
-            dates: components["schemas"]["DateTotalDurationDto"][];
-        };
-        CategoryTotalDurationDto: {
-            categoryId: string;
-            /** Format: int64 */
-            totalDuration: number;
-        };
-        WeeklyOverviewDto: {
-            categories: components["schemas"]["CategoryTotalDurationDto"][];
-            dates: components["schemas"]["DateTotalDurationDto"][];
-        };
-        DailyOverviewDto: {
-            categories: components["schemas"]["CategoryTotalDurationDto"][];
-        };
+  schemas: {
+    AddSessionDto: {
+      name: string;
+      tagId: string;
+      /** Format: int64 */
+      totalDuration: number;
+      /** Format: date-time */
+      startTime: string;
+      /** Format: date-time */
+      endTime: string;
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    CreateTagDto: {
+      name: string;
+      color: string;
+    };
+    CreateCurrentSessionDto: {
+      name: string;
+      tagId: string;
+      /** Format: int64 */
+      totalDuration: number;
+    };
+    UpdateSessionDto: {
+      name: string;
+      tagId: string;
+      /** Format: int64 */
+      totalDuration: number;
+      /** Format: date-time */
+      startDateTime: string;
+      /** Format: date-time */
+      endDateTime: string;
+    };
+    UpdateTagDto: {
+      name: string;
+      color: string;
+    };
+    ListTagDto: {
+      id: string;
+      name: string;
+      color: string;
+    };
+    CurrentSessionDto: {
+      name: string;
+      tag: components["schemas"]["CurrentSessionTagDto"];
+      /** Format: int64 */
+      totalDuration: number;
+      /** Format: int64 */
+      remainingDuration: number;
+      /** @enum {string} */
+      status: "RUNNING" | "PAUSED" | "COMPLETED";
+      /** Format: date-time */
+      startDateTime: string;
+      /** Format: date-time */
+      resumeDateTime: string;
+    };
+    CurrentSessionTagDto: {
+      name: string;
+      color: string;
+    };
+    ListSessionDto: {
+      id: string;
+      name: string;
+      tagId: string;
+      /** Format: int64 */
+      totalDuration: number;
+      /** Format: date-time */
+      startDateTime: string;
+      /** Format: date-time */
+      endDateTime?: string;
+    };
+    PagedListDtoListSessionDto: {
+      /** Format: int32 */
+      page: number;
+      /** Format: int32 */
+      totalPages: number;
+      items: components["schemas"]["ListSessionDto"][];
+    };
+    DateTotalDurationDto: {
+      /** Format: date */
+      date: string;
+      /** Format: int64 */
+      totalDuration: number;
+    };
+    YearlyOverviewDto: {
+      dates: components["schemas"]["DateTotalDurationDto"][];
+    };
+    CategoryTotalDurationDto: {
+      categoryId: string;
+      /** Format: int64 */
+      totalDuration: number;
+    };
+    WeeklyOverviewDto: {
+      categories: components["schemas"]["CategoryTotalDurationDto"][];
+      dates: components["schemas"]["DateTotalDurationDto"][];
+    };
+    DailyOverviewDto: {
+      categories: components["schemas"]["CategoryTotalDurationDto"][];
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 
 export type $defs = Record<string, never>;
@@ -161,205 +165,205 @@ export type external = Record<string, never>;
 
 export interface operations {
 
-    postAddTask: {
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["AddSessionDto"];
-            };
-        };
-        responses: {
-            /** @description Created */
-            201: {
-                content: never;
-            };
-        };
+  postAddTask: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["AddSessionDto"];
+      };
     };
-    postCreateTag: {
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateTagDto"];
-            };
-        };
-        responses: {
-            /** @description Created */
-            201: {
-                content: never;
-            };
-        };
+    responses: {
+      /** @description Created */
+      201: {
+        content: never;
+      };
     };
-    postResumeCurrentTask: {
-        responses: {
-            /** @description OK */
-            200: {
-                content: never;
-            };
-        };
+  };
+  postCreateTag: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTagDto"];
+      };
     };
-    postPauseCurrentTask: {
-        responses: {
-            /** @description OK */
-            200: {
-                content: never;
-            };
-        };
+    responses: {
+      /** @description Created */
+      201: {
+        content: never;
+      };
     };
-    postEndCurrentTask: {
-        responses: {
-            /** @description OK */
-            200: {
-                content: never;
-            };
-        };
+  };
+  postResumeCurrentTask: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: never;
+      };
     };
-    postCreateCurrentTask: {
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateCurrentSessionDto"];
-            };
-        };
-        responses: {
-            /** @description Created */
-            201: {
-                content: never;
-            };
-        };
+  };
+  postPauseCurrentTask: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: never;
+      };
     };
-    deleteTask: {
-        parameters: {
-            path: {
-                id: string;
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                content: never;
-            };
-        };
+  };
+  postEndCurrentTask: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: never;
+      };
     };
-    patchUpdateTask: {
-        parameters: {
-            path: {
-                id: string;
-            };
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateSessionDto"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                content: never;
-            };
-        };
+  };
+  postCreateCurrentTask: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateCurrentSessionDto"];
+      };
     };
-    deleteTag: {
-        parameters: {
-            path: {
-                id: string;
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                content: never;
-            };
-        };
+    responses: {
+      /** @description Created */
+      201: {
+        content: never;
+      };
     };
-    patchUpdateTag: {
-        parameters: {
-            path: {
-                id: string;
-            };
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateTagDto"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                content: never;
-            };
-        };
+  };
+  deleteTask: {
+    parameters: {
+      path: {
+        id: string;
+      };
     };
-    getAllTags: {
-        responses: {
-            /** @description OK */
-            200: {
-                content: {
-                    "*/*": components["schemas"]["ListTagDto"][];
-                };
-            };
-        };
+    responses: {
+      /** @description OK */
+      200: {
+        content: never;
+      };
     };
-    getCurrentTask: {
-        responses: {
-            /** @description OK */
-            200: {
-                content: {
-                    "*/*": components["schemas"]["CurrentSessionDto"];
-                };
-            };
-        };
+  };
+  patchUpdateTask: {
+    parameters: {
+      path: {
+        id: string;
+      };
     };
-    getAllTasks: {
-        parameters: {
-            query: {
-                page: number;
-                tagId?: string;
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                content: {
-                    "*/*": components["schemas"]["PagedListDtoListSessionDto"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateSessionDto"];
+      };
     };
-    getYearlyOverview: {
-        responses: {
-            /** @description OK */
-            200: {
-                content: {
-                    "*/*": components["schemas"]["YearlyOverviewDto"];
-                };
-            };
-        };
+    responses: {
+      /** @description OK */
+      200: {
+        content: never;
+      };
     };
-    getWeeklyOverview: {
-        parameters: {
-            query?: {
-                date?: string;
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                content: {
-                    "*/*": components["schemas"]["WeeklyOverviewDto"];
-                };
-            };
-        };
+  };
+  deleteTag: {
+    parameters: {
+      path: {
+        id: string;
+      };
     };
-    getDailyOverview: {
-        parameters: {
-            query?: {
-                date?: string;
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                content: {
-                    "*/*": components["schemas"]["DailyOverviewDto"];
-                };
-            };
-        };
+    responses: {
+      /** @description OK */
+      200: {
+        content: never;
+      };
     };
+  };
+  patchUpdateTag: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateTagDto"];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: never;
+      };
+    };
+  };
+  getAllTags: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["ListTagDto"][];
+        };
+      };
+    };
+  };
+  getCurrentTask: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["CurrentSessionDto"];
+        };
+      };
+    };
+  };
+  getAllTasks: {
+    parameters: {
+      query: {
+        page: number;
+        tagId?: string;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["PagedListDtoListSessionDto"];
+        };
+      };
+    };
+  };
+  getYearlyOverview: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["YearlyOverviewDto"];
+        };
+      };
+    };
+  };
+  getWeeklyOverview: {
+    parameters: {
+      query?: {
+        date?: string;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["WeeklyOverviewDto"];
+        };
+      };
+    };
+  };
+  getDailyOverview: {
+    parameters: {
+      query?: {
+        date?: string;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["DailyOverviewDto"];
+        };
+      };
+    };
+  };
 }

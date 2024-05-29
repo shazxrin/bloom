@@ -1,10 +1,7 @@
 import { Stack, Title } from "@mantine/core"
 import {
-    ClientActionFunction,
     ClientActionFunctionArgs,
-    ClientLoaderFunction,
     ClientLoaderFunctionArgs,
-    json,
     useLoaderData
 } from "@remix-run/react"
 import AnimatedPage from "~/components/animation/animated-page"
@@ -17,7 +14,7 @@ import { IconAlertTriangle, IconCheck, IconInputX, IconPlayerPause, IconSparkles
 import { z } from "zod"
 import { badRequest, methodNotAllowed, serverError } from "~/utils/responses.client"
 
-const clientLoader: ClientLoaderFunction = async ({}: ClientLoaderFunctionArgs) => {
+const clientLoader = async ({}: ClientLoaderFunctionArgs) => {
     const {
         data: currentSession,
         error: getCurrentSessionError,
@@ -51,10 +48,10 @@ const clientLoader: ClientLoaderFunction = async ({}: ClientLoaderFunctionArgs) 
         throw serverError()
     }
 
-    return json({
+    return {
         currentSession: getCurrentSessionResponse.status == 200 ? currentSession : null,
         tags
-    })
+    }
 }
 
 const formSchema = z.union([
@@ -70,7 +67,7 @@ const formSchema = z.union([
     })
 ])
 
-const clientAction: ClientActionFunction = async ({ request }: ClientActionFunctionArgs) => {
+const clientAction = async ({ request }: ClientActionFunctionArgs) => {
     if (request.method !== "POST") {
         throw methodNotAllowed()
     }
@@ -89,10 +86,10 @@ const clientAction: ClientActionFunction = async ({ request }: ClientActionFunct
             icon: <IconInputX size={ 18 }/>
         })
 
-        return json({
+        return {
             success: false,
             errors: errors
-        })
+        }
     }
 
     const parsedFormValues = parsedFormValuesResult.data
@@ -188,9 +185,9 @@ const clientAction: ClientActionFunction = async ({ request }: ClientActionFunct
         throw badRequest()
     }
 
-    return json({
+    return {
         success: true
-    })
+    }
 }
 
 const Timer = () => {

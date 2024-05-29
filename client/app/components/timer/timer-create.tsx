@@ -5,7 +5,7 @@ import { IconMoodPuzzled, IconSparkles } from "@tabler/icons-react"
 
 type TimerCreateProps = {
     tags: {
-        id: number
+        id: string
         name: string
         color: string
     }[]
