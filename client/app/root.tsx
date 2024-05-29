@@ -66,7 +66,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         >
             <AppShell
                 h="100vh"
-                navbar={ { width: 300, breakpoint: "sm" } }
+                navbar={ { width: 320, breakpoint: "sm" } }
                 padding="md"
             >
                 <AppShell.Navbar p="md" bg={ "dark" }>
