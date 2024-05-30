@@ -54,23 +54,23 @@ const clientLoader = async ({}: ClientLoaderFunctionArgs) => {
     }
 }
 
-const formSchema = z.union([
-    z.object({
-        intent: z.enum(["resume", "pause", "end"]),
-    }),
-    z.object({
-        intent: z.literal("create"),
-        name: z.string().min(1).max(255),
-        hours: z.coerce.number().min(0).max(23),
-        minutes: z.coerce.number().min(0).max(59),
-        tagId: z.string()
-    })
-])
-
 const clientAction = async ({ request }: ClientActionFunctionArgs) => {
     if (request.method !== "POST") {
         throw methodNotAllowed()
     }
+
+    const formSchema = z.union([
+        z.object({
+            intent: z.enum(["resume", "pause", "end"]),
+        }),
+        z.object({
+            intent: z.literal("create"),
+            name: z.string().min(1).max(255),
+            hours: z.coerce.number().min(0).max(23),
+            minutes: z.coerce.number().min(0).max(59),
+            tagId: z.string()
+        })
+    ])
 
     const formData = await request.formData()
     const formValues = Object.fromEntries(formData.entries())
