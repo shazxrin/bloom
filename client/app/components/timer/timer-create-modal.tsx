@@ -33,7 +33,7 @@ const TimerCreateModal = ({ opened, close, tags }: TimerCreateModalProps) => {
                         placeholder="Enter Name"
                         name="name"
                         required
-                        error={ !actionData?.success && (actionData?.errors?.name?.join(", ") ?? "") }
+                        error={ !actionData?.success && (actionData?.errors?.get("name")?.join(", ") ?? "") }
                     />
                     <Group grow>
                         <NumberInput
@@ -43,7 +43,7 @@ const TimerCreateModal = ({ opened, close, tags }: TimerCreateModalProps) => {
                             defaultValue={ 0 }
                             name="hours"
                             required
-                            error={ !actionData?.success && (actionData?.errors?.hours?.join(", ") ?? "") }
+                            error={ !actionData?.success && (actionData?.errors?.get("hours")?.join(", ") ?? "") }
                         />
                         <NumberInput
                             label="Minutes"
@@ -52,7 +52,7 @@ const TimerCreateModal = ({ opened, close, tags }: TimerCreateModalProps) => {
                             defaultValue={ 0 }
                             name="minutes"
                             required
-                            error={ !actionData?.success && (actionData?.errors?.minutes?.join(", ") ?? "") }
+                            error={ !actionData?.success && (actionData?.errors?.get("minutes")?.join(", ") ?? "") }
                         />
                     </Group>
 
@@ -62,7 +62,7 @@ const TimerCreateModal = ({ opened, close, tags }: TimerCreateModalProps) => {
                         data={ tags.map(tag => ({ value: tag.id.toString(), label: tag.name })) }
                         name="tagId"
                         required
-                        error={ !actionData?.success && (actionData?.errors?.tagId?.join(", ") ?? "") }
+                        error={ !actionData?.success && (actionData?.errors?.get("tagId")?.join(", ") ?? "") }
                     />
 
                     <Button type="submit" loading={ navigation.state === "submitting" }>

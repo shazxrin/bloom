@@ -77,7 +77,7 @@ const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 
     const parsedFormValuesResult = formSchema.safeParse(formValues)
     if (!parsedFormValuesResult.success) {
-        const errors = parsedFormValuesResult.error.flatten().fieldErrors
+        const errors = new Map(Object.entries(parsedFormValuesResult.error.flatten().fieldErrors))
 
         notifications.show({
             color: "red",

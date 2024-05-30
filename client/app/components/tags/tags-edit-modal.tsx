@@ -34,7 +34,7 @@ const TagsEditModal = ({ tag, opened, close }: TagsEditModalProps) => {
                         name="name"
                         defaultValue={ tag.name }
                         required
-                        error={ !actionData?.success && (actionData?.errors?.name?.join(", ") ?? "") }
+                        error={ !actionData?.success && (actionData?.errors?.get("name")?.join(", ") ?? "") }
                     />
 
                     <ColorInput
@@ -43,7 +43,7 @@ const TagsEditModal = ({ tag, opened, close }: TagsEditModalProps) => {
                         name="color"
                         defaultValue={ tag.color }
                         required
-                        error={ !actionData?.success && (actionData?.errors?.color?.join(", ") ?? "") }
+                        error={ !actionData?.success && (actionData?.errors?.get("color")?.join(", ") ?? "") }
                     />
 
                     <Button type="submit" loading={ navigation.state === "submitting" }>

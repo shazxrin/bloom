@@ -45,7 +45,7 @@ const clientAction = async ({ request }: ClientLoaderFunctionArgs) => {
 
         const parsedFormValuesResult = formSchema.safeParse(formValues)
         if (!parsedFormValuesResult.success) {
-            const errors = parsedFormValuesResult.error.flatten().fieldErrors
+            const errors = new Map(Object.entries(parsedFormValuesResult.error.flatten().fieldErrors))
 
             notifications.show({
                 color: "red",
@@ -104,7 +104,7 @@ const clientAction = async ({ request }: ClientLoaderFunctionArgs) => {
 
         const parsedFormValuesResult = formSchema.safeParse(formValues)
         if (!parsedFormValuesResult.success) {
-            const errors = parsedFormValuesResult.error.flatten().fieldErrors
+            const errors = new Map(Object.entries(parsedFormValuesResult.error.flatten().fieldErrors))
 
             notifications.show({
                 color: "red",
@@ -166,7 +166,7 @@ const clientAction = async ({ request }: ClientLoaderFunctionArgs) => {
 
         const parsedFormValuesResult = formSchema.safeParse(formValues)
         if (!parsedFormValuesResult.success) {
-            const errors = parsedFormValuesResult.error.flatten().fieldErrors
+            const errors = new Map(Object.entries(parsedFormValuesResult.error.flatten().fieldErrors))
 
             notifications.show({
                 color: "red",

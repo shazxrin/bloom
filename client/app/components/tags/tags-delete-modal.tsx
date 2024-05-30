@@ -42,4 +42,5 @@ const TagsDeleteModal = ({ tag, opened, close }: TagsDeleteModalProps) => {
         </Modal>
     )
 }
+
 export default TagsDeleteModal

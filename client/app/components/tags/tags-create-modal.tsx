@@ -27,7 +27,7 @@ const TagsCreateModal = ({ opened, close }: TagsCreateModalProps) => {
                         placeholder="Enter Name"
                         name="name"
                         required
-                        error={ !actionData?.success && (actionData?.errors?.name?.join(", ") ?? "") }
+                        error={ !actionData?.success && (actionData?.errors?.get("name")?.join(", ") ?? "") }
                     />
 
                     <ColorInput
@@ -35,7 +35,7 @@ const TagsCreateModal = ({ opened, close }: TagsCreateModalProps) => {
                         placeholder="Enter Color"
                         name="color"
                         required
-                        error={ !actionData?.success && (actionData?.errors?.color?.join(", ") ?? "") }
+                        error={ !actionData?.success && (actionData?.errors?.get("color")?.join(", ") ?? "") }
                     />
 
                     <Button type="submit" loading={ navigation.state === "submitting" }>
