@@ -10,9 +10,10 @@ import TimerSession from "~/components/timer/timer-session"
 import TimerCreate from "~/components/timer/timer-create"
 import apiClient from "~/api/apiClient.client"
 import { notifications } from "@mantine/notifications"
-import { IconAlertTriangle, IconCheck, IconInputX, IconPlayerPause, IconSparkles } from "@tabler/icons-react"
+import { IconAlertTriangle, IconCheck, IconPlayerPause, IconSparkles } from "@tabler/icons-react"
 import { z } from "zod"
 import { badRequest, methodNotAllowed, serverError } from "~/utils/responses.client"
+import parseFormData from "~/utils/parse-form-data"
 
 const clientLoader = async ({}: ClientLoaderFunctionArgs) => {
     const {
@@ -68,33 +69,20 @@ const clientAction = async ({ request }: ClientActionFunctionArgs) => {
             name: z.string().min(1).max(255),
             hours: z.coerce.number().min(0).max(23),
             minutes: z.coerce.number().min(0).max(59),
-            tagId: z.string()
+            tagId: z.string().min(1)
         })
     ])
 
-    const formData = await request.formData()
-    const formValues = Object.fromEntries(formData.entries())
-
-    const parsedFormValuesResult = formSchema.safeParse(formValues)
-    if (!parsedFormValuesResult.success) {
-        const errors = new Map(Object.entries(parsedFormValuesResult.error.flatten().fieldErrors))
-
-        notifications.show({
-            color: "red",
-            title: "Errors in input!",
-            message: "Check errors in form and try again.",
-            icon: <IconInputX size={ 18 }/>
-        })
-
+    const { formData, errors } = await parseFormData(formSchema, request)
+    if (errors) {
         return {
             success: false,
-            errors: errors
+            errors
         }
     }
 
-    const parsedFormValues = parsedFormValuesResult.data
-    if (parsedFormValues.intent === "create") {
-        const { name, hours, minutes, tagId } = parsedFormValues
+    if (formData.intent === "create") {
+        const { name, hours, minutes, tagId } = formData
 
         const { error } = await apiClient.POST("/api/session/current/create", {
             body: {
@@ -121,7 +109,7 @@ const clientAction = async ({ request }: ClientActionFunctionArgs) => {
             message: "Session successfully created.",
             icon: <IconSparkles size={ 18 }/>
         })
-    } else if (parsedFormValues.intent === "pause") {
+    } else if (formData.intent === "pause") {
         const { error } = await apiClient.POST("/api/session/current/pause")
 
         if (error) {
@@ -141,7 +129,7 @@ const clientAction = async ({ request }: ClientActionFunctionArgs) => {
             message: "Session successfully paused.",
             icon: <IconPlayerPause size={ 18 }/>
         })
-    } else if (parsedFormValues.intent === "resume") {
+    } else if (formData.intent === "resume") {
         const { error } = await apiClient.POST("/api/session/current/resume")
 
         if (error) {
@@ -161,7 +149,7 @@ const clientAction = async ({ request }: ClientActionFunctionArgs) => {
             message: "Session successfully resumed.",
             icon: <IconPlayerPause size={ 18 }/>
         })
-    } else if (parsedFormValues.intent === "end") {
+    } else if (formData.intent === "end") {
         const { error } = await apiClient.POST("/api/session/current/end")
 
         if (error) {

@@ -8,8 +8,9 @@ import TagsDeleteActionButton from "~/components/tags/tags-delete-action-button"
 import apiClient from "~/api/apiClient.client"
 import { methodNotAllowed, serverError } from "~/utils/responses.client"
 import { notifications } from "@mantine/notifications"
-import { IconAlertTriangle, IconInputX, IconPencil, IconSparkles, IconTrash } from "@tabler/icons-react"
+import { IconAlertTriangle, IconPencil, IconSparkles, IconTrash } from "@tabler/icons-react"
 import { z } from "zod"
+import parseFormData from "~/utils/parse-form-data"
 
 const clientLoader = async ({}: ClientLoaderFunctionArgs) => {
     const {
@@ -40,29 +41,14 @@ const clientAction = async ({ request }: ClientLoaderFunctionArgs) => {
             color: z.string().startsWith("#").length(7),
         })
 
-        const formData = await request.formData()
-        const formValues = Object.fromEntries(formData.entries())
-
-        const parsedFormValuesResult = formSchema.safeParse(formValues)
-        if (!parsedFormValuesResult.success) {
-            const errors = new Map(Object.entries(parsedFormValuesResult.error.flatten().fieldErrors))
-
-            notifications.show({
-                color: "red",
-                title: "Errors in input!",
-                message: "Check errors in form and try again.",
-                icon: <IconInputX size={ 18 }/>
-            })
-
+        const { formData, errors } = await parseFormData(formSchema, request)
+        if (errors) {
             return {
                 success: false,
-                errors: errors
+                errors
             }
         }
-
-        const parsedFormValues = parsedFormValuesResult.data
-
-        const { name, color } = parsedFormValues
+        const { name, color } = formData
 
         const { error } = await apiClient.POST("/api/session/tag", {
             body: {
@@ -99,29 +85,14 @@ const clientAction = async ({ request }: ClientLoaderFunctionArgs) => {
             color: z.string().startsWith("#").length(7)
         })
 
-        const formData = await request.formData()
-        const formValues = Object.fromEntries(formData.entries())
-
-        const parsedFormValuesResult = formSchema.safeParse(formValues)
-        if (!parsedFormValuesResult.success) {
-            const errors = new Map(Object.entries(parsedFormValuesResult.error.flatten().fieldErrors))
-
-            notifications.show({
-                color: "red",
-                title: "Errors in input!",
-                message: "Check errors in form and try again.",
-                icon: <IconInputX size={ 18 }/>
-            })
-
+        const { formData, errors } = await parseFormData(formSchema, request)
+        if (errors) {
             return {
                 success: false,
-                errors: errors
+                errors
             }
         }
-
-        const parsedFormValues = parsedFormValuesResult.data
-
-        const { id, name, color } = parsedFormValues
+        const { id, name, color } = formData
 
         const { error } = await apiClient.PATCH("/api/session/tag/{id}", {
             params: {
@@ -161,29 +132,14 @@ const clientAction = async ({ request }: ClientLoaderFunctionArgs) => {
             id: z.string()
         })
 
-        const formData = await request.formData()
-        const formValues = Object.fromEntries(formData.entries())
-
-        const parsedFormValuesResult = formSchema.safeParse(formValues)
-        if (!parsedFormValuesResult.success) {
-            const errors = new Map(Object.entries(parsedFormValuesResult.error.flatten().fieldErrors))
-
-            notifications.show({
-                color: "red",
-                title: "Errors in input!",
-                message: "Check errors in form and try again.",
-                icon: <IconInputX size={ 18 }/>
-            })
-
+        const { formData, errors } = await parseFormData(formSchema, request)
+        if (errors) {
             return {
                 success: false,
-                errors: errors
+                errors
             }
         }
-
-        const parsedFormValues = parsedFormValuesResult.data
-
-        const { id } = parsedFormValues
+        const { id } = formData
 
         const { error } = await apiClient.DELETE("/api/session/tag/{id}", {
             params: {
