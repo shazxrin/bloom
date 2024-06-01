@@ -56,125 +56,125 @@ const clientLoader = async ({}: ClientLoaderFunctionArgs) => {
 }
 
 const clientAction = async ({ request }: ClientActionFunctionArgs) => {
-    if (request.method !== "POST") {
-        throw methodNotAllowed()
-    }
+    if (request.method === "POST") {
+        const formSchema = z.union([
+            z.object({
+                intent: z.enum(["resume", "pause", "end"]),
+            }),
+            z.object({
+                intent: z.literal("create"),
+                name: z.string().min(1).max(255),
+                hours: z.coerce.number().min(0).max(23),
+                minutes: z.coerce.number().min(0).max(59),
+                tagId: z.string().min(1)
+            })
+        ])
 
-    const formSchema = z.union([
-        z.object({
-            intent: z.enum(["resume", "pause", "end"]),
-        }),
-        z.object({
-            intent: z.literal("create"),
-            name: z.string().min(1).max(255),
-            hours: z.coerce.number().min(0).max(23),
-            minutes: z.coerce.number().min(0).max(59),
-            tagId: z.string().min(1)
-        })
-    ])
-
-    const { formData, errors } = await parseFormData(formSchema, request)
-    if (errors) {
-        return {
-            success: false,
-            errors
-        }
-    }
-
-    if (formData.intent === "create") {
-        const { name, hours, minutes, tagId } = formData
-
-        const { error } = await apiClient.POST("/api/session/current/create", {
-            body: {
-                name: name,
-                tagId: tagId,
-                totalDuration: (hours * 3600) + (minutes * 60)
+        const { formData, errors } = await parseFormData(formSchema, request)
+        if (errors) {
+            return {
+                success: false,
+                errors
             }
-        })
-
-        if (error) {
-            notifications.show({
-                color: "red",
-                title: "Error occurred!",
-                message: "An error occurred while creating current session.",
-                icon: <IconAlertTriangle size={ 18 }/>
-            })
-
-            throw serverError()
         }
 
-        notifications.show({
-            color: "pink",
-            title: "New session started",
-            message: "Session successfully created.",
-            icon: <IconSparkles size={ 18 }/>
-        })
-    } else if (formData.intent === "pause") {
-        const { error } = await apiClient.POST("/api/session/current/pause")
+        if (formData.intent === "create") {
+            const { name, hours, minutes, tagId } = formData
 
-        if (error) {
-            notifications.show({
-                color: "red",
-                title: "Error occurred!",
-                message: "An error occurred while pausing current session.",
-                icon: <IconAlertTriangle size={ 18 }/>
+            const { error } = await apiClient.POST("/api/session/current/create", {
+                body: {
+                    name: name,
+                    tagId: tagId,
+                    totalDuration: (hours * 3600) + (minutes * 60)
+                }
             })
 
-            throw serverError()
-        }
+            if (error) {
+                notifications.show({
+                    color: "red",
+                    title: "Error occurred!",
+                    message: "An error occurred while creating current session.",
+                    icon: <IconAlertTriangle size={ 18 }/>
+                })
 
-        notifications.show({
-            color: "pink",
-            title: "Session paused",
-            message: "Session successfully paused.",
-            icon: <IconPlayerPause size={ 18 }/>
-        })
-    } else if (formData.intent === "resume") {
-        const { error } = await apiClient.POST("/api/session/current/resume")
+                throw serverError()
+            }
 
-        if (error) {
             notifications.show({
-                color: "red",
-                title: "Error occurred!",
-                message: "An error occurred while resuming current session.",
-                icon: <IconAlertTriangle size={ 18 }/>
+                color: "pink",
+                title: "New session started",
+                message: "Session successfully created.",
+                icon: <IconSparkles size={ 18 }/>
             })
+        } else if (formData.intent === "pause") {
+            const { error } = await apiClient.POST("/api/session/current/pause")
 
-            throw serverError()
-        }
+            if (error) {
+                notifications.show({
+                    color: "red",
+                    title: "Error occurred!",
+                    message: "An error occurred while pausing current session.",
+                    icon: <IconAlertTriangle size={ 18 }/>
+                })
 
-        notifications.show({
-            color: "pink",
-            title: "Session resumed",
-            message: "Session successfully resumed.",
-            icon: <IconPlayerPause size={ 18 }/>
-        })
-    } else if (formData.intent === "end") {
-        const { error } = await apiClient.POST("/api/session/current/end")
+                throw serverError()
+            }
 
-        if (error) {
             notifications.show({
-                color: "red",
-                title: "Error occurred!",
-                message: "An error occurred while ending current session.",
-                icon: <IconAlertTriangle size={ 18 }/>
+                color: "pink",
+                title: "Session paused",
+                message: "Session successfully paused.",
+                icon: <IconPlayerPause size={ 18 }/>
             })
+        } else if (formData.intent === "resume") {
+            const { error } = await apiClient.POST("/api/session/current/resume")
 
-            throw serverError()
+            if (error) {
+                notifications.show({
+                    color: "red",
+                    title: "Error occurred!",
+                    message: "An error occurred while resuming current session.",
+                    icon: <IconAlertTriangle size={ 18 }/>
+                })
+
+                throw serverError()
+            }
+
+            notifications.show({
+                color: "pink",
+                title: "Session resumed",
+                message: "Session successfully resumed.",
+                icon: <IconPlayerPause size={ 18 }/>
+            })
+        } else if (formData.intent === "end") {
+            const { error } = await apiClient.POST("/api/session/current/end")
+
+            if (error) {
+                notifications.show({
+                    color: "red",
+                    title: "Error occurred!",
+                    message: "An error occurred while ending current session.",
+                    icon: <IconAlertTriangle size={ 18 }/>
+                })
+
+                throw serverError()
+            }
+
+            notifications.show({
+                color: "pink",
+                title: "Session ended",
+                message: "Session successfully ended.",
+                icon: <IconCheck size={ 18 }/>
+            })
+        } else {
+            throw badRequest()
         }
 
-        notifications.show({
-            color: "pink",
-            title: "Session ended",
-            message: "Session successfully ended.",
-            icon: <IconCheck size={ 18 }/>
-        })
+        return {
+            success: true
+        }
     } else {
-        throw badRequest()
-    }
-
-    return {
-        success: true
+        throw methodNotAllowed()
     }
 }
 
