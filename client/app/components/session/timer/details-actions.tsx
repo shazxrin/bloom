@@ -4,13 +4,13 @@ import { IconPlayerPause, IconPlayerPlay, IconPlayerStop } from "@tabler/icons-r
 import { differenceInSeconds } from "date-fns"
 import { useEffect, useState } from "react"
 
-type TimerSessionActionsProps = {
+type SessionTimerDetailsActionsProps = {
     status: "RUNNING" | "PAUSED" | "COMPLETED"
     resumeDateTime: string
     remainingDuration: number
 }
 
-const TimerSessionActions = ({ status, resumeDateTime, remainingDuration }: TimerSessionActionsProps) => {
+const SessionTimerDetailsActions = ({ status, resumeDateTime, remainingDuration }: SessionTimerDetailsActionsProps) => {
     const initialRemainingSeconds = status === "PAUSED"
         ? remainingDuration
         : remainingDuration - differenceInSeconds(new Date(), resumeDateTime)
@@ -34,7 +34,7 @@ const TimerSessionActions = ({ status, resumeDateTime, remainingDuration }: Time
 
     return (
         <Group gap={ 16 } justify="center">
-            <Form method="POST" action="/timer">
+            <Form method="POST" action="/client/app/routes/session.timer">
                 <input type="hidden" name="intent" value="resume"/>
                 <ActionIcon
                     size="lg"
@@ -47,7 +47,7 @@ const TimerSessionActions = ({ status, resumeDateTime, remainingDuration }: Time
                 </ActionIcon>
             </Form>
 
-            <Form method="POST" action="/timer">
+            <Form method="POST" action="/client/app/routes/session.timer">
                 <input type="hidden" name="intent" value="pause"/>
                 <ActionIcon
                     size="lg"
@@ -60,7 +60,7 @@ const TimerSessionActions = ({ status, resumeDateTime, remainingDuration }: Time
                 </ActionIcon>
             </Form>
 
-            <Form method="POST" action="/timer">
+            <Form method="POST" action="/client/app/routes/session.timer">
                 <input type="hidden" name="intent" value="end"/>
                 <ActionIcon
                     size="lg"
@@ -75,4 +75,4 @@ const TimerSessionActions = ({ status, resumeDateTime, remainingDuration }: Time
     )
 }
 
-export default TimerSessionActions
+export default SessionTimerDetailsActions

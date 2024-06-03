@@ -1,6 +1,6 @@
 import { Stack, Badge, Text } from "@mantine/core"
 
-type TimerSessionInfoProps = {
+type SessionTimerDetailsInfoProps = {
     name: string
     tag: {
         name: string
@@ -8,7 +8,7 @@ type TimerSessionInfoProps = {
     }
 }
 
-const TimerSessionInfo = ({ name, tag }: TimerSessionInfoProps) => {
+const SessionTimerDetailsInfo = ({ name, tag }: SessionTimerDetailsInfoProps) => {
     return (
         <Stack gap={ 8 } align="center" maw={ 250 }>
             <Badge radius="xs" size="lg" autoContrast style={ { backgroundColor: tag.color } }>{ tag.name }</Badge>
@@ -18,4 +18,4 @@ const TimerSessionInfo = ({ name, tag }: TimerSessionInfoProps) => {
     )
 }
 
-export default TimerSessionInfo
+export default SessionTimerDetailsInfo

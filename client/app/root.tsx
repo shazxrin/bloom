@@ -82,9 +82,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                         <Stack gap={ 4 }>
                             <RootNavButton to="/" icon={ <IconDashboard size={ 20 }/> } label="Dashboard"/>
                             <RootSectionNavButton label={ "Session" } icon={ <IconTimeline size={ 20 }/> }>
-                                <RootNavButton to="/timer" icon={ <IconHourglassEmpty size={ 20 }/> } label="Timer"/>
-                                <RootNavButton to="/tags" icon={ <IconTags size={ 20 }/> } label="Tags"/>
-                                <RootNavButton to="/history" icon={ <IconHistory size={ 20 }/> } label="History"/>
+                                <RootNavButton to="/session/timer" icon={ <IconHourglassEmpty size={ 20 }/> } label="Timer"/>
+                                <RootNavButton to="/session/tags" icon={ <IconTags size={ 20 }/> } label="Tags"/>
+                                <RootNavButton to="/session/history" icon={ <IconHistory size={ 20 }/> } label="History"/>
                             </RootSectionNavButton>
                         </Stack>
                     </AppShell.Section>

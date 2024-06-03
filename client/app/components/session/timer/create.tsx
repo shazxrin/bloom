@@ -1,9 +1,9 @@
-import TimerCreateModal from "~/components/timer/timer-create-modal"
+import SessionTimerCreateModal from "~/components/session/timer/create-modal"
 import { Button, Center, Stack, Title } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import { IconMoodPuzzled, IconSparkles } from "@tabler/icons-react"
 
-type TimerCreateProps = {
+type SessionTimerCreateProps = {
     tags: {
         id: string
         name: string
@@ -11,7 +11,7 @@ type TimerCreateProps = {
     }[]
 }
 
-const TimerCreate = ({ tags }: TimerCreateProps) => {
+const SessionTimerCreate = ({ tags }: SessionTimerCreateProps) => {
     const [opened, { open, close }] = useDisclosure(false)
 
     return (
@@ -27,9 +27,9 @@ const TimerCreate = ({ tags }: TimerCreateProps) => {
                 </Stack>
             </Center>
 
-            <TimerCreateModal opened={ opened } close={ close } tags={ tags }/>
+            <SessionTimerCreateModal opened={ opened } close={ close } tags={ tags }/>
         </>
     )
 }
 
-export default TimerCreate
+export default SessionTimerCreate

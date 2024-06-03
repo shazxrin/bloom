@@ -1,9 +1,9 @@
 import { Center, Stack } from "@mantine/core"
-import TimerSessionActions from "~/components/timer/timer-session-actions"
-import TimerClock from "~/components/timer/timer-session-clock"
-import TimerSessionInfo from "~/components/timer/timer-session-info"
+import SessionTimerDetailsActions from "~/components/session/timer/details-actions"
+import TimerClock from "~/components/session/timer/details-clock"
+import SessionTimerDetailsInfo from "~/components/session/timer/details-info"
 
-type TimerSessionProps = {
+type SessionTimerDetailsProps = {
     name: string
     tag: {
         name: string
@@ -16,7 +16,7 @@ type TimerSessionProps = {
     resumeDateTime: string
 }
 
-const TimerSession = ({
+const SessionTimerDetails = ({
     name,
     tag,
     status,
@@ -24,11 +24,11 @@ const TimerSession = ({
     remainingDuration,
     startDateTime,
     resumeDateTime
-}: TimerSessionProps) => {
+}: SessionTimerDetailsProps) => {
     return (
         <Center h="100%" w="100%">
             <Stack gap={ 32 } align="center">
-                <TimerSessionInfo name={ name } tag={ tag }/>
+                <SessionTimerDetailsInfo name={ name } tag={ tag }/>
                 <TimerClock
                     name={ name }
                     startDateTime={ startDateTime }
@@ -37,7 +37,7 @@ const TimerSession = ({
                     totalDuration={ totalDuration }
                     resumeDateTime={ resumeDateTime }
                 />
-                <TimerSessionActions
+                <SessionTimerDetailsActions
                     status={ status }
                     resumeDateTime={ resumeDateTime }
                     remainingDuration={ remainingDuration }
@@ -47,4 +47,4 @@ const TimerSession = ({
     )
 }
 
-export default TimerSession
+export default SessionTimerDetails

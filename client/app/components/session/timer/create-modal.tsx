@@ -1,9 +1,9 @@
 import { Button, Group, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/core"
 import { Form, useActionData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
-import { clientAction } from "~/routes/timer"
+import { clientAction } from "~/routes/session.timer"
 
-type TimerCreateModalProps = {
+type SessionTimerCreateModalProps = {
     tags: {
         id: string
         name: string
@@ -13,7 +13,7 @@ type TimerCreateModalProps = {
     close: () => void
 }
 
-const TimerCreateModal = ({ opened, close, tags }: TimerCreateModalProps) => {
+const SessionTimerCreateModal = ({ opened, close, tags }: SessionTimerCreateModalProps) => {
     const actionData = useActionData<typeof clientAction>()
     useEffect(() => {
         if (actionData?.success) {
@@ -25,7 +25,7 @@ const TimerCreateModal = ({ opened, close, tags }: TimerCreateModalProps) => {
 
     return (
         <Modal opened={ opened } onClose={ close } title="New Session" centered>
-            <Form method="POST" action="/timer">
+            <Form method="POST" action="/client/app/routes/session.timer">
                 <input type="hidden" name="intent" value="create"/>
                 <Stack gap={ 16 }>
                     <TextInput
@@ -74,4 +74,4 @@ const TimerCreateModal = ({ opened, close, tags }: TimerCreateModalProps) => {
     )
 }
 
-export default TimerCreateModal
+export default SessionTimerCreateModal

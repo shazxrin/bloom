@@ -1,14 +1,14 @@
 import { Stack, Title } from "@mantine/core"
 import { ClientActionFunctionArgs, ClientLoaderFunctionArgs, useLoaderData } from "@remix-run/react"
 import React from "react"
-import TimerSession from "~/components/timer/timer-session"
-import TimerCreate from "~/components/timer/timer-create"
 import apiClient from "~/api/apiClient.client"
 import { notifications } from "@mantine/notifications"
 import { IconAlertTriangle, IconCheck, IconPlayerPause, IconSparkles } from "@tabler/icons-react"
 import { z } from "zod"
 import { badRequest, methodNotAllowed, serverError } from "~/utils/responses.client"
 import parseFormData from "~/utils/parse-form-data"
+import SessionTimerDetails from "~/components/session/timer/details"
+import SessionTimerCreate from "~/components/session/timer/create"
 
 const clientLoader = async ({}: ClientLoaderFunctionArgs) => {
     const {
@@ -173,7 +173,7 @@ const clientAction = async ({ request }: ClientActionFunctionArgs) => {
     }
 }
 
-const Timer = () => {
+const SessionTimer = () => {
     const { currentSession, tags } = useLoaderData<typeof clientLoader>()
 
     return (
@@ -181,8 +181,8 @@ const Timer = () => {
             <Title order={ 1 }>Timer</Title>
 
             { currentSession
-                ? <TimerSession { ...currentSession } />
-                : <TimerCreate tags={ tags }/>
+                ? <SessionTimerDetails { ...currentSession } />
+                : <SessionTimerCreate tags={ tags }/>
             }
         </Stack>
     )
@@ -192,4 +192,4 @@ export {
     clientLoader,
     clientAction
 }
-export default Timer
+export default SessionTimer

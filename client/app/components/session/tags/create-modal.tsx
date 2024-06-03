@@ -1,38 +1,31 @@
-import { Button, ColorInput, Modal, Stack, TextInput } from "@mantine/core"
+import { Modal, Stack, TextInput, Button, ColorInput } from "@mantine/core"
 import { Form, useActionData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
-import { clientAction } from "~/routes/tags"
+import { clientAction } from "~/routes/session.tags"
 
-type TagsEditModalProps = {
-    tag: {
-        id: string
-        name: string
-        color: string
-    }
+type SessionTagsCreateModalProps = {
     opened: boolean
     close: () => void
 }
 
-const TagsEditModal = ({ tag, opened, close }: TagsEditModalProps) => {
+const SessionTagsCreateModal = ({ opened, close }: SessionTagsCreateModalProps) => {
     const actionData = useActionData<typeof clientAction>()
+    const navigation = useNavigation()
+
     useEffect(() => {
         if (actionData?.success) {
             close()
         }
     }, [actionData])
 
-    const navigation = useNavigation()
-
     return (
-        <Modal opened={ opened } onClose={ close } title="Edit Tag" centered>
-            <Form method="PUT" action={ "/tags" }>
-                <input type={ "hidden" } name={ "id" } value={ tag.id }/>
+        <Modal opened={ opened } onClose={ close } title="New Tag" centered>
+            <Form method="POST" action="/client/app/routes/session.tags">
                 <Stack gap={ 16 }>
                     <TextInput
                         label="Name"
                         placeholder="Enter Name"
                         name="name"
-                        defaultValue={ tag.name }
                         required
                         error={ !actionData?.success && (actionData?.errors?.get("name")?.join(", ") ?? "") }
                     />
@@ -41,13 +34,12 @@ const TagsEditModal = ({ tag, opened, close }: TagsEditModalProps) => {
                         label="Color"
                         placeholder="Enter Color"
                         name="color"
-                        defaultValue={ tag.color }
                         required
                         error={ !actionData?.success && (actionData?.errors?.get("color")?.join(", ") ?? "") }
                     />
 
                     <Button type="submit" loading={ navigation.state === "submitting" }>
-                        Update
+                        Create
                     </Button>
                 </Stack>
             </Form>
@@ -55,4 +47,4 @@ const TagsEditModal = ({ tag, opened, close }: TagsEditModalProps) => {
     )
 }
 
-export default TagsEditModal
+export default SessionTagsCreateModal

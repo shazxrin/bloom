@@ -5,7 +5,7 @@ import { IconAlarm, IconChevronsRight } from "@tabler/icons-react"
 import { notifications } from "@mantine/notifications"
 import { useCheckNativeNotification, useShowNativeNotification } from "~/hooks/native-notification"
 
-type TimerSessionClockProps = {
+type SessionTimerDetailsClockProps = {
     name: string
     status: "RUNNING" | "PAUSED" | "COMPLETED"
     totalDuration: number
@@ -14,14 +14,14 @@ type TimerSessionClockProps = {
     resumeDateTime: string
 }
 
-const TimerSessionClock = ({
+const SessionTimerDetailsClock = ({
     name,
     status,
     totalDuration,
     remainingDuration,
     startDateTime,
     resumeDateTime,
-}: TimerSessionClockProps) => {
+}: SessionTimerDetailsClockProps) => {
     const initialRemainingSeconds = status === "PAUSED"
         ? remainingDuration
         : remainingDuration - differenceInSeconds(new Date(), resumeDateTime)
@@ -101,4 +101,4 @@ const TimerSessionClock = ({
     )
 }
 
-export default TimerSessionClock
+export default SessionTimerDetailsClock

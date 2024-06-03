@@ -1,15 +1,15 @@
 import { Badge, Group, Stack, Table, Text, Title } from "@mantine/core"
 import React from "react"
 import { ClientLoaderFunctionArgs, useLoaderData } from "@remix-run/react"
-import TagsCreateButton from "~/components/tags/tags-create-button"
-import TagsEditActionButton from "~/components/tags/tags-edit-action-button"
-import TagsDeleteActionButton from "~/components/tags/tags-delete-action-button"
 import apiClient from "~/api/apiClient.client"
 import { methodNotAllowed, serverError } from "~/utils/responses.client"
 import { notifications } from "@mantine/notifications"
 import { IconAlertTriangle, IconPencil, IconSparkles, IconTrash } from "@tabler/icons-react"
 import { z } from "zod"
 import parseFormData from "~/utils/parse-form-data"
+import SessionTagsCreateButton from "~/components/session/tags/create-button"
+import SessionTagsEditActionButton from "~/components/session/tags/edit-action-button"
+import SessionTagsDeleteActionButton from "~/components/session/tags/delete-action-button"
 
 const clientLoader = async ({}: ClientLoaderFunctionArgs) => {
     const {
@@ -174,7 +174,7 @@ const clientAction = async ({ request }: ClientLoaderFunctionArgs) => {
     }
 }
 
-const Tags = () => {
+const SessionTags = () => {
     const { tags } = useLoaderData<typeof clientLoader>()
 
     return (
@@ -182,7 +182,7 @@ const Tags = () => {
             <Title order={ 1 }>Tags</Title>
 
             <Group mt={ 16 } justify="start">
-                <TagsCreateButton/>
+                <SessionTagsCreateButton/>
             </Group>
 
             <Table highlightOnHover>
@@ -203,8 +203,8 @@ const Tags = () => {
                             </Table.Td>
                             <Table.Td>
                                 <Group justify="end" align="center">
-                                    <TagsEditActionButton tag={ tag }/>
-                                    <TagsDeleteActionButton tag={ tag }/>
+                                    <SessionTagsEditActionButton tag={ tag }/>
+                                    <SessionTagsDeleteActionButton tag={ tag }/>
                                 </Group>
                             </Table.Td>
                         </Table.Tr>
@@ -219,4 +219,4 @@ export {
     clientLoader,
     clientAction
 }
-export default Tags
+export default SessionTags
