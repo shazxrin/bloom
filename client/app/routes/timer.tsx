@@ -1,10 +1,5 @@
 import { Stack, Title } from "@mantine/core"
-import {
-    ClientActionFunctionArgs,
-    ClientLoaderFunctionArgs,
-    useLoaderData
-} from "@remix-run/react"
-import AnimatedPage from "~/components/animation/animated-page"
+import { ClientActionFunctionArgs, ClientLoaderFunctionArgs, useLoaderData } from "@remix-run/react"
 import React from "react"
 import TimerSession from "~/components/timer/timer-session"
 import TimerCreate from "~/components/timer/timer-create"
@@ -182,16 +177,14 @@ const Timer = () => {
     const { currentSession, tags } = useLoaderData<typeof clientLoader>()
 
     return (
-        <AnimatedPage>
-            <Stack px={ 16 } pt={ 24 } w="100%" h="100%">
-                <Title order={ 1 }>Timer</Title>
+        <Stack px={ 16 } pt={ 24 } w="100%" h="100%">
+            <Title order={ 1 }>Timer</Title>
 
-                { currentSession
-                    ? <TimerSession { ...currentSession } />
-                    : <TimerCreate tags={ tags }/>
-                }
-            </Stack>
-        </AnimatedPage>
+            { currentSession
+                ? <TimerSession { ...currentSession } />
+                : <TimerCreate tags={ tags }/>
+            }
+        </Stack>
     )
 }
 

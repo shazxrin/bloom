@@ -1,12 +1,12 @@
 import { useLocation } from "@remix-run/react"
 import { motion } from "framer-motion"
-import classes from "~/components/animation/animated-page.module.css"
+import classes from "~/components/animation/animate-page.module.css"
 
-type AnimatedPageProps = {
+type AnimatePageProps = {
     children: React.ReactNode
 }
 
-const AnimatedPage = ({ children }: AnimatedPageProps) => {
+const AnimatePage = ({ children }: AnimatePageProps) => {
     const location = useLocation()
 
     return (
@@ -28,4 +28,4 @@ const AnimatedPage = ({ children }: AnimatedPageProps) => {
         </motion.div>
     )
 }
-export default AnimatedPage
+export default AnimatePage

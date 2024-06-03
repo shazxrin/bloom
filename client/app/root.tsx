@@ -1,16 +1,11 @@
-import {
-    Links,
-    Meta,
-    Outlet,
-    Scripts,
-    ScrollRestoration, useNavigation,
-} from "@remix-run/react"
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useNavigation, } from "@remix-run/react"
 import { MetaFunction } from "@remix-run/node"
 import {
     AppShell,
     Center,
     ColorSchemeScript,
-    Container, Divider,
+    Container,
+    Divider,
     Image,
     Loader,
     MantineProvider,
@@ -27,6 +22,8 @@ import "@mantine/nprogress/styles.css"
 import "@mantine/notifications/styles.css"
 import "~/styles/fonts.css"
 import { Notifications } from "@mantine/notifications"
+import { AnimatePresence } from "framer-motion"
+import AnimatePage from "~/components/animation/animate-page"
 
 const meta: MetaFunction = () => {
     return [
@@ -119,7 +116,11 @@ const HydrateFallback = () => {
 
 const App = () => {
     return (
-        <Outlet/>
+        <AnimatePresence>
+            <AnimatePage>
+                <Outlet />
+            </AnimatePage>
+        </AnimatePresence>
     )
 }
 

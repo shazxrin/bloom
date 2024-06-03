@@ -1,4 +1,3 @@
-import AnimatedPage from "~/components/animation/animated-page"
 import { Badge, Group, Stack, Table, Text, Title } from "@mantine/core"
 import React from "react"
 import { ClientLoaderFunctionArgs, useLoaderData } from "@remix-run/react"
@@ -179,42 +178,40 @@ const Tags = () => {
     const { tags } = useLoaderData<typeof clientLoader>()
 
     return (
-        <AnimatedPage>
-            <Stack px={ 16 } pt={ 24 } w="100%" h="100%">
-                <Title order={ 1 }>Tags</Title>
+        <Stack px={ 16 } pt={ 24 } w="100%" h="100%">
+            <Title order={ 1 }>Tags</Title>
 
-                <Group mt={ 16 } justify="start">
-                    <TagsCreateButton/>
-                </Group>
+            <Group mt={ 16 } justify="start">
+                <TagsCreateButton/>
+            </Group>
 
-                <Table highlightOnHover>
-                    <Table.Thead>
-                        <Table.Tr>
-                            <Table.Th>Name</Table.Th>
-                            <Table.Th>{/* Actions */ }</Table.Th>
+            <Table highlightOnHover>
+                <Table.Thead>
+                    <Table.Tr>
+                        <Table.Th>Name</Table.Th>
+                        <Table.Th>{/* Actions */ }</Table.Th>
+                    </Table.Tr>
+                </Table.Thead>
+                <Table.Tbody>
+                    { tags.map(tag => (
+                        <Table.Tr key={ tag.id }>
+                            <Table.Td>
+                                <Group align="center">
+                                    <Badge color={ tag.color } circle/>
+                                    <Text>{ tag.name }</Text>
+                                </Group>
+                            </Table.Td>
+                            <Table.Td>
+                                <Group justify="end" align="center">
+                                    <TagsEditActionButton tag={ tag }/>
+                                    <TagsDeleteActionButton tag={ tag }/>
+                                </Group>
+                            </Table.Td>
                         </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>
-                        { tags.map(tag => (
-                            <Table.Tr key={ tag.id }>
-                                <Table.Td>
-                                    <Group align="center">
-                                        <Badge color={ tag.color } circle/>
-                                        <Text>{ tag.name }</Text>
-                                    </Group>
-                                </Table.Td>
-                                <Table.Td>
-                                    <Group justify="end" align="center">
-                                        <TagsEditActionButton tag={ tag }/>
-                                        <TagsDeleteActionButton tag={ tag }/>
-                                    </Group>
-                                </Table.Td>
-                            </Table.Tr>
-                        )) }
-                    </Table.Tbody>
-                </Table>
-            </Stack>
-        </AnimatedPage>
+                    )) }
+                </Table.Tbody>
+            </Table>
+        </Stack>
     )
 }
 
