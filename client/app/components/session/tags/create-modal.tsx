@@ -20,7 +20,7 @@ const SessionTagsCreateModal = ({ opened, close }: SessionTagsCreateModalProps) 
 
     return (
         <Modal opened={ opened } onClose={ close } title="New Tag" centered>
-            <Form method="POST" action="/client/app/routes/session.tags">
+            <Form method="POST" action="/session/tags">
                 <Stack gap={ 16 }>
                     <TextInput
                         label="Name"

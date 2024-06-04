@@ -28,7 +28,7 @@ const SessionTagsDeleteModal = ({ tag, opened, close }: SessionTagsDeleteModalPr
                 Are you sure you want to delete '{ tag.name }'?
                 This will delete all associated sessions!
             </Text>
-            <Form method="DELETE" action={ "/tags" }>
+            <Form method="DELETE" action={ "/session/tags" }>
                 <input type={ "hidden" } name={ "id" } value={ tag.id }/>
                 <Group justify="end">
                     <Button type="submit" color="red" loading={ navigation.state === "submitting" }>

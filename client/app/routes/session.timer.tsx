@@ -37,7 +37,7 @@ const clientLoader = async ({}: ClientLoaderFunctionArgs) => {
         notifications.show({
             color: "red",
             title: "Error occurred!",
-            message: "An error occurred while fetching current session.",
+            message: "An error occurred while fetching tags.",
             icon: <IconAlertTriangle size={ 18 }/>
         })
 

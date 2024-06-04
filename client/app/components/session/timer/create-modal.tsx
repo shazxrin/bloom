@@ -25,7 +25,7 @@ const SessionTimerCreateModal = ({ opened, close, tags }: SessionTimerCreateModa
 
     return (
         <Modal opened={ opened } onClose={ close } title="New Session" centered>
-            <Form method="POST" action="/client/app/routes/session.timer">
+            <Form method="POST" action="/session/timer">
                 <input type="hidden" name="intent" value="create"/>
                 <Stack gap={ 16 }>
                     <TextInput

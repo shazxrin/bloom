@@ -25,7 +25,7 @@ const SessionTagsEditModal = ({ tag, opened, close }: SessionTagsEditModalProps)
 
     return (
         <Modal opened={ opened } onClose={ close } title="Edit Tag" centered>
-            <Form method="PUT" action={ "/tags" }>
+            <Form method="PUT" action={ "/session/tags" }>
                 <input type={ "hidden" } name={ "id" } value={ tag.id }/>
                 <Stack gap={ 16 }>
                     <TextInput

@@ -34,7 +34,7 @@ const SessionTimerDetailsActions = ({ status, resumeDateTime, remainingDuration 
 
     return (
         <Group gap={ 16 } justify="center">
-            <Form method="POST" action="/client/app/routes/session.timer">
+            <Form method="POST" action="/session/timer">
                 <input type="hidden" name="intent" value="resume"/>
                 <ActionIcon
                     size="lg"
@@ -47,7 +47,7 @@ const SessionTimerDetailsActions = ({ status, resumeDateTime, remainingDuration 
                 </ActionIcon>
             </Form>
 
-            <Form method="POST" action="/client/app/routes/session.timer">
+            <Form method="POST" action="/session/timer">
                 <input type="hidden" name="intent" value="pause"/>
                 <ActionIcon
                     size="lg"
@@ -60,7 +60,7 @@ const SessionTimerDetailsActions = ({ status, resumeDateTime, remainingDuration 
                 </ActionIcon>
             </Form>
 
-            <Form method="POST" action="/client/app/routes/session.timer">
+            <Form method="POST" action="/session/timer">
                 <input type="hidden" name="intent" value="end"/>
                 <ActionIcon
                     size="lg"
