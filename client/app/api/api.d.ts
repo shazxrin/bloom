@@ -5,8 +5,12 @@
 
 
 export interface paths {
+  "/api/session/{id}": {
+    put: operations["putUpdateSession"];
+    delete: operations["deleteSession"];
+  };
   "/api/session": {
-    post: operations["postAddTask"];
+    post: operations["postAddSession"];
   };
   "/api/session/tag": {
     post: operations["postCreateTag"];
@@ -23,10 +27,6 @@ export interface paths {
   "/api/session/current/create": {
     post: operations["postCreateCurrentTask"];
   };
-  "/api/session/{id}": {
-    delete: operations["deleteTask"];
-    patch: operations["patchUpdateTask"];
-  };
   "/api/session/tag/{id}": {
     delete: operations["deleteTag"];
     patch: operations["patchUpdateTag"];
@@ -38,7 +38,7 @@ export interface paths {
     get: operations["getCurrentTask"];
   };
   "/api/session/all": {
-    get: operations["getAllTasks"];
+    get: operations["getAllSessions"];
   };
   "/api/overview/yearly": {
     get: operations["getYearlyOverview"];
@@ -55,15 +55,25 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    UpdateSessionDto: {
+      name: string;
+      tagId: string;
+      /** Format: int64 */
+      totalDuration: number;
+      /** Format: date-time */
+      startDateTime: string;
+      /** Format: date-time */
+      endDateTime: string;
+    };
     AddSessionDto: {
       name: string;
       tagId: string;
       /** Format: int64 */
       totalDuration: number;
       /** Format: date-time */
-      startTime: string;
+      startDateTime: string;
       /** Format: date-time */
-      endTime: string;
+      endDateTime: string;
     };
     CreateTagDto: {
       name: string;
@@ -74,16 +84,6 @@ export interface components {
       tagId: string;
       /** Format: int64 */
       totalDuration: number;
-    };
-    UpdateSessionDto: {
-      name: string;
-      tagId: string;
-      /** Format: int64 */
-      totalDuration: number;
-      /** Format: date-time */
-      startDateTime: string;
-      /** Format: date-time */
-      endDateTime: string;
     };
     UpdateTagDto: {
       name: string;
@@ -115,13 +115,18 @@ export interface components {
     ListSessionDto: {
       id: string;
       name: string;
-      tagId: string;
+      tag: components["schemas"]["ListSessionTagDto"];
       /** Format: int64 */
       totalDuration: number;
       /** Format: date-time */
       startDateTime: string;
       /** Format: date-time */
       endDateTime?: string;
+    };
+    ListSessionTagDto: {
+      id: string;
+      name: string;
+      color: string;
     };
     PagedListDtoListSessionDto: {
       /** Format: int32 */
@@ -165,7 +170,38 @@ export type external = Record<string, never>;
 
 export interface operations {
 
-  postAddTask: {
+  putUpdateSession: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateSessionDto"];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: never;
+      };
+    };
+  };
+  deleteSession: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: never;
+      };
+    };
+  };
+  postAddSession: {
     requestBody: {
       content: {
         "application/json": components["schemas"]["AddSessionDto"];
@@ -228,37 +264,6 @@ export interface operations {
       };
     };
   };
-  deleteTask: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: never;
-      };
-    };
-  };
-  patchUpdateTask: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UpdateSessionDto"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: never;
-      };
-    };
-  };
   deleteTag: {
     parameters: {
       path: {
@@ -310,7 +315,7 @@ export interface operations {
       };
     };
   };
-  getAllTasks: {
+  getAllSessions: {
     parameters: {
       query: {
         page: number;

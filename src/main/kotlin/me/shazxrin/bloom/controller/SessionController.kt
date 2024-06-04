@@ -15,7 +15,7 @@ class SessionController @Autowired constructor(private val sessionService: Sessi
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
-    fun getAllTasks(
+    fun getAllSessions(
         @RequestParam(required = true) page: Int,
         @RequestParam(required = false) tagId: String?
     ): PagedListDto<ListSessionDto> {
@@ -24,21 +24,32 @@ class SessionController @Autowired constructor(private val sessionService: Sessi
             else sessionService.getAllSessions(page)
 
         return pagedList.map {
-            ListSessionDto(it.id ?: "", it.name, it.tag.id ?: "", it.totalDuration, it.startDateTime, it.endDateTime)
+            ListSessionDto(
+                it.id ?: "",
+                it.name,
+                ListSessionTagDto(
+                    it.tag.id ?: "",
+                    it.tag.name,
+                    it.tag.color,
+                ),
+                it.totalDuration,
+                it.startDateTime,
+                it.endDateTime
+            )
         }
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    fun postAddTask(@Valid @RequestBody addSessionDto: AddSessionDto) {
+    fun postAddSession(@Valid @RequestBody addSessionDto: AddSessionDto) {
         with(addSessionDto) {
-            sessionService.createSession(name, tagId, totalDuration, startTime, endTime)
+            sessionService.createSession(name, tagId, totalDuration, startDateTime, endDateTime)
         }
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/{id}")
-    fun patchUpdateTask(@PathVariable id: String, @Valid @RequestBody updateSessionDto: UpdateSessionDto) {
+    @PutMapping("/{id}")
+    fun putUpdateSession(@PathVariable id: String, @Valid @RequestBody updateSessionDto: UpdateSessionDto) {
         with(updateSessionDto) {
             sessionService.updateSession(id, name, tagId, totalDuration, startDateTime, endDateTime)
         }
@@ -46,7 +57,7 @@ class SessionController @Autowired constructor(private val sessionService: Sessi
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
-    fun deleteTask(@PathVariable id: String) {
+    fun deleteSession(@PathVariable id: String) {
         sessionService.deleteSession(id)
     }
 }
