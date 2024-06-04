@@ -77,14 +77,17 @@ class MainCurrentSessionService @Autowired constructor(
         val currentSession = sessionRepository.findByStatusIn(listOf(SessionStatus.RUNNING, SessionStatus.PAUSED))
             ?: throw NotFoundException("Current task does not exist")
 
+        val endDateTime = LocalDateTime.now()
+
         currentSession.remainingDuration = 0
         // Update used duration if running only.
         // Paused session has updated used duration already.
         if (currentSession.status == SessionStatus.RUNNING) {
-            val deltaDuration = Duration.between(currentSession.resumeDateTime, LocalDateTime.now()).toSeconds()
+            val deltaDuration = Duration.between(currentSession.resumeDateTime, endDateTime).toSeconds()
             currentSession.usedDuration += deltaDuration
         }
         currentSession.status = SessionStatus.COMPLETED
+        currentSession.endDateTime = endDateTime
 
         sessionRepository.save(currentSession)
     }
