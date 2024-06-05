@@ -16,7 +16,7 @@ class CurrentSessionController @Autowired constructor(private val sessionService
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
-    fun postCreateCurrentTask(@Valid @RequestBody createCurrentSessionDto: CreateCurrentSessionDto) {
+    fun postCreateCurrentSession(@Valid @RequestBody createCurrentSessionDto: CreateCurrentSessionDto) {
         with(createCurrentSessionDto) {
             sessionService.createCurrentSession(name, tagId, totalDuration)
         }
@@ -24,24 +24,24 @@ class CurrentSessionController @Autowired constructor(private val sessionService
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/pause")
-    fun postPauseCurrentTask() {
+    fun postPauseCurrentSession() {
         sessionService.pauseCurrentSession()
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/resume")
-    fun postResumeCurrentTask() {
+    fun postResumeCurrentSession() {
         sessionService.resumeCurrentSession()
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/end")
-    fun postEndCurrentTask() {
+    fun postEndCurrentSession() {
         sessionService.endCurrentSession()
     }
 
     @GetMapping
-    fun getCurrentTask(): ResponseEntity<CurrentSessionDto?> {
+    fun getCurrentSession(): ResponseEntity<CurrentSessionDto?> {
         val currentTask = sessionService.getCurrentSession()
 
         return if (currentTask == null) {

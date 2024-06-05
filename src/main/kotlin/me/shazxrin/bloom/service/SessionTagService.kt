@@ -12,7 +12,7 @@ interface SessionTagService {
 
     fun deleteTag(id: String)
 
-    fun updateTag(id: String, name: String?, color: String?)
+    fun updateTag(id: String, name: String, color: String)
 
     fun getAllTags(): Iterable<SessionTag>
 }
@@ -38,17 +38,14 @@ class MainSessionTagService @Autowired constructor(
         sessionTagRepository.deleteById(id)
     }
 
-    override fun updateTag(id: String, name: String?, color: String?) {
-        val existingCategory = sessionTagRepository.findByIdOrNull(id)
+    override fun updateTag(id: String, name: String, color: String) {
+        val updateTag = sessionTagRepository.findByIdOrNull(id)
             ?: throw NotFoundException("Tag does not exist!")
 
-        val updatedExistingCategory = SessionTag(
-            id = id,
-            name = name ?: existingCategory.name,
-            color = color ?: existingCategory.color
-        )
+        updateTag.name = name
+        updateTag.color = color
 
-        sessionTagRepository.save(updatedExistingCategory)
+        sessionTagRepository.save(updateTag)
     }
 
     override fun getAllTags(): Iterable<SessionTag> {

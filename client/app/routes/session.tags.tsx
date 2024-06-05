@@ -93,7 +93,7 @@ const clientAction = async ({ request }: ClientLoaderFunctionArgs) => {
         }
         const { id, name, color } = formData
 
-        const { error } = await apiClient.PATCH("/api/session/tag/{id}", {
+        const { error } = await apiClient.PUT("/api/session/tag/{id}", {
             params: {
                 path: {
                     id

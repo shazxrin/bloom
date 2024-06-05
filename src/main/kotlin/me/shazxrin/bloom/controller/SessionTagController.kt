@@ -22,8 +22,8 @@ class SessionTagController @Autowired constructor(private val sessionTagService:
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/{id}")
-    fun patchUpdateTag(
+    @PutMapping("/{id}")
+    fun putUpdateTag(
         @PathVariable id: String,
         @Valid @RequestBody updateTagDto: UpdateTagDto
     ) {

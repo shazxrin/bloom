@@ -9,6 +9,10 @@ export interface paths {
     put: operations["putUpdateSession"];
     delete: operations["deleteSession"];
   };
+  "/api/session/tag/{id}": {
+    put: operations["putUpdateTag"];
+    delete: operations["deleteTag"];
+  };
   "/api/session": {
     post: operations["postAddSession"];
   };
@@ -16,26 +20,22 @@ export interface paths {
     post: operations["postCreateTag"];
   };
   "/api/session/current/resume": {
-    post: operations["postResumeCurrentTask"];
+    post: operations["postResumeCurrentSession"];
   };
   "/api/session/current/pause": {
-    post: operations["postPauseCurrentTask"];
+    post: operations["postPauseCurrentSession"];
   };
   "/api/session/current/end": {
-    post: operations["postEndCurrentTask"];
+    post: operations["postEndCurrentSession"];
   };
   "/api/session/current/create": {
-    post: operations["postCreateCurrentTask"];
-  };
-  "/api/session/tag/{id}": {
-    delete: operations["deleteTag"];
-    patch: operations["patchUpdateTag"];
+    post: operations["postCreateCurrentSession"];
   };
   "/api/session/tag/all": {
     get: operations["getAllTags"];
   };
   "/api/session/current": {
-    get: operations["getCurrentTask"];
+    get: operations["getCurrentSession"];
   };
   "/api/session/all": {
     get: operations["getAllSessions"];
@@ -65,6 +65,10 @@ export interface components {
       /** Format: date-time */
       endDateTime: string;
     };
+    UpdateTagDto: {
+      name: string;
+      color: string;
+    };
     AddSessionDto: {
       name: string;
       tagId: string;
@@ -84,10 +88,6 @@ export interface components {
       tagId: string;
       /** Format: int64 */
       totalDuration: number;
-    };
-    UpdateTagDto: {
-      name: string;
-      color: string;
     };
     ListTagDto: {
       id: string;
@@ -201,6 +201,37 @@ export interface operations {
       };
     };
   };
+  putUpdateTag: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateTagDto"];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: never;
+      };
+    };
+  };
+  deleteTag: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: never;
+      };
+    };
+  };
   postAddSession: {
     requestBody: {
       content: {
@@ -227,7 +258,7 @@ export interface operations {
       };
     };
   };
-  postResumeCurrentTask: {
+  postResumeCurrentSession: {
     responses: {
       /** @description OK */
       200: {
@@ -235,7 +266,7 @@ export interface operations {
       };
     };
   };
-  postPauseCurrentTask: {
+  postPauseCurrentSession: {
     responses: {
       /** @description OK */
       200: {
@@ -243,7 +274,7 @@ export interface operations {
       };
     };
   };
-  postEndCurrentTask: {
+  postEndCurrentSession: {
     responses: {
       /** @description OK */
       200: {
@@ -251,7 +282,7 @@ export interface operations {
       };
     };
   };
-  postCreateCurrentTask: {
+  postCreateCurrentSession: {
     requestBody: {
       content: {
         "application/json": components["schemas"]["CreateCurrentSessionDto"];
@@ -260,37 +291,6 @@ export interface operations {
     responses: {
       /** @description Created */
       201: {
-        content: never;
-      };
-    };
-  };
-  deleteTag: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: never;
-      };
-    };
-  };
-  patchUpdateTag: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UpdateTagDto"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
         content: never;
       };
     };
@@ -305,7 +305,7 @@ export interface operations {
       };
     };
   };
-  getCurrentTask: {
+  getCurrentSession: {
     responses: {
       /** @description OK */
       200: {
