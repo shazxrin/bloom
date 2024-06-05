@@ -1,5 +1,5 @@
-import { Group, Stack, Table, Title, Text, Badge } from "@mantine/core"
-import { ClientActionFunctionArgs, ClientLoaderFunctionArgs, useLoaderData } from "@remix-run/react"
+import { Group, Stack, Table, Title, Text, Badge, Pagination } from "@mantine/core"
+import { ClientActionFunctionArgs, ClientLoaderFunctionArgs, useLoaderData, useSearchParams } from "@remix-run/react"
 import { methodNotAllowed, serverError } from "~/utils/responses.client"
 import apiClient from "~/api/apiClient.client"
 import { notifications } from "@mantine/notifications"
@@ -15,7 +15,7 @@ import { formatToLocalISO } from "~/utils/date-time.client"
 
 const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
     const url = new URL(request.url)
-    const page = parseInt(url.searchParams.get("page") ?? "0")
+    const page = parseInt(url.searchParams.get("page") ?? "1") - 1
 
     const {
         data: sessionsPage,
@@ -217,12 +217,14 @@ const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 const SessionHistory = () => {
     const { sessionsPage, tags } = useLoaderData<typeof clientLoader>()
 
+    const [searchParams, setSearchParams] = useSearchParams()
+
     return (
         <Stack px={ 16 } pt={ 24 } w="100%" h="100%">
             <Title>History</Title>
 
-            <Group mt={16} justify="start">
-                <SessionHistoryCreateButton tags={tags} />
+            <Group mt={ 16 } justify="start">
+                <SessionHistoryCreateButton tags={ tags }/>
             </Group>
 
             <Table highlightOnHover>
@@ -232,36 +234,41 @@ const SessionHistory = () => {
                         <Table.Th>Tag</Table.Th>
                         <Table.Th>Start Date Time</Table.Th>
                         <Table.Th>End Date Time</Table.Th>
-                        <Table.Th>{/* Actions */}</Table.Th>
+                        <Table.Th>{/* Actions */ }</Table.Th>
                     </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
-                    {sessionsPage.items.map(session => (
-                        <Table.Tr key={session.id}>
+                    { sessionsPage.items.map(session => (
+                        <Table.Tr key={ session.id }>
                             <Table.Td>
-                                <Text>{session.name}</Text>
+                                <Text>{ session.name }</Text>
                             </Table.Td>
                             <Table.Td>
-                                <Badge color={session.tag.color}>
-                                    {session.tag.name}
+                                <Badge color={ session.tag.color }>
+                                    { session.tag.name }
                                 </Badge>
                             </Table.Td>
                             <Table.Td>
-                                {format(session.startDateTime, "dd MMM yyyy HH:mm")}
+                                { format(session.startDateTime, "dd MMM yyyy HH:mm") }
                             </Table.Td>
                             <Table.Td>
-                                {session.endDateTime ? format(session.endDateTime, "dd MMM yyyy HH:mm") : "In Progress"}
+                                { session.endDateTime ? format(session.endDateTime, "dd MMM yyyy HH:mm") : "In Progress" }
                             </Table.Td>
                             <Table.Td>
                                 <Group justify="end" align="center">
-                                    <SessionHistoryEditActionButton session={session} tags={tags} />
-                                    <SessionHistoryDeleteActionButton session={session} />
+                                    <SessionHistoryEditActionButton session={ session } tags={ tags }/>
+                                    <SessionHistoryDeleteActionButton session={ session }/>
                                 </Group>
                             </Table.Td>
                         </Table.Tr>
-                    ))}
+                    )) }
                 </Table.Tbody>
             </Table>
+            <Pagination
+                total={ sessionsPage.totalPages }
+                value={ parseInt(searchParams.get("page") ?? "1") }
+                onChange={ (newPage) => setSearchParams({ page: newPage.toString() }) }
+            />
         </Stack>
     )
 }
