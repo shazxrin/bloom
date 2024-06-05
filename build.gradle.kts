@@ -49,6 +49,7 @@ dependencies {
         exclude(module = "mockito-core")
     }
     testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testRuntimeOnly("com.h2database:h2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("com.ninja-squad:springmockk:4.0.2")
 }
