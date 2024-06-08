@@ -1,4 +1,4 @@
-import { Stack, Title } from "@mantine/core"
+import { Divider, Stack, Title } from "@mantine/core"
 import { ClientActionFunctionArgs, ClientLoaderFunctionArgs, useLoaderData } from "@remix-run/react"
 import React from "react"
 import apiClient from "~/api/apiClient.client"
@@ -177,8 +177,10 @@ const SessionTimer = () => {
     const { currentSession, tags } = useLoaderData<typeof clientLoader>()
 
     return (
-        <Stack px={ 16 } pt={ 24 } w="100%" h="100%">
+        <Stack my={ 24 } w="100%" h="100%">
             <Title order={ 1 }>Timer</Title>
+
+            <Divider my={ 8 } />
 
             { currentSession
                 ? <SessionTimerDetails { ...currentSession } />

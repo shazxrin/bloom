@@ -1,4 +1,4 @@
-import { Group, Stack, Table, Title, Text, Badge, Pagination } from "@mantine/core"
+import { Group, Stack, Table, Title, Text, Badge, Pagination, Divider } from "@mantine/core"
 import { ClientActionFunctionArgs, ClientLoaderFunctionArgs, useLoaderData, useSearchParams } from "@remix-run/react"
 import { methodNotAllowed, serverError } from "~/utils/responses.client"
 import apiClient from "~/api/apiClient.client"
@@ -220,8 +220,10 @@ const SessionHistory = () => {
     const [searchParams, setSearchParams] = useSearchParams()
 
     return (
-        <Stack px={ 16 } pt={ 24 } w="100%" h="100%">
-            <Title>History</Title>
+        <Stack my={ 24 } w="100%" mih="100%">
+            <Title order={ 1 }>History</Title>
+
+            <Divider my={ 8 } />
 
             <Group mt={ 16 } justify="start">
                 <SessionHistoryCreateButton tags={ tags }/>

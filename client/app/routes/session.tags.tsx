@@ -1,4 +1,4 @@
-import { Badge, Group, Stack, Table, Text, Title } from "@mantine/core"
+import { Badge, Divider, Group, Stack, Table, Text, Title } from "@mantine/core"
 import React from "react"
 import { ClientLoaderFunctionArgs, useLoaderData } from "@remix-run/react"
 import apiClient from "~/api/apiClient.client"
@@ -178,8 +178,10 @@ const SessionTags = () => {
     const { tags } = useLoaderData<typeof clientLoader>()
 
     return (
-        <Stack px={ 16 } pt={ 24 } w="100%" h="100%">
+        <Stack my={ 24 } w="100%" mih="100%">
             <Title order={ 1 }>Tags</Title>
+
+            <Divider my={ 8 } />
 
             <Group mt={ 16 } justify="start">
                 <SessionTagsCreateButton/>

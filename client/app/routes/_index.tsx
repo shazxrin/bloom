@@ -72,14 +72,14 @@ const Index = () => {
     const { dailyOverview, weeklyOverview } = useLoaderData<typeof clientLoader>()
 
     return (
-        <Stack mb={ 24 } w="100%" mih="100%">
-            <Title order={ 1 } mt={ 24 }>Dashboard</Title>
+        <Stack my={ 24 } w="100%" mih="100%">
+            <Title order={ 1 }>Dashboard</Title>
 
-            <Divider my={ 8 }/>
+            <Divider my={ 8 } />
 
             <DashboardDailyOverview { ...dailyOverview } />
 
-            <Divider my={ 16 }/>
+            <Divider my={ 16 } />
 
             <DashboardWeeklyOverview { ...weeklyOverview } />
         </Stack>
