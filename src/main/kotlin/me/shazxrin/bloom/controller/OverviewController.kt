@@ -18,7 +18,10 @@ class OverviewController @Autowired constructor(private val overviewService: Ove
 
         return DailyOverviewDto(
             dailyOverview.sessionTagTotalDurations.map {
-                CategoryTotalDurationDto(it.tag.id ?: "", it.totalDuration)
+                SessionTagTotalDurationDto(
+                    SessionTagTotalDurationSessionTagDto(it.tag.id ?: "", it.tag.name, it.tag.color),
+                    it.totalDuration
+                )
             }
         )
     }
@@ -29,14 +32,14 @@ class OverviewController @Autowired constructor(private val overviewService: Ove
         val weeklyOverview = overviewService.getWeeklyOverview(date ?: LocalDate.now())
 
         return WeeklyOverviewDto(
-            categories = weeklyOverview.sessionTagTotalDurations.map {
-                CategoryTotalDurationDto(
-                    it.tag.id ?: "",
+            sessionTagTotalDurations = weeklyOverview.sessionTagTotalDurations.map {
+                SessionTagTotalDurationDto(
+                    SessionTagTotalDurationSessionTagDto(it.tag.id ?: "", it.tag.name, it.tag.color),
                     it.totalDuration
                 )
             },
-            dates = weeklyOverview.sessionDateTotalDurations.map {
-                DateTotalDurationDto(
+            sessionDateTotalDurations = weeklyOverview.sessionDateTotalDurations.map {
+                SessionDateTotalDurationDto(
                     LocalDate.of(it.year, it.month, it.dayOfMonth),
                     it.totalDuration
                 )
@@ -50,8 +53,8 @@ class OverviewController @Autowired constructor(private val overviewService: Ove
         val yearlyOverview = overviewService.getYearlyOverview()
 
         return YearlyOverviewDto(
-            dates = yearlyOverview.sessionDateTotalDurations.map {
-                DateTotalDurationDto(
+            sessionDateTotalDurations = yearlyOverview.sessionDateTotalDurations.map {
+                SessionDateTotalDurationDto(
                     LocalDate.of(it.year, it.month, it.dayOfMonth),
                     it.totalDuration
                 )

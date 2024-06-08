@@ -135,26 +135,31 @@ export interface components {
       totalPages: number;
       items: components["schemas"]["ListSessionDto"][];
     };
-    DateTotalDurationDto: {
+    SessionDateTotalDurationDto: {
       /** Format: date */
       date: string;
       /** Format: int64 */
       totalDuration: number;
     };
     YearlyOverviewDto: {
-      dates: components["schemas"]["DateTotalDurationDto"][];
+      sessionDateTotalDurations: components["schemas"]["SessionDateTotalDurationDto"][];
     };
-    CategoryTotalDurationDto: {
-      categoryId: string;
+    SessionTagTotalDurationDto: {
+      tag: components["schemas"]["SessionTagTotalDurationSessionTagDto"];
       /** Format: int64 */
       totalDuration: number;
     };
+    SessionTagTotalDurationSessionTagDto: {
+      id: string;
+      name: string;
+      color: string;
+    };
     WeeklyOverviewDto: {
-      categories: components["schemas"]["CategoryTotalDurationDto"][];
-      dates: components["schemas"]["DateTotalDurationDto"][];
+      sessionTagTotalDurations: components["schemas"]["SessionTagTotalDurationDto"][];
+      sessionDateTotalDurations: components["schemas"]["SessionDateTotalDurationDto"][];
     };
     DailyOverviewDto: {
-      categories: components["schemas"]["CategoryTotalDurationDto"][];
+      sessionTagTotalDurations: components["schemas"]["SessionTagTotalDurationDto"][];
     };
   };
   responses: never;
