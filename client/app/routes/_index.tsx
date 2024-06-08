@@ -1,5 +1,5 @@
 import type { MetaFunction } from "@remix-run/node"
-import { Stack, Title } from "@mantine/core"
+import { Divider, Stack, Title } from "@mantine/core"
 import React from "react"
 import apiClient from "~/api/apiClient.client"
 import { notifications } from "@mantine/notifications"
@@ -8,6 +8,7 @@ import { serverError } from "~/utils/responses.client"
 import { ClientLoaderFunctionArgs, useLoaderData } from "@remix-run/react"
 import { format } from "date-fns"
 import DashboardDailyOverview from "~/components/dashboard/daily-overview"
+import DashboardWeeklyOverview from "~/components/dashboard/weekly-overview"
 
 const meta: MetaFunction = () => {
     return [
@@ -19,11 +20,9 @@ const meta: MetaFunction = () => {
 const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
     const url = new URL(request.url)
     const dailyOverviewDate = format(url.searchParams.get("daily") ?? new Date, "yyyy-MM-dd")
+    const weeklyOverviewDate = format(url.searchParams.get("weekly") ?? new Date, "yyyy-MM-dd")
 
-    const {
-        data: dailyOverview,
-        error: getDailyOverviewError
-    } = await apiClient.GET("/api/overview/daily", {
+    const dailyOverviewPromise = apiClient.GET("/api/overview/daily", {
         params: {
             query: {
                 date: dailyOverviewDate
@@ -31,7 +30,17 @@ const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
         }
     })
 
-    if (getDailyOverviewError) {
+    const weeklyOverviewPromise = await apiClient.GET("/api/overview/weekly", {
+        params: {
+            query: {
+                date: weeklyOverviewDate
+            }
+        }
+    })
+
+    const [dailyOverviewResponse, weeklyOverviewResponse] = await Promise.all([dailyOverviewPromise, weeklyOverviewPromise])
+
+    if (dailyOverviewResponse.error) {
         notifications.show({
             color: "red",
             title: "Error occurred!",
@@ -42,19 +51,37 @@ const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
         throw serverError()
     }
 
+    if (weeklyOverviewResponse.error) {
+        notifications.show({
+            color: "red",
+            title: "Error occurred!",
+            message: "An error occurred while fetching weekly overview.",
+            icon: <IconAlertTriangle size={ 18 }/>
+        })
+
+        throw serverError()
+    }
+
     return {
-        dailyOverview
+        dailyOverview: dailyOverviewResponse.data,
+        weeklyOverview: weeklyOverviewResponse.data
     }
 }
 
 const Index = () => {
-    const { dailyOverview } = useLoaderData<typeof clientLoader>()
+    const { dailyOverview, weeklyOverview } = useLoaderData<typeof clientLoader>()
 
     return (
-        <Stack px={ 16 } pt={ 24 } w="100%" h="100%">
-            <Title order={ 1 }>Dashboard</Title>
+        <Stack mb={ 24 } w="100%" mih="100%">
+            <Title order={ 1 } mt={ 24 }>Dashboard</Title>
 
-            <DashboardDailyOverview {...dailyOverview} />
+            <Divider my={ 8 }/>
+
+            <DashboardDailyOverview { ...dailyOverview } />
+
+            <Divider my={ 16 }/>
+
+            <DashboardWeeklyOverview { ...weeklyOverview } />
         </Stack>
     )
 }
