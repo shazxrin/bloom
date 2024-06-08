@@ -1,4 +1,4 @@
-import { Card, Center, ColorSwatch, Grid, Group, Stack, Text, Title } from "@mantine/core"
+import { Card, Center, ColorSwatch, Divider, Grid, Group, Stack, Text, Title } from "@mantine/core"
 import { DatePickerInput } from "@mantine/dates"
 import { IconCalendar, IconMoodPuzzled } from "@tabler/icons-react"
 import { format, parse } from "date-fns"
@@ -6,6 +6,8 @@ import { PieChart } from "@mantine/charts"
 import { extractHours, extractMinutes } from "~/utils/duration.client"
 import React from "react"
 import { useSearchParams } from "@remix-run/react"
+
+const dateFormat = "yyyy-MM-dd"
 
 type DashboardDailyOverviewProps = {
     sessionTagTotalDurations: {
@@ -26,12 +28,12 @@ const DashboardDailyOverview = ({ sessionTagTotalDurations }: DashboardDailyOver
     const [searchParams, setSearchParams] = useSearchParams()
     const dailyOverviewDateStr = searchParams.get("daily")
     const dailyOverviewDate = dailyOverviewDateStr
-        ? parse(dailyOverviewDateStr, "yyyy-MM-dd", new Date())
+        ? parse(dailyOverviewDateStr, dateFormat, new Date())
         : new Date()
 
     return (
         <Stack mt={ 8 }>
-            <Group justify={ "space-between" }>
+            <Group justify={ "space-between" } mb={ 8 }>
                 <Title order={ 2 }>Daily</Title>
 
                 <Group>
@@ -43,7 +45,7 @@ const DashboardDailyOverview = ({ sessionTagTotalDurations }: DashboardDailyOver
                                 return
                             }
                             setSearchParams((prev) => {
-                                prev.set("daily", format(newDate, "yyyy-MM-dd"))
+                                prev.set("daily", format(newDate, dateFormat))
                                 return prev
                             })
                         } }
@@ -52,52 +54,61 @@ const DashboardDailyOverview = ({ sessionTagTotalDurations }: DashboardDailyOver
                 </Group>
             </Group>
 
-            <Card>
-                <Grid py={ 8 } px={ 4 } align={ "center" }>
+            <Card py={ 42 } px={ 42 }>
+                <Grid align={ "start" } gutter={ 24 }>
                     <Grid.Col span={ 4 }>
-                        <Center>
-                            {
-                                sessionTagTotalDurations.length === 0
-                                    ? <IconMoodPuzzled size={ 120 }/>
-                                    : <PieChart
-                                        data={
-                                            sessionTagTotalDurations.map((sessionTagTotalDuration) => ({
-                                                name: sessionTagTotalDuration.tag.name,
-                                                value: Number((sessionTagTotalDuration.totalDuration / 3600).toFixed(2)),
-                                                color: sessionTagTotalDuration.tag.color
-                                            }))
-                                        }
-                                        size={ 240 }
-                                        withTooltip
-                                        tooltipDataSource={ "segment" }
-                                        withLabels
-                                        withLabelsLine
-                                        labelsPosition={ "outside" }
-                                        labelsType={ "value" }
-                                        strokeWidth={ 1.5 }
-                                    />
-                            }
-                        </Center>
+                        <Group gap={ 0 } justify={ "space-between" }>
+                            <Stack>
+                                <Title c={ "dimmed" } order={ 5 } td={ "underline" }>CHART</Title>
+
+                                <Center>
+                                    {
+                                        sessionTagTotalDurations.length === 0
+                                            ? <IconMoodPuzzled size={ 120 }/>
+                                            : <PieChart
+                                                data={
+                                                    sessionTagTotalDurations.map((sessionTagTotalDuration) => ({
+                                                        name: sessionTagTotalDuration.tag.name,
+                                                        value: Number((sessionTagTotalDuration.totalDuration / 3600).toFixed(2)),
+                                                        color: sessionTagTotalDuration.tag.color
+                                                    }))
+                                                }
+                                                size={ 240 }
+                                                withTooltip
+                                                tooltipDataSource={ "segment" }
+                                                withLabels
+                                                withLabelsLine
+                                                labelsPosition={ "outside" }
+                                                labelsType={ "value" }
+                                                strokeWidth={ 1.5 }
+                                            />
+                                    }
+                                </Center>
+                            </Stack>
+
+                            <Divider orientation={ "vertical" }/>
+                        </Group>
                     </Grid.Col>
 
+
                     <Grid.Col span={ 8 }>
-                        <Stack my={ 16 }>
+                        <Stack>
                             <Stack>
-                                <Title order={ 4 }>SUMMARY</Title>
+                                <Title c={ "dimmed" } order={ 5 } td={ "underline" }>SUMMARY</Title>
                                 <Text size={ "24px" }>
                                     { `${ extractHours(dailyTotalDurationSum) } hours and ${ extractMinutes(dailyTotalDurationSum) } minutes` }
                                 </Text>
                             </Stack>
 
-                            <Stack>
-                                <Title order={ 4 } mt={ 16 }>BREAKDOWN</Title>
+                            <Stack mt={ 16 }>
+                                <Title c={ "dimmed" } order={ 5 } td={ "underline" }>BREAKDOWN</Title>
                                 {
                                     sessionTagTotalDurations.length === 0
                                         ? <Text size={ "sm" }> No sessions created</Text>
                                         : <Group>
                                             {
                                                 sessionTagTotalDurations.map((sessionTagTotalDuration) => (
-                                                    <Group>
+                                                    <Group key={ sessionTagTotalDuration.tag.id }>
                                                         <ColorSwatch color={ sessionTagTotalDuration.tag.color }
                                                                      size={ "16px" }/>
                                                         <Stack gap={ 1 }>
