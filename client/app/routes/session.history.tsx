@@ -225,7 +225,12 @@ const SessionHistory = () => {
 
             <Divider my={ 8 } />
 
-            <Group mt={ 16 } justify="start">
+            <Group justify="space-between">
+                <Pagination
+                    total={ sessionsPage.totalPages }
+                    value={ parseInt(searchParams.get("page") ?? "1") }
+                    onChange={ (newPage) => setSearchParams({ page: newPage.toString() }) }
+                />
                 <SessionHistoryCreateButton tags={ tags }/>
             </Group>
 
@@ -266,11 +271,6 @@ const SessionHistory = () => {
                     )) }
                 </Table.Tbody>
             </Table>
-            <Pagination
-                total={ sessionsPage.totalPages }
-                value={ parseInt(searchParams.get("page") ?? "1") }
-                onChange={ (newPage) => setSearchParams({ page: newPage.toString() }) }
-            />
         </Stack>
     )
 }
