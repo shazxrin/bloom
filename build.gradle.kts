@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "me.shazxrin"
-version = "1.8"
+version = "2.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -84,7 +84,7 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-tasks.named("forkedSpringBootRun").configure {
+tasks.forkedSpringBootRun.configure {
     dependsOn(tasks.named("pnpmSetup"))
     doNotTrackState("Workaround!")
 }
