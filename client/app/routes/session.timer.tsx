@@ -96,9 +96,9 @@ const clientAction = async ({ request }: ClientActionFunctionArgs) => {
             }
 
             notifications.show({
-                color: "pink",
-                title: "New session started",
-                message: "Session successfully created.",
+                color: "green",
+                title: "Session started",
+                message: "Session successfully started.",
                 icon: <IconSparkles size={ 18 }/>
             })
         } else if (formData.intent === "pause") {
@@ -116,7 +116,7 @@ const clientAction = async ({ request }: ClientActionFunctionArgs) => {
             }
 
             notifications.show({
-                color: "pink",
+                color: "orange",
                 title: "Session paused",
                 message: "Session successfully paused.",
                 icon: <IconPlayerPause size={ 18 }/>
@@ -136,7 +136,7 @@ const clientAction = async ({ request }: ClientActionFunctionArgs) => {
             }
 
             notifications.show({
-                color: "pink",
+                color: "green",
                 title: "Session resumed",
                 message: "Session successfully resumed.",
                 icon: <IconPlayerPause size={ 18 }/>
@@ -156,7 +156,7 @@ const clientAction = async ({ request }: ClientActionFunctionArgs) => {
             }
 
             notifications.show({
-                color: "pink",
+                color: "green",
                 title: "Session ended",
                 message: "Session successfully ended.",
                 icon: <IconCheck size={ 18 }/>

@@ -68,9 +68,9 @@ const clientAction = async ({ request }: ClientLoaderFunctionArgs) => {
         }
 
         notifications.show({
-            color: "pink",
+            color: "green",
             title: "Tag created",
-            message: "Session successfully created.",
+            message: "Tag successfully created.",
             icon: <IconSparkles size={ 18 }/>
         })
 
@@ -117,9 +117,9 @@ const clientAction = async ({ request }: ClientLoaderFunctionArgs) => {
         }
 
         notifications.show({
-            color: "pink",
+            color: "blue",
             title: "Tag updated",
-            message: "Session successfully updated.",
+            message: "Tag successfully updated.",
             icon: <IconPencil size={ 18 }/>
         })
 
@@ -160,9 +160,9 @@ const clientAction = async ({ request }: ClientLoaderFunctionArgs) => {
         }
 
         notifications.show({
-            color: "pink",
-            title: "Tag updated",
-            message: "Session successfully updated.",
+            color: "red",
+            title: "Tag deleted",
+            message: "Tag successfully deleted.",
             icon: <IconTrash size={ 18 }/>
         })
 
