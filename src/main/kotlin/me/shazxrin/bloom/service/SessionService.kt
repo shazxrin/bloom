@@ -1,9 +1,11 @@
 package me.shazxrin.bloom.service
 
+import jakarta.transaction.Transactional
 import me.shazxrin.bloom.exception.NotFoundException
 import me.shazxrin.bloom.model.paging.PagedList
 import me.shazxrin.bloom.model.session.Session
 import me.shazxrin.bloom.model.session.SessionStatus
+import me.shazxrin.bloom.repository.SessionNotificationRepository
 import me.shazxrin.bloom.repository.SessionTagRepository
 import me.shazxrin.bloom.repository.SessionRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,7 +29,8 @@ interface SessionService {
 @Service
 class MainSessionService @Autowired constructor(
     private val sessionRepository: SessionRepository,
-    private val sessionTagRepository: SessionTagRepository
+    private val sessionTagRepository: SessionTagRepository,
+    private val sessionNotificationRepository: SessionNotificationRepository
 ) : SessionService {
     override fun getAllSessions(page: Int): PagedList<Session> {
         val pageable = PageRequest.of(page, 10)
@@ -79,7 +82,9 @@ class MainSessionService @Autowired constructor(
         sessionRepository.save(newSession)
     }
 
+    @Transactional
     override fun deleteSession(id: String) {
+        sessionNotificationRepository.deleteBySessionId(id)
         sessionRepository.deleteById(id)
     }
 
