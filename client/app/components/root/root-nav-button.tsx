@@ -7,9 +7,10 @@ type RootNavButtonProps = {
     to: string
     label: string
     icon: React.ReactNode
+    onClick: () => void
 }
 
-const RootNavButton = ({ to, label, icon }: RootNavButtonProps) => {
+const RootNavButton = ({ to, label, icon, onClick }: RootNavButtonProps) => {
     const location = useLocation()
 
     return (
@@ -20,6 +21,7 @@ const RootNavButton = ({ to, label, icon }: RootNavButtonProps) => {
             component={ Link }
             to={ to }
             fullWidth
+            onClick={() => onClick()}
         >
             { label }
         </Button>
