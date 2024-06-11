@@ -1,5 +1,6 @@
 package me.shazxrin.bloom.service
 
+import me.shazxrin.bloom.dto.notification.NotificationMessageDto
 import me.shazxrin.bloom.model.session.Session
 import me.shazxrin.bloom.model.notification.SessionNotification
 import me.shazxrin.bloom.repository.SessionNotificationRepository
@@ -17,17 +18,22 @@ interface SessionNotificationService {
 @Service
 class MainSessionNotificationService @Autowired constructor(
     private val sessionNotificationRepository: SessionNotificationRepository,
-    private val rabbitTemplate: RabbitTemplate
+    private val rabbitTemplate: RabbitTemplate,
+    @Value("\${bloom.notification-queue-name}") private val notificationQueueName: String
 ) : SessionNotificationService {
-    @Value("\${bloom.mq.queue}")
-    lateinit var queueName: String
-
     override fun checkHasSessionCompletionNotified(sessionId: String): Boolean {
         return sessionNotificationRepository.existsBySessionId(sessionId)
     }
 
     override fun notifyCurrentSessionCompletion(session: Session) {
-        rabbitTemplate.convertAndSend(queueName, "<b>[Bloom] :: Timer Completed</b>\n\n${session.name} has been completed")
+        rabbitTemplate.convertAndSend(
+            notificationQueueName,
+            NotificationMessageDto(
+                "Bloom",
+                "Timer Completed",
+                "${session.name} session for tag ${session.tag.name} has completed"
+            )
+        )
 
         sessionNotificationRepository.save(SessionNotification(id = null, session = session))
     }

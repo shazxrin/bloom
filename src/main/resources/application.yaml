@@ -25,5 +25,4 @@ management:
           - "health"
           - "metrics"
 bloom:
-  mq:
-    queue: whistle
+  notification-queue-name: notification

@@ -32,7 +32,7 @@ class CurrentTaskCompletionSchedule @Autowired constructor(
             return
         }
 
-        if (LocalDateTime.now().isAfter(currentSession.modifiedDateTime.plusSeconds(currentSession.remainingDuration))) {
+        if (LocalDateTime.now().isAfter(currentSession.resumeDateTime.plusSeconds(currentSession.remainingDuration))) {
             LOGGER.info("Notifying current task completion")
             sessionNotificationService.notifyCurrentSessionCompletion(currentSession)
         }
