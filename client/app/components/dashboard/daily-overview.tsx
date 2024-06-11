@@ -1,4 +1,4 @@
-import { Card, Center, ColorSwatch, Divider, Grid, Group, Stack, Text, Title } from "@mantine/core"
+import { Card, Center, ColorSwatch, Divider, Grid, Group, Stack, Text, Title, useMatches } from "@mantine/core"
 import { DatePickerInput } from "@mantine/dates"
 import { IconCalendar, IconMoodPuzzled } from "@tabler/icons-react"
 import { format, parse } from "date-fns"
@@ -31,6 +31,15 @@ const DashboardDailyOverview = ({ sessionTagTotalDurations }: DashboardDailyOver
         ? parse(dailyOverviewDateStr, dateFormat, new Date())
         : new Date()
 
+    const chartColSpan = useMatches({
+        sm: 1,
+        lg: 4
+    })
+    const summaryBreakdownColSpan = useMatches({
+        sm: 1,
+        lg: 8
+    })
+
     return (
         <Stack mt={ 8 }>
             <Group justify={ "space-between" } mb={ 8 }>
@@ -56,7 +65,7 @@ const DashboardDailyOverview = ({ sessionTagTotalDurations }: DashboardDailyOver
 
             <Card py={ 42 } px={ 42 }>
                 <Grid align={ "start" } gutter={ 24 }>
-                    <Grid.Col span={ 4 }>
+                    <Grid.Col span={ chartColSpan }>
                         <Group gap={ 0 } justify={ "space-between" }>
                             <Stack>
                                 <Title c={ "dimmed" } order={ 5 } td={ "underline" }>CHART</Title>
@@ -86,12 +95,10 @@ const DashboardDailyOverview = ({ sessionTagTotalDurations }: DashboardDailyOver
                                 </Center>
                             </Stack>
 
-                            <Divider orientation={ "vertical" }/>
                         </Group>
                     </Grid.Col>
 
-
-                    <Grid.Col span={ 8 }>
+                    <Grid.Col span={ summaryBreakdownColSpan }>
                         <Stack>
                             <Stack>
                                 <Title c={ "dimmed" } order={ 5 } td={ "underline" }>SUMMARY</Title>
