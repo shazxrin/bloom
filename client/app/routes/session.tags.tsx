@@ -183,7 +183,7 @@ const SessionTags = () => {
 
             <Divider my={ 8 } />
 
-            <Group justify="end">
+            <Group justify="space-between">
                 <SessionTagsCreateButton/>
             </Group>
 

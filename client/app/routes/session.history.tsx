@@ -226,12 +226,13 @@ const SessionHistory = () => {
             <Divider my={ 8 } />
 
             <Group justify="space-between">
+                <SessionHistoryCreateButton tags={ tags }/>
+
                 <Pagination
                     total={ sessionsPage.totalPages }
                     value={ parseInt(searchParams.get("page") ?? "1") }
                     onChange={ (newPage) => setSearchParams({ page: newPage.toString() }) }
                 />
-                <SessionHistoryCreateButton tags={ tags }/>
             </Group>
 
             <Table highlightOnHover>
