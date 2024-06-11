@@ -257,10 +257,10 @@ const SessionHistory = () => {
                                 </Badge>
                             </Table.Td>
                             <Table.Td>
-                                { format(session.startDateTime, "dd MMM yyyy HH:mm") }
+                                { format(session.startDateTime, "dd MMM yyyy h:mm aa") }
                             </Table.Td>
                             <Table.Td>
-                                { session.endDateTime ? format(session.endDateTime, "dd MMM yyyy HH:mm") : "In Progress" }
+                                { session.endDateTime ? format(session.endDateTime, "dd MMM yyyy h:mm aa") : "In Progress" }
                             </Table.Td>
                             <Table.Td>
                                 <Group justify="end" align="center">
