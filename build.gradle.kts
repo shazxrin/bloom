@@ -16,7 +16,7 @@ plugins {
 }
 
 group = "me.shazxrin"
-version = "2.0"
+version = "2.1"
 
 kotlin {
     compilerOptions {
