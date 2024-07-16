@@ -91,7 +91,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                         />
                     </AppShell.Section>
 
-                    <Divider/>
+                    <Divider my={4} />
 
                     <AppShell.Section grow my="md" component={ ScrollArea }>
                         <Stack gap={ 4 }>

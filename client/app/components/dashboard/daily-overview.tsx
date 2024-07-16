@@ -43,7 +43,7 @@ const DashboardDailyOverview = ({ sessionTagTotalDurations }: DashboardDailyOver
     return (
         <Stack mt={ 8 }>
             <Group justify={ "space-between" } mb={ 8 }>
-                <Title order={ 2 }>Daily</Title>
+                <Title order={ 2 } c={ "dimmed" }>Daily</Title>
 
                 <Group>
                     <DatePickerInput

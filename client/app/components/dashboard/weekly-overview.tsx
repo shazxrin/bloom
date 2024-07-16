@@ -61,7 +61,7 @@ const DashboardWeeklyOverview = ({ sessionDateTotalDurations, sessionTagTotalDur
     return (
         <Stack>
             <Group justify={ "space-between" } mb={ 8 }>
-                <Title order={ 2 }>Weekly</Title>
+                <Title order={ 2 } c={ "dimmed" }>Weekly</Title>
 
                 <Group>
                     <DatePickerInput

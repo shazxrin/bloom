@@ -220,10 +220,10 @@ const SessionHistory = () => {
     const [searchParams, setSearchParams] = useSearchParams()
 
     return (
-        <Stack my={ 24 } w="100%" mih="100%">
+        <Stack pt={ 8 } pb={ 24 } w="100%" mih="100%">
             <Title order={ 1 }>History</Title>
 
-            <Divider my={ 8 } />
+            <Divider />
 
             <Group justify="space-between">
                 <SessionHistoryCreateButton tags={ tags }/>
