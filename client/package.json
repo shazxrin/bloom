@@ -23,7 +23,7 @@
         "@remix-run/serve": "^2.9.2",
         "@tabler/icons-react": "^3.5.0",
         "date-fns": "^3.6.0",
-        "dayjs": "^1.11.11",
+        "dayjs": "^1.11.12",
         "framer-motion": "^11.2.6",
         "isbot": "^4.4.0",
         "openapi-fetch": "^0.9.7",
