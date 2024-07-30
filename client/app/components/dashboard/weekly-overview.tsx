@@ -60,7 +60,7 @@ const DashboardWeeklyOverview = ({ sessionDateTotalDurations, sessionTagTotalDur
 
     return (
         <Stack>
-            <Group justify={ "space-between" } mb={ 8 }>
+            <Group justify={ "space-between" }>
                 <Title order={ 2 } c={ "dimmed" }>Weekly</Title>
 
                 <Group>
@@ -81,7 +81,7 @@ const DashboardWeeklyOverview = ({ sessionDateTotalDurations, sessionTagTotalDur
                 </Group>
             </Group>
 
-            <Card py={ 42 } px={ 42 }>
+            <Card py={ 32 } px={ 32 }>
                 <Stack>
                     <Title c={ "dimmed" } order={ 5 } td={ "underline" }>GRAPH</Title>
                     <Center>

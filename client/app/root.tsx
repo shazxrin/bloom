@@ -10,7 +10,7 @@ import {
     Divider,
     Image,
     Loader,
-    MantineProvider,
+    MantineProvider, rem,
     ScrollArea,
     Stack,
 } from "@mantine/core"
@@ -74,6 +74,23 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 primaryColor: "pink",
                 fontFamily: "DM Sans, sans-serif",
                 fontFamilyMonospace: "DM Mono, monospace",
+                fontSizes: {
+                    xs: rem(11),
+                    sm: rem(12),
+                    md: rem(14),
+                    lg: rem(16),
+                    xl: rem(18),
+                },
+                headings: {
+                    sizes: {
+                        h1: { fontSize: rem(28) },
+                        h2: { fontSize: rem(24) },
+                        h3: { fontSize: rem(18) },
+                        h4: { fontSize: rem(16) },
+                        h5: { fontSize: rem(14) },
+                        h6: { fontSize: rem(12) },
+                    }
+                }
             } }
         >
             <AppShell

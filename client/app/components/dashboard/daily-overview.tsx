@@ -1,10 +1,9 @@
-import { Card, Center, ColorSwatch, Divider, Grid, Group, Stack, Text, Title, useMatches } from "@mantine/core"
+import {Box, Card, Center, ColorSwatch, Group, Stack, Text, Title, useMantineTheme} from "@mantine/core"
 import { DatePickerInput } from "@mantine/dates"
 import { IconCalendar, IconMoodPuzzled } from "@tabler/icons-react"
 import { format, parse } from "date-fns"
 import { PieChart } from "@mantine/charts"
 import { extractHours, extractMinutes } from "~/utils/duration.client"
-import React from "react"
 import { useSearchParams } from "@remix-run/react"
 
 const dateFormat = "yyyy-MM-dd"
@@ -31,18 +30,11 @@ const DashboardDailyOverview = ({ sessionTagTotalDurations }: DashboardDailyOver
         ? parse(dailyOverviewDateStr, dateFormat, new Date())
         : new Date()
 
-    const chartColSpan = useMatches({
-        sm: 1,
-        lg: 4
-    })
-    const summaryBreakdownColSpan = useMatches({
-        sm: 1,
-        lg: 8
-    })
+    const theme = useMantineTheme()
 
     return (
-        <Stack mt={ 8 }>
-            <Group justify={ "space-between" } mb={ 8 }>
+        <Stack>
+            <Group justify={ "space-between" }>
                 <Title order={ 2 } c={ "dimmed" }>Daily</Title>
 
                 <Group>
@@ -63,9 +55,8 @@ const DashboardDailyOverview = ({ sessionTagTotalDurations }: DashboardDailyOver
                 </Group>
             </Group>
 
-            <Card py={ 42 } px={ 42 }>
-                <Grid align={ "start" } gutter={ 24 }>
-                    <Grid.Col span={ chartColSpan }>
+            <Card py={ 32 } px={ 32 }>
+                <Group align={ "start" }>
                         <Group gap={ 0 } justify={ "space-between" }>
                             <Stack>
                                 <Title c={ "dimmed" } order={ 5 } td={ "underline" }>CHART</Title>
@@ -73,7 +64,9 @@ const DashboardDailyOverview = ({ sessionTagTotalDurations }: DashboardDailyOver
                                 <Center>
                                     {
                                         sessionTagTotalDurations.length === 0
-                                            ? <IconMoodPuzzled size={ 120 }/>
+                                            ? <Box p={ 32 }>
+                                                <IconMoodPuzzled size={ 160 } strokeWidth={ 1.25 } color={ theme.colors.pink[7] } />
+                                            </Box>
                                             : <PieChart
                                                 data={
                                                     sessionTagTotalDurations.map((sessionTagTotalDuration) => ({
@@ -96,9 +89,7 @@ const DashboardDailyOverview = ({ sessionTagTotalDurations }: DashboardDailyOver
                             </Stack>
 
                         </Group>
-                    </Grid.Col>
 
-                    <Grid.Col span={ summaryBreakdownColSpan }>
                         <Stack>
                             <Stack>
                                 <Title c={ "dimmed" } order={ 5 } td={ "underline" }>SUMMARY</Title>
@@ -111,7 +102,7 @@ const DashboardDailyOverview = ({ sessionTagTotalDurations }: DashboardDailyOver
                                 <Title c={ "dimmed" } order={ 5 } td={ "underline" }>BREAKDOWN</Title>
                                 {
                                     sessionTagTotalDurations.length === 0
-                                        ? <Text size={ "sm" }> No sessions created</Text>
+                                        ? <Text size={ "sm" } c={ "dimmed" }> No sessions created</Text>
                                         : <Group>
                                             {
                                                 sessionTagTotalDurations.map((sessionTagTotalDuration) => (
@@ -133,8 +124,7 @@ const DashboardDailyOverview = ({ sessionTagTotalDurations }: DashboardDailyOver
                                 }
                             </Stack>
                         </Stack>
-                    </Grid.Col>
-                </Grid>
+                </Group>
             </Card>
         </Stack>
     )

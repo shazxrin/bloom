@@ -177,7 +177,7 @@ const SessionTimer = () => {
     const { currentSession, tags } = useLoaderData<typeof clientLoader>()
 
     return (
-        <Stack pt={ 8 } w="100%" h="100%">
+        <Stack pt={ 16 } w="100%" h="100%">
             <Title order={ 1 }>Timer</Title>
 
             <Divider />

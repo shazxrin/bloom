@@ -178,7 +178,7 @@ const SessionTags = () => {
     const { tags } = useLoaderData<typeof clientLoader>()
 
     return (
-        <Stack pt={ 8 } pb={ 24 } w="100%" mih="100%">
+        <Stack pt={ 16 } pb={ 24 } w="100%" mih="100%">
             <Title order={ 1 }>Tags</Title>
 
             <Divider />
