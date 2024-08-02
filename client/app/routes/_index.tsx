@@ -9,6 +9,7 @@ import { ClientLoaderFunctionArgs, useLoaderData } from "@remix-run/react"
 import { format } from "date-fns"
 import DashboardDailyOverview from "~/components/dashboard/daily-overview"
 import DashboardWeeklyOverview from "~/components/dashboard/weekly-overview"
+import DashboardYearlyOverview from "~/components/dashboard/yearly-overview";
 
 const meta: MetaFunction = () => {
     return [
@@ -38,7 +39,10 @@ const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
         }
     })
 
-    const [dailyOverviewResponse, weeklyOverviewResponse] = await Promise.all([dailyOverviewPromise, weeklyOverviewPromise])
+    const yearlyOverviewPromise = await apiClient.GET("/api/overview/yearly")
+
+    const [dailyOverviewResponse, weeklyOverviewResponse, yearlyOverviewResponse]
+        = await Promise.all([dailyOverviewPromise, weeklyOverviewPromise, yearlyOverviewPromise])
 
     if (dailyOverviewResponse.error) {
         notifications.show({
@@ -62,14 +66,27 @@ const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
         throw serverError()
     }
 
+    if (yearlyOverviewResponse.error) {
+        notifications.show({
+            color: "red",
+            title: "Error occurred!",
+            message: "An error occurred while fetching yearly overview.",
+            icon: <IconAlertTriangle size={ 18 }/>
+        })
+
+        throw serverError()
+    }
+
     return {
         dailyOverview: dailyOverviewResponse.data,
-        weeklyOverview: weeklyOverviewResponse.data
+        weeklyOverview: weeklyOverviewResponse.data,
+        yearlyOverview: yearlyOverviewResponse.data
     }
 }
 
 const Index = () => {
-    const { dailyOverview, weeklyOverview } = useLoaderData<typeof clientLoader>()
+    const { dailyOverview, weeklyOverview, yearlyOverview }
+        = useLoaderData<typeof clientLoader>()
 
     return (
         <Stack pt={ 16 } pb={ 24 } w="100%" mih="100%">
@@ -82,6 +99,10 @@ const Index = () => {
             <Divider my={ 12 } />
 
             <DashboardWeeklyOverview { ...weeklyOverview } />
+
+            <Divider my={ 12 } />
+
+            <DashboardYearlyOverview { ...yearlyOverview } />
         </Stack>
     )
 }
