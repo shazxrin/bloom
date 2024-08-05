@@ -20,7 +20,7 @@
         "@mantine/nprogress": "^7.10.0",
         "@remix-run/node": "^2.9.2",
         "@remix-run/react": "^2.9.2",
-        "@remix-run/serve": "^2.9.2",
+        "@remix-run/serve": "^2.11.0",
         "@tabler/icons-react": "^3.5.0",
         "date-fns": "^3.6.0",
         "dayjs": "^1.11.11",
