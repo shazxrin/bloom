@@ -1,8 +1,10 @@
-import React from "react";
-import { Badge, Card, Group, Stack, Title, useMantineTheme } from "@mantine/core";
-import { Calendar } from "@mantine/dates";
-import { format } from "date-fns";
+import { Badge, Card, Group, Stack, Title } from "@mantine/core";
+import { Calendar, YearPickerInput } from "@mantine/dates";
+import { format, parse } from "date-fns";
+import { IconCalendar } from "@tabler/icons-react";
+import { useSearchParams } from "@remix-run/react";
 
+const yearFormat = "yyyy"
 const dateFormat = "yyyy-MM-dd"
 const dayFormat = "d"
 const maxHours = 6
@@ -15,13 +17,38 @@ type DashboardYearlyOverviewProps = {
 }
 
 const DashboardYearlyOverview = ({ sessionDateTotalDurations }: DashboardYearlyOverviewProps) => {
+    const [searchParams, setSearchParams] = useSearchParams()
+    const yearlyOverviewYearStr = searchParams.get("yearly")
+    const yearlyOverviewDate = yearlyOverviewYearStr
+                               ? parse(yearlyOverviewYearStr, yearFormat, new Date())
+                               : new Date()
+
     const dateTotalDurationMap = new Map(
         sessionDateTotalDurations.map(session => [session.date, session.totalDuration])
     )
 
     return (
         <Stack>
-            <Title order={ 2 } c={ "dimmed" }>Yearly</Title>
+            <Group justify={ "space-between" }>
+                <Title order={ 2 } c={ "dimmed" }>Yearly</Title>
+
+                <Group>
+                    <YearPickerInput
+                        value={ yearlyOverviewDate }
+                        leftSection={ <IconCalendar size={ 18 }/> }
+                        onChange={ (newDate) => {
+                            if (newDate == null) {
+                                return
+                            }
+                            setSearchParams((prev) => {
+                                prev.set("yearly", format(newDate, yearFormat))
+                                return prev
+                            })
+                        } }
+                        maxDate={ new Date() }
+                    />
+                </Group>
+            </Group>
 
             <Card py={ 32 } px={ 32 }>
                 <Group justify={ "center" } align={ "start" }>
@@ -31,7 +58,7 @@ const DashboardYearlyOverview = ({ sessionDateTotalDurations }: DashboardYearlyO
                                 key={ value }
                                 static={ true }
                                 hideOutsideDates={ true }
-                                date={ new Date(2024, value) }
+                                date={ new Date(yearlyOverviewDate.getFullYear(), value) }
                                 size={ "xs" }
                                 renderDay={
                                     (date) => {
