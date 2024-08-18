@@ -14,7 +14,7 @@ interface OverviewService {
 
     fun getWeeklyOverview(date: LocalDate): WeeklyOverview
 
-    fun getYearlyOverview(): YearlyOverview
+    fun getYearlyOverview(year: Int): YearlyOverview
 }
 
 @Service
@@ -49,13 +49,13 @@ class MainOverviewService @Autowired constructor(
         )
     }
 
-    override fun getYearlyOverview(): YearlyOverview {
+    override fun getYearlyOverview(year: Int): YearlyOverview {
         val fromDateTime = LocalDateTime.of(
-            LocalDate.now().withMonth(1).withDayOfYear(1),
+            LocalDate.now().withMonth(1).withDayOfYear(1).withYear(year),
             LocalTime.MIN
         )
         val toDateTime = LocalDateTime.of(
-            LocalDate.now().withMonth(12).withDayOfMonth(31),
+            LocalDate.now().withMonth(12).withDayOfMonth(31).withYear(year),
             LocalTime.MAX
         )
 

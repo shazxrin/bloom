@@ -83,10 +83,11 @@ class OverviewSessionTest {
     @Test
     fun `Get yearly overview gets correct date range`() {
         // Arrange
+        val year = 2024
         every { overviewRepository.findSessionsTotalDurationGroupByDate(any(), any()) } returns listOf()
 
         // Act
-        overviewService.getYearlyOverview()
+        overviewService.getYearlyOverview(year)
 
         // Assert
         val fromDateTime = LocalDateTime.of(

@@ -49,8 +49,8 @@ class OverviewController @Autowired constructor(private val overviewService: Ove
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/yearly")
-    fun getYearlyOverview(): YearlyOverviewDto {
-        val yearlyOverview = overviewService.getYearlyOverview()
+    fun getYearlyOverview(@RequestParam("year") year: Int?): YearlyOverviewDto {
+        val yearlyOverview = overviewService.getYearlyOverview(year ?: LocalDate.now().year)
 
         return YearlyOverviewDto(
             sessionDateTotalDurations = yearlyOverview.sessionDateTotalDurations.map {

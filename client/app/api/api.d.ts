@@ -337,6 +337,11 @@ export interface operations {
     };
   };
   getYearlyOverview: {
+    parameters: {
+      query?: {
+        year?: number;
+      };
+    };
     responses: {
       /** @description OK */
       200: {

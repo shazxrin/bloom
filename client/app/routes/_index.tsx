@@ -22,6 +22,7 @@ const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
     const url = new URL(request.url)
     const dailyOverviewDate = format(url.searchParams.get("daily") ?? new Date, "yyyy-MM-dd")
     const weeklyOverviewDate = format(url.searchParams.get("weekly") ?? new Date, "yyyy-MM-dd")
+    const yearlyOverviewDate = format(url.searchParams.get("yearly") ?? new Date, "yyyy")
 
     const dailyOverviewPromise = apiClient.GET("/api/overview/daily", {
         params: {
@@ -39,7 +40,13 @@ const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
         }
     })
 
-    const yearlyOverviewPromise = await apiClient.GET("/api/overview/yearly")
+    const yearlyOverviewPromise = await apiClient.GET("/api/overview/yearly", {
+        params: {
+            query: {
+                year: parseInt(yearlyOverviewDate)
+            }
+        }
+    })
 
     const [dailyOverviewResponse, weeklyOverviewResponse, yearlyOverviewResponse]
         = await Promise.all([dailyOverviewPromise, weeklyOverviewPromise, yearlyOverviewPromise])
