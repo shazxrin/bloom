@@ -56,6 +56,7 @@ const DashboardYearlyOverview = ({ sessionDateTotalDurations }: DashboardYearlyO
                         [...Array(12).keys()].map(value => (
                             <Calendar
                                 key={ value }
+                                maxLevel={ "month" }
                                 static={ true }
                                 hideOutsideDates={ true }
                                 date={ new Date(yearlyOverviewDate.getFullYear(), value) }
