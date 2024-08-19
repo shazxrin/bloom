@@ -1,10 +1,9 @@
-import { Card, Center, ColorSwatch, Divider, Group, Stack, Text, Title } from "@mantine/core"
+import { ActionIcon, Card, Center, ColorSwatch, Divider, Group, Stack, Text, Title } from "@mantine/core"
 import { DatePickerInput } from "@mantine/dates"
-import { IconCalendar } from "@tabler/icons-react"
-import { addDays, format, parse, startOfWeek } from "date-fns"
+import { IconCalendar, IconChevronLeft, IconChevronRight } from "@tabler/icons-react"
+import { addDays, format, isAfter, parse, startOfWeek } from "date-fns"
 import { LineChart } from "@mantine/charts"
 import { extractHours, extractMinutes } from "~/utils/duration.client"
-import React from "react"
 import { useSearchParams } from "@remix-run/react"
 
 const dateFormat = "yyyy-MM-dd"
@@ -22,15 +21,18 @@ type DashboardWeeklyOverviewProps = {
             color: string
         }
         totalDuration: number
-    }[]    
+    }[]
 }
 
-const DashboardWeeklyOverview = ({ sessionDateTotalDurations, sessionTagTotalDurations }: DashboardWeeklyOverviewProps) => {
+const DashboardWeeklyOverview = ({
+     sessionDateTotalDurations,
+     sessionTagTotalDurations
+ }: DashboardWeeklyOverviewProps) => {
     const [searchParams, setSearchParams] = useSearchParams()
     const weeklyOverviewDateStr = searchParams.get("weekly")
     const weeklyOverviewDate = weeklyOverviewDateStr
-        ? parse(weeklyOverviewDateStr, dateFormat, new Date())
-        : new Date()
+                               ? parse(weeklyOverviewDateStr, dateFormat, new Date())
+                               : new Date()
 
     const weeklyOverviewDateTotalDurations: Map<string, number> = new Map<string, number>()
     let weeklyDate = startOfWeek(weeklyOverviewDate, { weekStartsOn: 1 })
@@ -63,7 +65,23 @@ const DashboardWeeklyOverview = ({ sessionDateTotalDurations, sessionTagTotalDur
             <Group justify={ "space-between" }>
                 <Title order={ 2 } c={ "dimmed" }>Weekly</Title>
 
-                <Group>
+                <Group gap={ "sm" } align={ "center" }>
+                    <ActionIcon
+                        size={ "lg" }
+                        variant={ "default" }
+                        c={ "gray.6" }
+                        onClick={ () => {
+                            const newWeeklyOverviewDate = addDays(weeklyOverviewDate, -7)
+
+                            setSearchParams((prev) => {
+                                prev.set("weekly", format(newWeeklyOverviewDate, dateFormat))
+                                return prev
+                            })
+                        } }
+                    >
+                        <IconChevronLeft size={ 18 }/>
+                    </ActionIcon>
+
                     <DatePickerInput
                         value={ weeklyOverviewDate }
                         leftSection={ <IconCalendar size={ 18 }/> }
@@ -78,6 +96,26 @@ const DashboardWeeklyOverview = ({ sessionDateTotalDurations, sessionTagTotalDur
                         } }
                         maxDate={ new Date() }
                     />
+
+                    <ActionIcon
+                        size={ "lg" }
+                        variant={ "default" }
+                        c={ "gray.6" }
+                        onClick={ () => {
+                            const newWeeklyOverviewDate = addDays(weeklyOverviewDate, 7)
+                            if (isAfter(newWeeklyOverviewDate, new Date())) {
+                                return
+                            }
+
+                            setSearchParams((prev) => {
+                                prev.set("weekly", format(newWeeklyOverviewDate, dateFormat))
+                                return prev
+                            })
+                        } }
+                        disabled={ isAfter(addDays(weeklyOverviewDate, 7), new Date()) }
+                    >
+                        <IconChevronRight size={ 18 }/>
+                    </ActionIcon>
                 </Group>
             </Group>
 
@@ -98,7 +136,7 @@ const DashboardWeeklyOverview = ({ sessionDateTotalDurations, sessionTagTotalDur
                         />
                     </Center>
 
-                    <Divider my={ 16 } />
+                    <Divider my={ 16 }/>
 
                     <Stack>
                         <Stack>

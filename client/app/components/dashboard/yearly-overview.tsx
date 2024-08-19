@@ -1,7 +1,7 @@
-import { Badge, Card, Group, Stack, Title } from "@mantine/core";
+import { ActionIcon, Badge, Card, Group, Stack, Title } from "@mantine/core";
 import { Calendar, YearPickerInput } from "@mantine/dates";
-import { format, parse } from "date-fns";
-import { IconCalendar } from "@tabler/icons-react";
+import { addYears, format, isAfter, parse } from "date-fns";
+import { IconCalendar, IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useSearchParams } from "@remix-run/react";
 
 const yearFormat = "yyyy"
@@ -32,7 +32,23 @@ const DashboardYearlyOverview = ({ sessionDateTotalDurations }: DashboardYearlyO
             <Group justify={ "space-between" }>
                 <Title order={ 2 } c={ "dimmed" }>Yearly</Title>
 
-                <Group>
+                <Group gap={ "sm" } align={ "center" }>
+                    <ActionIcon
+                        size={ "lg" }
+                        variant={ "default" }
+                        c={ "gray.6" }
+                        onClick={ () => {
+                            const newYearlyOverviewDate = addYears(yearlyOverviewDate, -1)
+
+                            setSearchParams((prev) => {
+                                prev.set("yearly", format(newYearlyOverviewDate, yearFormat))
+                                return prev
+                            })
+                        } }
+                    >
+                        <IconChevronLeft size={ 18 }/>
+                    </ActionIcon>
+
                     <YearPickerInput
                         value={ yearlyOverviewDate }
                         leftSection={ <IconCalendar size={ 18 }/> }
@@ -47,6 +63,26 @@ const DashboardYearlyOverview = ({ sessionDateTotalDurations }: DashboardYearlyO
                         } }
                         maxDate={ new Date() }
                     />
+
+                    <ActionIcon
+                        size={ "lg" }
+                        variant={ "default" }
+                        c={ "gray.6" }
+                        onClick={ () => {
+                            const newYearlyOverviewDate = addYears(yearlyOverviewDate, 1)
+                            if (isAfter(newYearlyOverviewDate, new Date())) {
+                                return
+                            }
+
+                            setSearchParams((prev) => {
+                                prev.set("yearly", format(newYearlyOverviewDate, yearFormat))
+                                return prev
+                            })
+                        } }
+                        disabled={ isAfter(addYears(yearlyOverviewDate, 1), new Date()) }
+                    >
+                        <IconChevronRight size={ 18 }/>
+                    </ActionIcon>
                 </Group>
             </Group>
 
@@ -67,7 +103,9 @@ const DashboardYearlyOverview = ({ sessionDateTotalDurations }: DashboardYearlyO
 
                                         const duration = dateTotalDurationMap.get(dateStr) ?? 0
                                         const colorIdx = Math.floor(
-                                            Math.min(duration / (60 * 60 * maxHours), 1) * 9
+                                            Math.min(duration / (
+                                                60 * 60 * maxHours
+                                            ), 1) * 9
                                         )
 
                                         return (

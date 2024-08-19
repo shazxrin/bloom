@@ -1,7 +1,7 @@
-import {Box, Card, Center, ColorSwatch, Group, Stack, Text, Title, useMantineTheme} from "@mantine/core"
+import { ActionIcon, Box, Card, Center, ColorSwatch, Group, Stack, Text, Title, useMantineTheme } from "@mantine/core"
 import { DatePickerInput } from "@mantine/dates"
-import { IconCalendar, IconMoodPuzzled } from "@tabler/icons-react"
-import { format, parse } from "date-fns"
+import { IconCalendar, IconChevronLeft, IconChevronRight, IconMoodPuzzled } from "@tabler/icons-react"
+import { addDays, format, isAfter, parse } from "date-fns"
 import { PieChart } from "@mantine/charts"
 import { extractHours, extractMinutes } from "~/utils/duration.client"
 import { useSearchParams } from "@remix-run/react"
@@ -37,7 +37,23 @@ const DashboardDailyOverview = ({ sessionTagTotalDurations }: DashboardDailyOver
             <Group justify={ "space-between" }>
                 <Title order={ 2 } c={ "dimmed" }>Daily</Title>
 
-                <Group>
+                <Group gap={ "sm" } align={ "center" }>
+                    <ActionIcon
+                        size={ "lg" }
+                        variant={ "default" }
+                        c={ "gray.6" }
+                        onClick={ () => {
+                            const newDailyOverviewDate = addDays(dailyOverviewDate, -1)
+
+                            setSearchParams((prev) => {
+                                prev.set("daily", format(newDailyOverviewDate, dateFormat))
+                                return prev
+                            })
+                        } }
+                    >
+                        <IconChevronLeft size={ 18 }/>
+                    </ActionIcon>
+
                     <DatePickerInput
                         value={ dailyOverviewDate }
                         leftSection={ <IconCalendar size={ 18 }/> }
@@ -52,6 +68,26 @@ const DashboardDailyOverview = ({ sessionTagTotalDurations }: DashboardDailyOver
                         } }
                         maxDate={ new Date() }
                     />
+
+                    <ActionIcon
+                        size={ "lg" }
+                        variant={ "default" }
+                        c={ "gray.6" }
+                        onClick={ () => {
+                            const newDailyOverviewDate = addDays(dailyOverviewDate, 1)
+                            if (isAfter(newDailyOverviewDate, new Date())) {
+                                return
+                            }
+
+                            setSearchParams((prev) => {
+                                prev.set("daily", format(newDailyOverviewDate, dateFormat))
+                                return prev
+                            })
+                        } }
+                        disabled={ isAfter(addDays(dailyOverviewDate, 1), new Date()) }
+                    >
+                        <IconChevronRight size={ 18 }/>
+                    </ActionIcon>
                 </Group>
             </Group>
 
