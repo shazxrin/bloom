@@ -1,7 +1,7 @@
 import { Button, Group, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/core"
 import { Form, useActionData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
-import { clientAction } from "~/routes/session.history"
+import { action } from "~/routes/session.history"
 import { DateTimePicker } from "@mantine/dates"
 
 type SessionHistoryCreateModalProps = {
@@ -15,7 +15,7 @@ type SessionHistoryCreateModalProps = {
 }
 
 const SessionHistoryCreateModal = ({ opened, close, tags }: SessionHistoryCreateModalProps) => {
-    const actionData = useActionData<typeof clientAction>()
+    const actionData = useActionData<typeof action>()
     useEffect(() => {
         if (actionData?.success) {
             close()

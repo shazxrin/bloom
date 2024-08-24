@@ -3,7 +3,7 @@ import { DatePickerInput } from "@mantine/dates"
 import { IconCalendar, IconChevronLeft, IconChevronRight } from "@tabler/icons-react"
 import { addDays, format, isAfter, parse, startOfWeek } from "date-fns"
 import { LineChart } from "@mantine/charts"
-import { extractHours, extractMinutes } from "~/utils/duration.client"
+import { extractHours, extractMinutes } from "~/utils/duration"
 import { useSearchParams } from "@remix-run/react"
 
 const dateFormat = "yyyy-MM-dd"

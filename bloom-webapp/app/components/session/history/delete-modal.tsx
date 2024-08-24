@@ -1,7 +1,7 @@
 import { Button, Group, Modal, Text } from "@mantine/core"
 import { Form, useActionData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
-import { clientAction } from "~/routes/session.history"
+import { action } from "~/routes/session.history"
 
 type SessionHistoryDeleteModalProps = {
     session: {
@@ -13,7 +13,7 @@ type SessionHistoryDeleteModalProps = {
 }
 
 const SessionHistoryDeleteModal = ({ session, opened, close }: SessionHistoryDeleteModalProps) => {
-    const actionData = useActionData<typeof clientAction>()
+    const actionData = useActionData<typeof action>()
     useEffect(() => {
         if (actionData?.success) {
             close()

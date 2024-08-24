@@ -1,7 +1,7 @@
 import { Modal, Stack, TextInput, Button, ColorInput } from "@mantine/core"
 import { Form, useActionData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
-import { clientAction } from "~/routes/session.tags"
+import { action } from "~/routes/session.tags"
 
 type SessionTagsCreateModalProps = {
     opened: boolean
@@ -9,7 +9,7 @@ type SessionTagsCreateModalProps = {
 }
 
 const SessionTagsCreateModal = ({ opened, close }: SessionTagsCreateModalProps) => {
-    const actionData = useActionData<typeof clientAction>()
+    const actionData = useActionData<typeof action>()
     const navigation = useNavigation()
 
     useEffect(() => {

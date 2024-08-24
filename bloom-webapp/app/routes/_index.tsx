@@ -1,11 +1,11 @@
-import type { MetaFunction } from "@remix-run/node"
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node"
 import { Divider, Stack, Title } from "@mantine/core"
 import React from "react"
-import apiClient from "~/api/apiClient.client"
+import apiClient from "~/api/apiClient"
 import { notifications } from "@mantine/notifications"
 import { IconAlertTriangle } from "@tabler/icons-react"
-import { serverError } from "~/utils/responses.client"
-import { ClientLoaderFunctionArgs, useLoaderData } from "@remix-run/react"
+import { serverError } from "~/utils/responses"
+import { useLoaderData } from "@remix-run/react"
 import { format } from "date-fns"
 import DashboardDailyOverview from "~/components/dashboard/daily-overview"
 import DashboardWeeklyOverview from "~/components/dashboard/weekly-overview"
@@ -18,7 +18,7 @@ const meta: MetaFunction = () => {
     ]
 }
 
-const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
+const loader = async ({ request }: LoaderFunctionArgs) => {
     const url = new URL(request.url)
     const dailyOverviewDate = format(url.searchParams.get("daily") ?? new Date, "yyyy-MM-dd")
     const weeklyOverviewDate = format(url.searchParams.get("weekly") ?? new Date, "yyyy-MM-dd")
@@ -93,7 +93,7 @@ const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
 
 const Index = () => {
     const { dailyOverview, weeklyOverview, yearlyOverview }
-        = useLoaderData<typeof clientLoader>()
+        = useLoaderData<typeof loader>()
 
     return (
         <Stack pt={ 16 } pb={ 24 } w="100%" mih="100%">
@@ -116,6 +116,6 @@ const Index = () => {
 
 export {
     meta,
-    clientLoader
+    loader
 }
 export default Index

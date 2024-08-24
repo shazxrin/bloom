@@ -1,8 +1,8 @@
 import { Badge, Divider, Group, Stack, Table, Text, Title } from "@mantine/core"
 import React from "react"
-import { ClientLoaderFunctionArgs, useLoaderData } from "@remix-run/react"
-import apiClient from "~/api/apiClient.client"
-import { methodNotAllowed, serverError } from "~/utils/responses.client"
+import { useLoaderData } from "@remix-run/react"
+import apiClient from "~/api/apiClient"
+import { methodNotAllowed, serverError } from "~/utils/responses"
 import { notifications } from "@mantine/notifications"
 import { IconAlertTriangle, IconPencil, IconSparkles, IconTrash } from "@tabler/icons-react"
 import { z } from "zod"
@@ -10,8 +10,9 @@ import parseFormData from "~/utils/parse-form-data"
 import SessionTagsCreateButton from "~/components/session/tags/create-button"
 import SessionTagsEditActionButton from "~/components/session/tags/edit-action-button"
 import SessionTagsDeleteActionButton from "~/components/session/tags/delete-action-button"
+import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 
-const clientLoader = async ({}: ClientLoaderFunctionArgs) => {
+const loader = async ({}: LoaderFunctionArgs) => {
     const {
         data: tags,
         error: getTagsError
@@ -33,7 +34,7 @@ const clientLoader = async ({}: ClientLoaderFunctionArgs) => {
     }
 }
 
-const clientAction = async ({ request }: ClientLoaderFunctionArgs) => {
+const action = async ({ request }: ActionFunctionArgs) => {
     if (request.method === "POST") {
         const formSchema = z.object({
             name: z.string().min(1).max(255),
@@ -175,7 +176,7 @@ const clientAction = async ({ request }: ClientLoaderFunctionArgs) => {
 }
 
 const SessionTags = () => {
-    const { tags } = useLoaderData<typeof clientLoader>()
+    const { tags } = useLoaderData<typeof loader>()
 
     return (
         <Stack pt={ 16 } pb={ 24 } w="100%" mih="100%">
@@ -218,7 +219,7 @@ const SessionTags = () => {
 }
 
 export {
-    clientLoader,
-    clientAction
+    loader,
+    action
 }
 export default SessionTags

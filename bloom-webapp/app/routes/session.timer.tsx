@@ -1,16 +1,17 @@
 import { Divider, Stack, Title } from "@mantine/core"
 import { ClientActionFunctionArgs, ClientLoaderFunctionArgs, useLoaderData } from "@remix-run/react"
 import React from "react"
-import apiClient from "~/api/apiClient.client"
+import apiClient from "~/api/apiClient"
 import { notifications } from "@mantine/notifications"
 import { IconAlertTriangle, IconCheck, IconPlayerPause, IconSparkles } from "@tabler/icons-react"
 import { z } from "zod"
-import { badRequest, methodNotAllowed, serverError } from "~/utils/responses.client"
+import { badRequest, methodNotAllowed, serverError } from "~/utils/responses"
 import parseFormData from "~/utils/parse-form-data"
 import SessionTimerDetails from "~/components/session/timer/details"
 import SessionTimerCreate from "~/components/session/timer/create"
+import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 
-const clientLoader = async ({}: ClientLoaderFunctionArgs) => {
+const loader = async ({}: LoaderFunctionArgs) => {
     const {
         data: currentSession,
         error: getCurrentSessionError,
@@ -50,7 +51,7 @@ const clientLoader = async ({}: ClientLoaderFunctionArgs) => {
     }
 }
 
-const clientAction = async ({ request }: ClientActionFunctionArgs) => {
+const action = async ({ request }: ActionFunctionArgs) => {
     if (request.method === "POST") {
         const formSchema = z.union([
             z.object({
@@ -174,7 +175,7 @@ const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 }
 
 const SessionTimer = () => {
-    const { currentSession, tags } = useLoaderData<typeof clientLoader>()
+    const { currentSession, tags } = useLoaderData<typeof loader>()
 
     return (
         <Stack pt={ 16 } w="100%" h="100%">
@@ -191,7 +192,7 @@ const SessionTimer = () => {
 }
 
 export {
-    clientLoader,
-    clientAction
+    loader,
+    action
 }
 export default SessionTimer

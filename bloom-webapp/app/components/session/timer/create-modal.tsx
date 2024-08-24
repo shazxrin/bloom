@@ -1,7 +1,7 @@
 import { Button, Group, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/core"
 import { Form, useActionData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
-import { clientAction } from "~/routes/session.timer"
+import { action } from "~/routes/session.timer"
 
 type SessionTimerCreateModalProps = {
     tags: {
@@ -14,7 +14,7 @@ type SessionTimerCreateModalProps = {
 }
 
 const SessionTimerCreateModal = ({ opened, close, tags }: SessionTimerCreateModalProps) => {
-    const actionData = useActionData<typeof clientAction>()
+    const actionData = useActionData<typeof action>()
     useEffect(() => {
         if (actionData?.success) {
             close()

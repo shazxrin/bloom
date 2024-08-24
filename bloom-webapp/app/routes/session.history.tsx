@@ -1,7 +1,7 @@
 import { Group, Stack, Table, Title, Text, Badge, Pagination, Divider } from "@mantine/core"
-import { ClientActionFunctionArgs, ClientLoaderFunctionArgs, useLoaderData, useSearchParams } from "@remix-run/react"
-import { methodNotAllowed, serverError } from "~/utils/responses.client"
-import apiClient from "~/api/apiClient.client"
+import { useLoaderData, useSearchParams } from "@remix-run/react"
+import { methodNotAllowed, serverError } from "~/utils/responses"
+import apiClient from "~/api/apiClient"
 import { notifications } from "@mantine/notifications"
 import { IconAlertTriangle, IconPencil, IconSparkles, IconTrash } from "@tabler/icons-react"
 import React from "react"
@@ -11,9 +11,10 @@ import SessionHistoryEditActionButton from "~/components/session/history/edit-ac
 import SessionHistoryDeleteActionButton from "~/components/session/history/delete-action-button"
 import { z } from "zod"
 import parseFormData from "~/utils/parse-form-data"
-import { formatToLocalISO } from "~/utils/date-time.client"
+import { formatToLocalISO } from "~/utils/date-time"
+import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 
-const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
+const loader = async ({ request }: LoaderFunctionArgs) => {
     const url = new URL(request.url)
     const page = parseInt(url.searchParams.get("page") ?? "1") - 1
 
@@ -59,7 +60,7 @@ const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
     }
 }
 
-const clientAction = async ({ request }: ClientActionFunctionArgs) => {
+const action = async ({ request }: ActionFunctionArgs) => {
     if (request.method === "POST") {
         const formSchema = z.object({
             name: z.string().min(1).max(255),
@@ -215,7 +216,7 @@ const clientAction = async ({ request }: ClientActionFunctionArgs) => {
 }
 
 const SessionHistory = () => {
-    const { sessionsPage, tags } = useLoaderData<typeof clientLoader>()
+    const { sessionsPage, tags } = useLoaderData<typeof loader>()
 
     const [searchParams, setSearchParams] = useSearchParams()
 
@@ -277,7 +278,7 @@ const SessionHistory = () => {
 }
 
 export {
-    clientLoader,
-    clientAction
+    loader,
+    action
 }
 export default SessionHistory
