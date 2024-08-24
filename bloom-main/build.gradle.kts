@@ -1,4 +1,3 @@
-import com.github.gradle.node.pnpm.task.PnpmTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -10,7 +9,6 @@ plugins {
     id("io.spring.dependency-management") version "1.1.6"
 
     id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
-    id("com.github.node-gradle.node") version "7.0.2"
 }
 
 group = "me.shazxrin"
@@ -31,10 +29,6 @@ java {
 
 repositories {
     mavenCentral()
-}
-
-node {
-    nodeProjectDir.set(file("${projectDir}/client"))
 }
 
 dependencies {
@@ -62,34 +56,6 @@ dependencies {
     testRuntimeOnly("com.h2database:h2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("com.ninja-squad:springmockk:4.0.2")
-}
-
-tasks.register<Delete>("cleanClient") {
-    delete(file("${projectDir}/build/resources/main/public"))
-    delete(file("${projectDir}/build/resources/main/templates"))
-    delete(file("${projectDir}/client/dist"))
-}
-
-tasks.register<PnpmTask>("buildClient") {
-    dependsOn(tasks.named("cleanClient"))
-    pnpmCommand.set(listOf("run", "build"))
-}
-
-tasks.register<Copy>("bundleClient") {
-    dependsOn(tasks.named("buildClient"))
-    from(file("${projectDir}/client/build/client"))
-    into(file("${projectDir}/build/resources/main/public"))
-}
-
-tasks.register<PnpmTask>("generateClientApi") {
-    dependsOn(tasks.named("generateOpenApiDocs"))
-
-    pnpmCommand.set(listOf("run", "generateClientApi"))
-}
-
-tasks.forkedSpringBootRun.configure {
-    dependsOn(tasks.named("pnpmSetup"))
-    doNotTrackState("Workaround!")
 }
 
 tasks.withType<Test> {

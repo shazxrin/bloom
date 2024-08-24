@@ -1,2 +1,2 @@
 rootProject.name = "bloom"
-include("bloom-main")
+include("bloom-main", "bloom-webapp")
