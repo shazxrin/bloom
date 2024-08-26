@@ -5,7 +5,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.51.0"
 
     kotlin("jvm") version "2.0.0"
-    kotlin("plugin.spring") version "2.0.0"
+    kotlin("plugin.spring") version "2.0.20"
     kotlin("plugin.jpa") version "2.0.0"
 
     id("org.springframework.boot") version "3.3.2"
