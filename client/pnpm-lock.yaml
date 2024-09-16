@@ -68,7 +68,7 @@ importers:
     devDependencies:
       '@remix-run/dev':
         specifier: ^2.9.2
-        version: 2.9.2(@remix-run/react@2.9.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.4))(@remix-run/serve@2.11.2(typescript@5.5.4))(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38))(typescript@5.5.4)(vite@5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38)))
+        version: 2.9.2(@remix-run/react@2.9.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.4))(@remix-run/serve@2.11.2(typescript@5.5.4))(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47))(typescript@5.5.4)(vite@5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47)))
       '@types/react':
         specifier: ^18.3.3
         version: 18.3.3
@@ -100,23 +100,23 @@ importers:
         specifier: ^6.7.6
         version: 6.7.6
       postcss:
-        specifier: ^8.4.38
-        version: 8.4.38
+        specifier: ^8.4.47
+        version: 8.4.47
       postcss-preset-mantine:
         specifier: ^1.15.0
-        version: 1.15.0(postcss@8.4.38)
+        version: 1.15.0(postcss@8.4.47)
       postcss-simple-vars:
         specifier: ^7.0.1
-        version: 7.0.1(postcss@8.4.38)
+        version: 7.0.1(postcss@8.4.47)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
       vite:
         specifier: ^5.2.11
-        version: 5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38))
+        version: 5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47))
       vite-tsconfig-paths:
         specifier: ^4.3.2
-        version: 4.3.2(typescript@5.5.4)(vite@5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38)))
+        version: 4.3.2(typescript@5.5.4)(vite@5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47)))
 
 packages:
 
@@ -2827,6 +2827,9 @@ packages:
   picocolors@1.0.1:
     resolution: {integrity: sha512-anP1Z8qwhkbmu7MFP5iTt+wQKXgwzf7zTyGlcdzabySa9vd0Xt392U0rVmz9poOaBj0uHJKyyo9/upk0HrEQew==}
 
+  picocolors@1.1.0:
+    resolution: {integrity: sha512-TQ92mBOW0l3LeMeyLV6mzy/kWr8lkd/hp3mTg7wYK7zJhuBStmGMBG0BdeDZS/dZx1IukaX6Bk11zcln25o1Aw==}
+
   picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
@@ -2926,8 +2929,8 @@ packages:
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
-  postcss@8.4.38:
-    resolution: {integrity: sha512-Wglpdk03BSfXkHoQa3b/oulrotAkwrlLDRSOb9D0bN86FdRyE9lppSp33aHNPgBa0JKCoB+drFLZkQoRRYae5A==}
+  postcss@8.4.47:
+    resolution: {integrity: sha512-56rxCq7G/XfB4EkXq9Egn5GCqugWvDFjafDOThIdMBsI15iqPqR5r15TfSr1YPYeEI19YeaXMCbY6u88Y76GLQ==}
     engines: {node: ^10 || ^12 || >=14}
 
   prelude-ls@1.2.1:
@@ -3256,8 +3259,8 @@ packages:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
 
-  source-map-js@1.2.0:
-    resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==}
+  source-map-js@1.2.1:
+    resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
 
   source-map-support@0.5.21:
@@ -4340,7 +4343,7 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@remix-run/dev@2.9.2(@remix-run/react@2.9.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.4))(@remix-run/serve@2.11.2(typescript@5.5.4))(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38))(typescript@5.5.4)(vite@5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38)))':
+  '@remix-run/dev@2.9.2(@remix-run/react@2.9.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.4))(@remix-run/serve@2.11.2(typescript@5.5.4))(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47))(typescript@5.5.4)(vite@5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47)))':
     dependencies:
       '@babel/core': 7.24.6
       '@babel/generator': 7.24.6
@@ -4357,7 +4360,7 @@ snapshots:
       '@remix-run/router': 1.16.1
       '@remix-run/server-runtime': 2.9.2(typescript@5.5.4)
       '@types/mdx': 2.0.13
-      '@vanilla-extract/integration': 6.5.0(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38))
+      '@vanilla-extract/integration': 6.5.0(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47))
       arg: 5.0.2
       cacache: 17.1.4
       chalk: 4.1.2
@@ -4382,10 +4385,10 @@ snapshots:
       picocolors: 1.0.1
       picomatch: 2.3.1
       pidtree: 0.6.0
-      postcss: 8.4.38
-      postcss-discard-duplicates: 5.1.0(postcss@8.4.38)
-      postcss-load-config: 4.0.2(postcss@8.4.38)
-      postcss-modules: 6.0.0(postcss@8.4.38)
+      postcss: 8.4.47
+      postcss-discard-duplicates: 5.1.0(postcss@8.4.47)
+      postcss-load-config: 4.0.2(postcss@8.4.47)
+      postcss-modules: 6.0.0(postcss@8.4.47)
       prettier: 2.8.8
       pretty-ms: 7.0.1
       react-refresh: 0.14.2
@@ -4399,7 +4402,7 @@ snapshots:
     optionalDependencies:
       '@remix-run/serve': 2.11.2(typescript@5.5.4)
       typescript: 5.5.4
-      vite: 5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38))
+      vite: 5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47))
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -4768,7 +4771,7 @@ snapshots:
     transitivePeerDependencies:
       - babel-plugin-macros
 
-  '@vanilla-extract/integration@6.5.0(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38))':
+  '@vanilla-extract/integration@6.5.0(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47))':
     dependencies:
       '@babel/core': 7.24.6
       '@babel/plugin-syntax-typescript': 7.24.6(@babel/core@7.24.6)
@@ -4781,8 +4784,8 @@ snapshots:
       lodash: 4.17.21
       mlly: 1.7.0
       outdent: 0.8.0
-      vite: 5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38))
-      vite-node: 1.6.0(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38))
+      vite: 5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47))
+      vite-node: 1.6.0(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47))
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -6024,9 +6027,9 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
-  icss-utils@5.1.0(postcss@8.4.38):
+  icss-utils@5.1.0(postcss@8.4.47):
     dependencies:
-      postcss: 8.4.38
+      postcss: 8.4.47
 
   ieee754@1.2.1: {}
 
@@ -6946,6 +6949,8 @@ snapshots:
 
   picocolors@1.0.1: {}
 
+  picocolors@1.1.0: {}
+
   picomatch@2.3.1: {}
 
   pidtree@0.6.0: {}
@@ -6958,90 +6963,90 @@ snapshots:
 
   possible-typed-array-names@1.0.0: {}
 
-  postcss-discard-duplicates@5.1.0(postcss@8.4.38):
+  postcss-discard-duplicates@5.1.0(postcss@8.4.47):
     dependencies:
-      postcss: 8.4.38
+      postcss: 8.4.47
 
-  postcss-js@4.0.1(postcss@8.4.38):
+  postcss-js@4.0.1(postcss@8.4.47):
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.4.38
+      postcss: 8.4.47
 
-  postcss-load-config@4.0.2(postcss@8.4.38):
+  postcss-load-config@4.0.2(postcss@8.4.47):
     dependencies:
       lilconfig: 3.1.1
       yaml: 2.4.2
     optionalDependencies:
-      postcss: 8.4.38
+      postcss: 8.4.47
 
-  postcss-mixins@9.0.4(postcss@8.4.38):
+  postcss-mixins@9.0.4(postcss@8.4.47):
     dependencies:
       fast-glob: 3.3.2
-      postcss: 8.4.38
-      postcss-js: 4.0.1(postcss@8.4.38)
-      postcss-simple-vars: 7.0.1(postcss@8.4.38)
-      sugarss: 4.0.1(postcss@8.4.38)
+      postcss: 8.4.47
+      postcss-js: 4.0.1(postcss@8.4.47)
+      postcss-simple-vars: 7.0.1(postcss@8.4.47)
+      sugarss: 4.0.1(postcss@8.4.47)
 
-  postcss-modules-extract-imports@3.1.0(postcss@8.4.38):
+  postcss-modules-extract-imports@3.1.0(postcss@8.4.47):
     dependencies:
-      postcss: 8.4.38
+      postcss: 8.4.47
 
-  postcss-modules-local-by-default@4.0.5(postcss@8.4.38):
+  postcss-modules-local-by-default@4.0.5(postcss@8.4.47):
     dependencies:
-      icss-utils: 5.1.0(postcss@8.4.38)
-      postcss: 8.4.38
+      icss-utils: 5.1.0(postcss@8.4.47)
+      postcss: 8.4.47
       postcss-selector-parser: 6.1.0
       postcss-value-parser: 4.2.0
 
-  postcss-modules-scope@3.2.0(postcss@8.4.38):
+  postcss-modules-scope@3.2.0(postcss@8.4.47):
     dependencies:
-      postcss: 8.4.38
+      postcss: 8.4.47
       postcss-selector-parser: 6.1.0
 
-  postcss-modules-values@4.0.0(postcss@8.4.38):
+  postcss-modules-values@4.0.0(postcss@8.4.47):
     dependencies:
-      icss-utils: 5.1.0(postcss@8.4.38)
-      postcss: 8.4.38
+      icss-utils: 5.1.0(postcss@8.4.47)
+      postcss: 8.4.47
 
-  postcss-modules@6.0.0(postcss@8.4.38):
+  postcss-modules@6.0.0(postcss@8.4.47):
     dependencies:
       generic-names: 4.0.0
-      icss-utils: 5.1.0(postcss@8.4.38)
+      icss-utils: 5.1.0(postcss@8.4.47)
       lodash.camelcase: 4.3.0
-      postcss: 8.4.38
-      postcss-modules-extract-imports: 3.1.0(postcss@8.4.38)
-      postcss-modules-local-by-default: 4.0.5(postcss@8.4.38)
-      postcss-modules-scope: 3.2.0(postcss@8.4.38)
-      postcss-modules-values: 4.0.0(postcss@8.4.38)
+      postcss: 8.4.47
+      postcss-modules-extract-imports: 3.1.0(postcss@8.4.47)
+      postcss-modules-local-by-default: 4.0.5(postcss@8.4.47)
+      postcss-modules-scope: 3.2.0(postcss@8.4.47)
+      postcss-modules-values: 4.0.0(postcss@8.4.47)
       string-hash: 1.1.3
 
-  postcss-nested@6.0.1(postcss@8.4.38):
+  postcss-nested@6.0.1(postcss@8.4.47):
     dependencies:
-      postcss: 8.4.38
+      postcss: 8.4.47
       postcss-selector-parser: 6.1.0
 
-  postcss-preset-mantine@1.15.0(postcss@8.4.38):
+  postcss-preset-mantine@1.15.0(postcss@8.4.47):
     dependencies:
-      postcss: 8.4.38
-      postcss-mixins: 9.0.4(postcss@8.4.38)
-      postcss-nested: 6.0.1(postcss@8.4.38)
+      postcss: 8.4.47
+      postcss-mixins: 9.0.4(postcss@8.4.47)
+      postcss-nested: 6.0.1(postcss@8.4.47)
 
   postcss-selector-parser@6.1.0:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss-simple-vars@7.0.1(postcss@8.4.38):
+  postcss-simple-vars@7.0.1(postcss@8.4.47):
     dependencies:
-      postcss: 8.4.38
+      postcss: 8.4.47
 
   postcss-value-parser@4.2.0: {}
 
-  postcss@8.4.38:
+  postcss@8.4.47:
     dependencies:
       nanoid: 3.3.7
-      picocolors: 1.0.1
-      source-map-js: 1.2.0
+      picocolors: 1.1.0
+      source-map-js: 1.2.1
 
   prelude-ls@1.2.1: {}
 
@@ -7442,7 +7447,7 @@ snapshots:
 
   slash@3.0.0: {}
 
-  source-map-js@1.2.0: {}
+  source-map-js@1.2.1: {}
 
   source-map-support@0.5.21:
     dependencies:
@@ -7558,9 +7563,9 @@ snapshots:
     dependencies:
       inline-style-parser: 0.1.1
 
-  sugarss@4.0.1(postcss@8.4.38):
+  sugarss@4.0.1(postcss@8.4.47):
     dependencies:
-      postcss: 8.4.38
+      postcss: 8.4.47
 
   supports-color@5.5.0:
     dependencies:
@@ -7871,13 +7876,13 @@ snapshots:
       d3-time: 3.1.0
       d3-timer: 3.0.1
 
-  vite-node@1.6.0(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38)):
+  vite-node@1.6.0(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47)):
     dependencies:
       cac: 6.7.14
       debug: 4.3.4
       pathe: 1.1.2
       picocolors: 1.0.1
-      vite: 5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38))
+      vite: 5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47))
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -7888,26 +7893,26 @@ snapshots:
       - supports-color
       - terser
 
-  vite-tsconfig-paths@4.3.2(typescript@5.5.4)(vite@5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38))):
+  vite-tsconfig-paths@4.3.2(typescript@5.5.4)(vite@5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47))):
     dependencies:
       debug: 4.3.4
       globrex: 0.1.2
       tsconfck: 3.0.3(typescript@5.5.4)
     optionalDependencies:
-      vite: 5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38))
+      vite: 5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47))
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.38)):
+  vite@5.2.11(@types/node@20.12.12)(sugarss@4.0.1(postcss@8.4.47)):
     dependencies:
       esbuild: 0.20.2
-      postcss: 8.4.38
+      postcss: 8.4.47
       rollup: 4.18.0
     optionalDependencies:
       '@types/node': 20.12.12
       fsevents: 2.3.3
-      sugarss: 4.0.1(postcss@8.4.38)
+      sugarss: 4.0.1(postcss@8.4.47)
 
   wcwidth@1.0.1:
     dependencies:
