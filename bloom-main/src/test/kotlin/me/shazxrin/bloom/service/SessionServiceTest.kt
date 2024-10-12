@@ -9,6 +9,7 @@ import me.shazxrin.bloom.exception.NotFoundException
 import me.shazxrin.bloom.model.session.Session
 import me.shazxrin.bloom.model.session.SessionStatus
 import me.shazxrin.bloom.model.session.SessionTag
+import me.shazxrin.bloom.repository.SessionNotificationRepository
 import me.shazxrin.bloom.repository.SessionRepository
 import me.shazxrin.bloom.repository.SessionTagRepository
 import org.junit.jupiter.api.Assertions.*
@@ -25,6 +26,9 @@ class SessionServiceTest {
 
     @MockK
     private lateinit var sessionTagRepository: SessionTagRepository
+
+    @MockK
+    private lateinit var sessionNotificationRepository: SessionNotificationRepository
 
     @InjectMockKs
     private lateinit var sessionService: MainSessionService
