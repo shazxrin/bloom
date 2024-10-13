@@ -1,12 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/bloom
+    url: jdbc:postgresql://postgres:5432/bloom
     username: postgres
     password: password
   liquibase:
     change-log: classpath:db/changelog/changelog-master.yaml
   rabbitmq:
-    host: localhost
+    host: rabbitmq
     port: 5672
     username: guest
     password: guest

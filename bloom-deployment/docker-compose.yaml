@@ -1,4 +1,13 @@
+# Deployment containing the full application and services
+
 services:
+  bloom-main:
+    build: ../bloom-main
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - rabbitmq
   postgres:
     image: postgres:latest
     ports:
