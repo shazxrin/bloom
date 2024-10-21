@@ -1,7 +1,7 @@
 import { ActionIcon } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import { IconTrash } from "@tabler/icons-react"
-import SessionsDeleteModal from "~/components/session/history/delete-modal"
+import SessionsDeleteModal from "~/routes/session.history/components/delete-modal"
 
 type SessionHistoryDeleteActionButtonProps = {
     session: {
@@ -11,7 +11,7 @@ type SessionHistoryDeleteActionButtonProps = {
     }
 }
 
-const SessionHistoryDeleteActionButton = ({ session }: SessionHistoryDeleteActionButtonProps) => {
+export default function SessionHistoryDeleteActionButton({ session }: SessionHistoryDeleteActionButtonProps) {
     const [opened, { open, close }] = useDisclosure()
 
     return (
@@ -29,5 +29,3 @@ const SessionHistoryDeleteActionButton = ({ session }: SessionHistoryDeleteActio
         </>
     )
 }
-
-export default SessionHistoryDeleteActionButton

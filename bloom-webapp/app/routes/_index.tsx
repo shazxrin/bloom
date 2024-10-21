@@ -1,10 +1,8 @@
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node"
+import { json, LoaderFunctionArgs, MetaFunction } from "@remix-run/node"
 import { Divider, Stack, Title } from "@mantine/core"
 import React from "react"
 import apiClient from "~/api/apiClient"
-import { notifications } from "@mantine/notifications"
-import { IconAlertTriangle } from "@tabler/icons-react"
-import { serverError } from "~/utils/responses"
+import { ok, serverError } from "~/utils/responses.server"
 import { useLoaderData } from "@remix-run/react"
 import { format } from "date-fns"
 import DashboardDailyOverview from "~/components/dashboard/daily-overview"
@@ -51,44 +49,18 @@ const loader = async ({ request }: LoaderFunctionArgs) => {
     const [dailyOverviewResponse, weeklyOverviewResponse, yearlyOverviewResponse]
         = await Promise.all([dailyOverviewPromise, weeklyOverviewPromise, yearlyOverviewPromise])
 
-    if (dailyOverviewResponse.error) {
-        notifications.show({
-            color: "red",
-            title: "Error occurred!",
-            message: "An error occurred while fetching daily overview.",
-            icon: <IconAlertTriangle size={ 18 }/>
-        })
-
+    if (dailyOverviewResponse.error
+        || weeklyOverviewResponse.error
+        || yearlyOverviewResponse.error
+    ) {
         throw serverError()
     }
 
-    if (weeklyOverviewResponse.error) {
-        notifications.show({
-            color: "red",
-            title: "Error occurred!",
-            message: "An error occurred while fetching weekly overview.",
-            icon: <IconAlertTriangle size={ 18 }/>
-        })
-
-        throw serverError()
-    }
-
-    if (yearlyOverviewResponse.error) {
-        notifications.show({
-            color: "red",
-            title: "Error occurred!",
-            message: "An error occurred while fetching yearly overview.",
-            icon: <IconAlertTriangle size={ 18 }/>
-        })
-
-        throw serverError()
-    }
-
-    return {
+    return json({
         dailyOverview: dailyOverviewResponse.data,
         weeklyOverview: weeklyOverviewResponse.data,
         yearlyOverview: yearlyOverviewResponse.data
-    }
+    }, 200)
 }
 
 const Index = () => {
@@ -99,15 +71,15 @@ const Index = () => {
         <Stack pt={ 16 } pb={ 24 } w="100%" mih="100%">
             <Title order={ 1 }>Dashboard</Title>
 
-            <Divider my={ 0 } />
+            <Divider my={ 0 }/>
 
             <DashboardDailyOverview { ...dailyOverview } />
 
-            <Divider my={ 12 } />
+            <Divider my={ 12 }/>
 
             <DashboardWeeklyOverview { ...weeklyOverview } />
 
-            <Divider my={ 12 } />
+            <Divider my={ 12 }/>
 
             <DashboardYearlyOverview { ...yearlyOverview } />
         </Stack>

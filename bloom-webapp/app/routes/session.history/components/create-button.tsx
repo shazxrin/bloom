@@ -1,7 +1,7 @@
 import { Button } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import { IconPlus } from "@tabler/icons-react"
-import SessionHistoryCreateModal from "~/components/session/history/create-modal"
+import SessionHistoryCreateModal from "~/routes/session.history/components/create-modal"
 
 type SessionHistoryCreateButtonProps = {
     tags: {
@@ -11,7 +11,7 @@ type SessionHistoryCreateButtonProps = {
     }[]
 }
 
-const SessionHistoryCreateButton = ({ tags }: SessionHistoryCreateButtonProps) => {
+export default function SessionHistoryCreateButton({ tags }: SessionHistoryCreateButtonProps){
     const [opened, { open, close }] = useDisclosure()
 
     return (
@@ -27,5 +27,3 @@ const SessionHistoryCreateButton = ({ tags }: SessionHistoryCreateButtonProps) =
         </>
     )
 }
-
-export default SessionHistoryCreateButton

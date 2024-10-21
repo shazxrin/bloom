@@ -1,9 +1,9 @@
 import { Button, Group, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/core"
 import { DateTimePicker } from "@mantine/dates"
 import { Form, useActionData, useNavigation } from "@remix-run/react"
-import { useEffect } from "react"
-import { action } from "~/routes/session.history"
 import { extractHours, extractMinutes } from "~/utils/duration"
+import { ActionData } from "~/routes/session.history/action.server"
+import { useEffect } from "react"
 
 type SessionHistoryEditModalProps = {
     session: {
@@ -27,13 +27,14 @@ type SessionHistoryEditModalProps = {
     close: () => void
 }
 
-const SessionHistoryEditModal = ({ session, tags, opened, close }: SessionHistoryEditModalProps) => {
-    const actionData = useActionData<typeof action>()
+export default function SessionHistoryEditModal({ session, tags, opened, close }: SessionHistoryEditModalProps) {
+    const actionData = useActionData<ActionData>()
     useEffect(() => {
-        if (actionData?.success) {
+        // Close modal if session is updated successfully
+        if (actionData && actionData.action === "update" && actionData.success) {
             close()
         }
-    }, [actionData])
+    }, [actionData]);
 
     const navigation = useNavigation()
 
@@ -49,7 +50,6 @@ const SessionHistoryEditModal = ({ session, tags, opened, close }: SessionHistor
                         name={ "name" }
                         defaultValue={ session.name }
                         required={ true }
-                        error={ !actionData?.success && (actionData?.errors?.get("name")?.join(", ") ?? "") }
                     />
 
                     <DateTimePicker
@@ -59,7 +59,6 @@ const SessionHistoryEditModal = ({ session, tags, opened, close }: SessionHistor
                         defaultValue={ new Date(session.startDateTime) }
                         maxDate={ new Date() }
                         required={ true }
-                        error={ !actionData?.success && (actionData?.errors?.get("startDateTime")?.join(", ") ?? "") }
                     />
 
                     <Group grow={ true }>
@@ -70,7 +69,6 @@ const SessionHistoryEditModal = ({ session, tags, opened, close }: SessionHistor
                             defaultValue={ extractHours(session.totalDuration) }
                             name={ "hours" }
                             required={ true }
-                            error={ !actionData?.success && (actionData?.errors?.get("hours")?.join(", ") ?? "") }
                         />
                         <NumberInput
                             label={ "Minutes" }
@@ -79,7 +77,6 @@ const SessionHistoryEditModal = ({ session, tags, opened, close }: SessionHistor
                             defaultValue={ extractMinutes(session.totalDuration) }
                             name={ "minutes" }
                             required={ true }
-                            error={ !actionData?.success && (actionData?.errors?.get("minutes")?.join(", ") ?? "") }
                         />
                     </Group>
 
@@ -90,7 +87,6 @@ const SessionHistoryEditModal = ({ session, tags, opened, close }: SessionHistor
                         name={ "tagId" }
                         defaultValue={ session.tag.id }
                         required={ true }
-                        error={ !actionData?.success && (actionData?.errors?.get("tagId")?.join(", ") ?? "") }
                     />
 
                     <Button type={ "submit" } loading={ navigation.state === "submitting" }>
@@ -101,5 +97,3 @@ const SessionHistoryEditModal = ({ session, tags, opened, close }: SessionHistor
         </Modal>
     )
 }
-
-export default SessionHistoryEditModal

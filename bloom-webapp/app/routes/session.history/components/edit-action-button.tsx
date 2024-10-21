@@ -1,7 +1,7 @@
 import { ActionIcon } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import { IconEdit } from "@tabler/icons-react"
-import SessionsEditModal from "~/components/session/history/edit-modal"
+import SessionsEditModal from "~/routes/session.history/components/edit-modal"
 
 type SessionHistoryEditActionButtonProps = {
     session: {
@@ -23,7 +23,7 @@ type SessionHistoryEditActionButtonProps = {
     }[]
 }
 
-const SessionHistoryEditActionButton = ({ session, tags }: SessionHistoryEditActionButtonProps) => {
+export default function SessionHistoryEditActionButton({ session, tags }: SessionHistoryEditActionButtonProps) {
     const [opened, { open, close }] = useDisclosure()
 
     return (
@@ -41,5 +41,3 @@ const SessionHistoryEditActionButton = ({ session, tags }: SessionHistoryEditAct
         </>
     )
 }
-
-export default SessionHistoryEditActionButton

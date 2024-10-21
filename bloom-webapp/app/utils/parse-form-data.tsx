@@ -1,7 +1,4 @@
 import { z } from "zod"
-import { notifications } from "@mantine/notifications"
-import { IconInputX } from "@tabler/icons-react"
-import React from "react"
 
 const parseFormData = async <Schema extends z.ZodTypeAny>(formSchema: Schema, request: Request)  => {
     const formData = await request.formData()
@@ -9,14 +6,7 @@ const parseFormData = async <Schema extends z.ZodTypeAny>(formSchema: Schema, re
 
     const parsedFormValuesResult = formSchema.safeParse(formValues)
     if (!parsedFormValuesResult.success) {
-        const errors = new Map(Object.entries(parsedFormValuesResult.error.flatten().fieldErrors))
-
-        notifications.show({
-            color: "red",
-            title: "Errors in input!",
-            message: "Check errors in form and try again.",
-            icon: <IconInputX size={ 18 }/>
-    })
+        const errors: Record<string, string[] | undefined> = parsedFormValuesResult.error.flatten().fieldErrors
 
         return {
             formData: null,

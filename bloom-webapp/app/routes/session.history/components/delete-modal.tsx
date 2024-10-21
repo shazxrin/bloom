@@ -1,7 +1,7 @@
 import { Button, Group, Modal, Text } from "@mantine/core"
 import { Form, useActionData, useNavigation } from "@remix-run/react"
+import { ActionData } from "~/routes/session.history/action.server"
 import { useEffect } from "react"
-import { action } from "~/routes/session.history"
 
 type SessionHistoryDeleteModalProps = {
     session: {
@@ -12,13 +12,14 @@ type SessionHistoryDeleteModalProps = {
     close: () => void
 }
 
-const SessionHistoryDeleteModal = ({ session, opened, close }: SessionHistoryDeleteModalProps) => {
-    const actionData = useActionData<typeof action>()
+export default function SessionHistoryDeleteModal({ session, opened, close }: SessionHistoryDeleteModalProps) {
+    const actionData = useActionData<ActionData>()
     useEffect(() => {
-        if (actionData?.success) {
+        // Close modal if session is deleted successfully
+        if (actionData && actionData.action === "delete" && actionData.success) {
             close()
         }
-    }, [actionData])
+    }, [actionData]);
 
     const navigation = useNavigation()
 
@@ -39,5 +40,3 @@ const SessionHistoryDeleteModal = ({ session, opened, close }: SessionHistoryDel
         </Modal>
     )
 }
-
-export default SessionHistoryDeleteModal

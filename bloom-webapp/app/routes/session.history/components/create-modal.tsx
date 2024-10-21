@@ -1,8 +1,8 @@
 import { Button, Group, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/core"
 import { Form, useActionData, useNavigation } from "@remix-run/react"
-import { useEffect } from "react"
-import { action } from "~/routes/session.history"
 import { DateTimePicker } from "@mantine/dates"
+import { ActionData } from "~/routes/session.history/action.server"
+import { useEffect } from "react"
 
 type SessionHistoryCreateModalProps = {
     tags: {
@@ -14,13 +14,14 @@ type SessionHistoryCreateModalProps = {
     close: () => void
 }
 
-const SessionHistoryCreateModal = ({ opened, close, tags }: SessionHistoryCreateModalProps) => {
-    const actionData = useActionData<typeof action>()
+export default function SessionHistoryCreateModal({ opened, close, tags }: SessionHistoryCreateModalProps) {
+    const actionData = useActionData<ActionData>()
     useEffect(() => {
-        if (actionData?.success) {
+        // Close modal if session is created successfully
+        if (actionData && actionData.action === "create" && actionData.success) {
             close()
         }
-    }, [actionData])
+    }, [actionData]);
 
     const navigation = useNavigation()
 
@@ -33,7 +34,7 @@ const SessionHistoryCreateModal = ({ opened, close, tags }: SessionHistoryCreate
                         placeholder={ "Enter Name" }
                         name={ "name" }
                         required={ true }
-                        error={ !actionData?.success && (actionData?.errors?.get("name")?.join(", ") ?? "") }
+                        error={ !actionData?.success && (actionData?.errors["name"]?.join(", ") ?? "") }
                     />
 
                     <DateTimePicker
@@ -43,7 +44,7 @@ const SessionHistoryCreateModal = ({ opened, close, tags }: SessionHistoryCreate
                         maxDate={ new Date() }
                         name={ "startDateTime" }
                         required={ true }
-                        error={ !actionData?.success && (actionData?.errors?.get("startDateTime")?.join(", ") ?? "") }
+                        error={ !actionData?.success && (actionData?.errors["startDateTime"]?.join(", ") ?? "") }
                     />
 
                     <Group grow>
@@ -54,7 +55,7 @@ const SessionHistoryCreateModal = ({ opened, close, tags }: SessionHistoryCreate
                             defaultValue={ 0 }
                             name={ "hours" }
                             required={ true }
-                            error={ !actionData?.success && (actionData?.errors?.get("hours")?.join(", ") ?? "") }
+                            error={ !actionData?.success && (actionData?.errors["hours"]?.join(", ") ?? "") }
                         />
                         <NumberInput
                             label={ "Minutes" }
@@ -63,7 +64,7 @@ const SessionHistoryCreateModal = ({ opened, close, tags }: SessionHistoryCreate
                             defaultValue={ 0 }
                             name={ "minutes" }
                             required={ true }
-                            error={ !actionData?.success && (actionData?.errors?.get("minutes")?.join(", ") ?? "") }
+                            error={ !actionData?.success && (actionData?.errors["minutes"]?.join(", ") ?? "") }
                         />
                     </Group>
 
@@ -73,7 +74,7 @@ const SessionHistoryCreateModal = ({ opened, close, tags }: SessionHistoryCreate
                         data={ tags.map(tag => ({ value: tag.id.toString(), label: tag.name })) }
                         name={ "tagId" }
                         required={ true }
-                        error={ !actionData?.success && (actionData?.errors?.get("tagId")?.join(", ") ?? "") }
+                        error={ !actionData?.success && (actionData?.errors["tagId"]?.join(", ") ?? "") }
                     />
 
                     <Button type={ "submit" } loading={ navigation.state === "submitting" }>
@@ -84,5 +85,3 @@ const SessionHistoryCreateModal = ({ opened, close, tags }: SessionHistoryCreate
         </Modal>
     )
 }
-
-export default SessionHistoryCreateModal
