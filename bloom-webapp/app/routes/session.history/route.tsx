@@ -15,6 +15,8 @@ export {
     action
 }
 
+const dateTimeFormat = "dd MMM yyyy hh:mm";
+
 export default function SessionHistoryPage() {
     const { sessionsPage, tags } = useLoaderData<LoaderData>()
     const actionData = useActionData<ActionData>()
@@ -120,11 +122,11 @@ export default function SessionHistoryPage() {
                                 </Badge>
                             </Table.Td>
                             <Table.Td>
-                                { format(session.startDateTime, "dd MMM yyyy h:mm aa") }
+                                { format(session.startDateTime, dateTimeFormat) }
                             </Table.Td>
                             <Table.Td>
                                 { session.endDateTime
-                                  ? format(session.endDateTime, "dd MMM yyyy h:mm aa")
+                                  ? format(session.endDateTime, dateTimeFormat)
                                   : "In Progress" }
                             </Table.Td>
                             <Table.Td>
