@@ -16,7 +16,7 @@ type DashboardYearlyOverviewProps = {
     }[]
 }
 
-const DashboardYearlyOverview = ({ sessionDateTotalDurations }: DashboardYearlyOverviewProps) => {
+export default function DashboardYearlyOverview({ sessionDateTotalDurations }: DashboardYearlyOverviewProps) {
     const [searchParams, setSearchParams] = useSearchParams()
     const yearlyOverviewYearStr = searchParams.get("yearly")
     const yearlyOverviewDate = yearlyOverviewYearStr
@@ -128,5 +128,3 @@ const DashboardYearlyOverview = ({ sessionDateTotalDurations }: DashboardYearlyO
         </Stack>
     )
 }
-
-export default DashboardYearlyOverview

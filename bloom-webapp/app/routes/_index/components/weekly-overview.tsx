@@ -24,10 +24,10 @@ type DashboardWeeklyOverviewProps = {
     }[]
 }
 
-const DashboardWeeklyOverview = ({
+export default function DashboardWeeklyOverview({
      sessionDateTotalDurations,
      sessionTagTotalDurations
- }: DashboardWeeklyOverviewProps) => {
+}: DashboardWeeklyOverviewProps) {
     const [searchParams, setSearchParams] = useSearchParams()
     const weeklyOverviewDateStr = searchParams.get("weekly")
     const weeklyOverviewDate = weeklyOverviewDateStr
@@ -177,5 +177,3 @@ const DashboardWeeklyOverview = ({
         </Stack>
     )
 }
-
-export default DashboardWeeklyOverview
