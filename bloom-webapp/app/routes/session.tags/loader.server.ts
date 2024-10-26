@@ -1,6 +1,6 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
+import { LoaderFunctionArgs, TypedResponse } from "@remix-run/node";
 import apiClient from "~/api/apiClient";
-import { serverError } from "~/utils/responses.server";
+import { ok, serverError } from "~/utils/responses.server";
 
 export type LoaderData = {
     tags: {
@@ -10,7 +10,7 @@ export type LoaderData = {
     }[]
 }
 
-export async function loader({}: LoaderFunctionArgs) {
+export async function loader({}: LoaderFunctionArgs): Promise<TypedResponse<LoaderData>> {
     const {
         data: tags,
         error: getTagsError
@@ -20,7 +20,7 @@ export async function loader({}: LoaderFunctionArgs) {
         throw serverError()
     }
 
-    return {
+    return ok<LoaderData>({
         tags
-    }
+    })
 }

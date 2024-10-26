@@ -1,5 +1,5 @@
 import { components } from "~/api/api"
-import { LoaderFunctionArgs } from "@remix-run/node"
+import { LoaderFunctionArgs, TypedResponse } from "@remix-run/node"
 import apiClient from "~/api/apiClient"
 import { ok, serverError } from "~/utils/responses.server"
 
@@ -16,7 +16,7 @@ export type LoaderData = {
     }[]
 }
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: LoaderFunctionArgs): Promise<TypedResponse<LoaderData>> {
     const url = new URL(request.url)
     const page = parseInt(url.searchParams.get("page") ?? "1") - 1
 
