@@ -1,5 +1,4 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useNavigation, } from "@remix-run/react"
-import { MetaFunction } from "@remix-run/node"
 import {
     ActionIcon,
     Affix,
@@ -38,14 +37,14 @@ import { AnimatePresence } from "framer-motion"
 import AnimatePage from "~/components/animation/animate-page"
 import { useToggle } from "@mantine/hooks"
 
-const meta: MetaFunction = () => {
+export function meta() {
     return [
         { title: "Bloom" },
         { name: "description", content: "Personal time tracking app" },
     ]
 }
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+export function Layout({ children }: { children: React.ReactNode }) {
     const navigation = useNavigation()
     useEffect(() => {
         console.log(navigation.state)
@@ -172,7 +171,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     )
 }
 
-const HydrateFallback = () => {
+export function HydrateFallback() {
     return (
         <Center w={ "100%" } h={ "100%" }>
             <Loader/>
@@ -180,7 +179,7 @@ const HydrateFallback = () => {
     )
 }
 
-const App = () => {
+export default function App() {
     return (
         <AnimatePresence>
             <AnimatePage>
@@ -189,10 +188,3 @@ const App = () => {
         </AnimatePresence>
     )
 }
-
-export {
-    meta,
-    Layout,
-    HydrateFallback,
-}
-export default App
