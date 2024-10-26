@@ -1,9 +1,9 @@
 import { Button } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import { IconPlus } from "@tabler/icons-react"
-import SessionTagsCreateModal from "~/components/session/tags/create-modal"
+import SessionTagsCreateModal from "~/routes/session.tags/components/create-modal"
 
-const SessionTagsCreateButton = () => {
+export default function SessionTagsCreateButton() {
     const [opened, { open, close }] = useDisclosure()
 
     return (
@@ -19,5 +19,3 @@ const SessionTagsCreateButton = () => {
         </>
     )
 }
-
-export default SessionTagsCreateButton

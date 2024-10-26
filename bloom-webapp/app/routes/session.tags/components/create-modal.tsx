@@ -1,19 +1,20 @@
 import { Modal, Stack, TextInput, Button, ColorInput } from "@mantine/core"
 import { Form, useActionData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
-import { action } from "~/routes/session.tags"
+import { ActionData } from "~/routes/session.tags/action.server";
 
 type SessionTagsCreateModalProps = {
     opened: boolean
     close: () => void
 }
 
-const SessionTagsCreateModal = ({ opened, close }: SessionTagsCreateModalProps) => {
-    const actionData = useActionData<typeof action>()
+export default function SessionTagsCreateModal({ opened, close }: SessionTagsCreateModalProps) {
+    const actionData = useActionData<ActionData>()
     const navigation = useNavigation()
 
     useEffect(() => {
-        if (actionData?.success) {
+        // Close modal if tag is created successfully
+        if (actionData && actionData.action === "create" && actionData.success) {
             close()
         }
     }, [actionData])
@@ -27,7 +28,7 @@ const SessionTagsCreateModal = ({ opened, close }: SessionTagsCreateModalProps) 
                         placeholder="Enter Name"
                         name="name"
                         required
-                        error={ !actionData?.success && (actionData?.errors?.get("name")?.join(", ") ?? "") }
+                        error={ !actionData?.success && (actionData?.errors["name"]?.join(", ") ?? "") }
                     />
 
                     <ColorInput
@@ -35,7 +36,7 @@ const SessionTagsCreateModal = ({ opened, close }: SessionTagsCreateModalProps) 
                         placeholder="Enter Color"
                         name="color"
                         required
-                        error={ !actionData?.success && (actionData?.errors?.get("color")?.join(", ") ?? "") }
+                        error={ !actionData?.success && (actionData?.errors["color"]?.join(", ") ?? "") }
                     />
 
                     <Button type="submit" loading={ navigation.state === "submitting" }>
@@ -46,5 +47,3 @@ const SessionTagsCreateModal = ({ opened, close }: SessionTagsCreateModalProps) 
         </Modal>
     )
 }
-
-export default SessionTagsCreateModal

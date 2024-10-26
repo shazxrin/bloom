@@ -1,7 +1,7 @@
 import { Button, Group, Modal, Text } from "@mantine/core"
 import { Form, useActionData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
-import { action } from "~/routes/session.tags"
+import { ActionData } from "~/routes/session.tags/action.server";
 
 type SessionTagsDeleteModalProps = {
     tag: {
@@ -12,10 +12,11 @@ type SessionTagsDeleteModalProps = {
     close: () => void
 }
 
-const SessionTagsDeleteModal = ({ tag, opened, close }: SessionTagsDeleteModalProps) => {
-    const actionData = useActionData<typeof action>()
+export default function SessionTagsDeleteModal({ tag, opened, close }: SessionTagsDeleteModalProps) {
+    const actionData = useActionData<ActionData>()
     useEffect(() => {
-        if (actionData?.success) {
+        // Close modal if tag is deleted successfully
+        if (actionData && actionData.action === "delete" && actionData.success) {
             close()
         }
     }, [actionData])
@@ -42,5 +43,3 @@ const SessionTagsDeleteModal = ({ tag, opened, close }: SessionTagsDeleteModalPr
         </Modal>
     )
 }
-
-export default SessionTagsDeleteModal
