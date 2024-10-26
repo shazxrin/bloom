@@ -8,7 +8,7 @@ type SessionTimerDetailsInfoProps = {
     }
 }
 
-const SessionTimerDetailsInfo = ({ name, tag }: SessionTimerDetailsInfoProps) => {
+export default function SessionTimerDetailsInfo({ name, tag }: SessionTimerDetailsInfoProps) {
     return (
         <Stack gap={ 8 } align="center" maw={ 250 }>
             <Badge radius="xs" size="lg" autoContrast style={ { backgroundColor: tag.color } }>{ tag.name }</Badge>
@@ -17,5 +17,3 @@ const SessionTimerDetailsInfo = ({ name, tag }: SessionTimerDetailsInfoProps) =>
         </Stack>
     )
 }
-
-export default SessionTimerDetailsInfo

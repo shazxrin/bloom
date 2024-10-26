@@ -1,7 +1,7 @@
 import { Button, Group, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/core"
 import { Form, useActionData, useNavigation } from "@remix-run/react"
 import { useEffect } from "react"
-import { action } from "~/routes/session.timer"
+import { ActionData } from "~/routes/session.timer/action.server";
 
 type SessionTimerCreateModalProps = {
     tags: {
@@ -13,10 +13,11 @@ type SessionTimerCreateModalProps = {
     close: () => void
 }
 
-const SessionTimerCreateModal = ({ opened, close, tags }: SessionTimerCreateModalProps) => {
-    const actionData = useActionData<typeof action>()
+export default function SessionTimerCreateModal({ opened, close, tags }: SessionTimerCreateModalProps) {
+    const actionData = useActionData<ActionData>()
     useEffect(() => {
-        if (actionData?.success) {
+        // Close modal if timer is created successfully
+        if (actionData && actionData.action === "create" && actionData.success) {
             close()
         }
     }, [actionData])
@@ -26,14 +27,14 @@ const SessionTimerCreateModal = ({ opened, close, tags }: SessionTimerCreateModa
     return (
         <Modal opened={ opened } onClose={ close } title="New Session" centered>
             <Form method="POST" action="/session/timer">
-                <input type="hidden" name="intent" value="create"/>
+                <input type="hidden" name="action" value="create"/>
                 <Stack gap={ 16 }>
                     <TextInput
                         label="Name"
                         placeholder="Enter Name"
                         name="name"
                         required
-                        error={ !actionData?.success && (actionData?.errors?.get("name")?.join(", ") ?? "") }
+                        error={ !actionData?.success && (actionData?.errors["name"]?.join(", ") ?? "") }
                     />
                     <Group grow>
                         <NumberInput
@@ -43,7 +44,7 @@ const SessionTimerCreateModal = ({ opened, close, tags }: SessionTimerCreateModa
                             defaultValue={ 0 }
                             name="hours"
                             required
-                            error={ !actionData?.success && (actionData?.errors?.get("hours")?.join(", ") ?? "") }
+                            error={ !actionData?.success && (actionData?.errors["hours"]?.join(", ") ?? "") }
                         />
                         <NumberInput
                             label="Minutes"
@@ -52,7 +53,7 @@ const SessionTimerCreateModal = ({ opened, close, tags }: SessionTimerCreateModa
                             defaultValue={ 0 }
                             name="minutes"
                             required
-                            error={ !actionData?.success && (actionData?.errors?.get("minutes")?.join(", ") ?? "") }
+                            error={ !actionData?.success && (actionData?.errors["minutes"]?.join(", ") ?? "") }
                         />
                     </Group>
 
@@ -62,7 +63,7 @@ const SessionTimerCreateModal = ({ opened, close, tags }: SessionTimerCreateModa
                         data={ tags.map(tag => ({ value: tag.id.toString(), label: tag.name })) }
                         name="tagId"
                         required
-                        error={ !actionData?.success && (actionData?.errors?.get("tagId")?.join(", ") ?? "") }
+                        error={ !actionData?.success && (actionData?.errors["tagId"]?.join(", ") ?? "") }
                     />
 
                     <Button type="submit" loading={ navigation.state === "submitting" }>
@@ -73,5 +74,3 @@ const SessionTimerCreateModal = ({ opened, close, tags }: SessionTimerCreateModa
         </Modal>
     )
 }
-
-export default SessionTimerCreateModal

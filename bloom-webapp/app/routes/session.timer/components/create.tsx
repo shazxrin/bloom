@@ -1,4 +1,4 @@
-import SessionTimerCreateModal from "~/components/session/timer/create-modal"
+import SessionTimerCreateModal from "~/routes/session.timer/components/create-modal"
 import { Button, Center, Stack, Title } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import { IconMoodPuzzled, IconSparkles } from "@tabler/icons-react"
@@ -11,7 +11,7 @@ type SessionTimerCreateProps = {
     }[]
 }
 
-const SessionTimerCreate = ({ tags }: SessionTimerCreateProps) => {
+export default function SessionTimerCreate({ tags }: SessionTimerCreateProps) {
     const [opened, { open, close }] = useDisclosure(false)
 
     return (
@@ -31,5 +31,3 @@ const SessionTimerCreate = ({ tags }: SessionTimerCreateProps) => {
         </>
     )
 }
-
-export default SessionTimerCreate

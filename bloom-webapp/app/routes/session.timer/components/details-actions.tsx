@@ -10,7 +10,7 @@ type SessionTimerDetailsActionsProps = {
     remainingDuration: number
 }
 
-const SessionTimerDetailsActions = ({ status, resumeDateTime, remainingDuration }: SessionTimerDetailsActionsProps) => {
+export default function SessionTimerDetailsActions({ status, resumeDateTime, remainingDuration }: SessionTimerDetailsActionsProps) {
     const initialRemainingSeconds = status === "PAUSED"
         ? remainingDuration
         : remainingDuration - differenceInSeconds(new Date(), resumeDateTime)
@@ -35,7 +35,7 @@ const SessionTimerDetailsActions = ({ status, resumeDateTime, remainingDuration 
     return (
         <Group gap={ 16 } justify="center">
             <Form method="POST" action="/session/timer">
-                <input type="hidden" name="intent" value="resume"/>
+                <input type="hidden" name="action" value="resume"/>
                 <ActionIcon
                     size="lg"
                     variant="outline"
@@ -48,7 +48,7 @@ const SessionTimerDetailsActions = ({ status, resumeDateTime, remainingDuration 
             </Form>
 
             <Form method="POST" action="/session/timer">
-                <input type="hidden" name="intent" value="pause"/>
+                <input type="hidden" name="action" value="pause"/>
                 <ActionIcon
                     size="lg"
                     variant="outline"
@@ -61,7 +61,7 @@ const SessionTimerDetailsActions = ({ status, resumeDateTime, remainingDuration 
             </Form>
 
             <Form method="POST" action="/session/timer">
-                <input type="hidden" name="intent" value="end"/>
+                <input type="hidden" name="action" value="end"/>
                 <ActionIcon
                     size="lg"
                     variant="outline"
@@ -74,5 +74,3 @@ const SessionTimerDetailsActions = ({ status, resumeDateTime, remainingDuration 
         </Group>
     )
 }
-
-export default SessionTimerDetailsActions

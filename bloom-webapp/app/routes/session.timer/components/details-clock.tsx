@@ -14,14 +14,14 @@ type SessionTimerDetailsClockProps = {
     resumeDateTime: string
 }
 
-const SessionTimerDetailsClock = ({
+export default function SessionTimerDetailsClock({
     name,
     status,
     totalDuration,
     remainingDuration,
     startDateTime,
     resumeDateTime,
-}: SessionTimerDetailsClockProps) => {
+}: SessionTimerDetailsClockProps) {
     const initialRemainingSeconds = status === "PAUSED"
         ? remainingDuration
         : remainingDuration - differenceInSeconds(new Date(), resumeDateTime)
@@ -100,5 +100,3 @@ const SessionTimerDetailsClock = ({
         </Stack>
     )
 }
-
-export default SessionTimerDetailsClock

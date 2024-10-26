@@ -1,7 +1,7 @@
 import { Center, Stack } from "@mantine/core"
-import SessionTimerDetailsActions from "~/components/session/timer/details-actions"
-import TimerClock from "~/components/session/timer/details-clock"
-import SessionTimerDetailsInfo from "~/components/session/timer/details-info"
+import SessionTimerDetailsActions from "~/routes/session.timer/components/details-actions"
+import TimerClock from "~/routes/session.timer/components/details-clock"
+import SessionTimerDetailsInfo from "~/routes/session.timer/components/details-info"
 
 type SessionTimerDetailsProps = {
     name: string
@@ -16,7 +16,7 @@ type SessionTimerDetailsProps = {
     resumeDateTime: string
 }
 
-const SessionTimerDetails = ({
+export default function SessionTimerDetails({
     name,
     tag,
     status,
@@ -24,7 +24,7 @@ const SessionTimerDetails = ({
     remainingDuration,
     startDateTime,
     resumeDateTime
-}: SessionTimerDetailsProps) => {
+}: SessionTimerDetailsProps) {
     return (
         <Center h="100%" w="100%">
             <Stack gap={ 32 } align="center">
@@ -46,5 +46,3 @@ const SessionTimerDetails = ({
         </Center>
     )
 }
-
-export default SessionTimerDetails
