@@ -1,4 +1,4 @@
-import { ActionFunctionArgs } from "@remix-run/node"
+import { ActionFunctionArgs, TypedResponse } from "@remix-run/node"
 import { z } from "zod"
 import parseFormData from "~/utils/parse-form-data"
 import apiClient from "~/api/apiClient"
@@ -18,7 +18,7 @@ export type ActionData =
         action: "create" | "update" | "delete"
     } & (ActionDataSuccess | ActionDataError)
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request }: ActionFunctionArgs): Promise<TypedResponse<ActionData>> {
     if (request.method === "POST") {
         const formSchema = z.object({
             name: z.string().min(1).max(255),
@@ -108,7 +108,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const { formData, errors } = await parseFormData(formSchema, request)
         if (errors) {
-            return ok<ActionData>({
+            return badRequest<ActionData>({
                 action: "delete",
                 success: false,
                 errors
