@@ -1,5 +1,5 @@
 # Deployment containing the full application and services
-
+name: bloom
 services:
   bloom-main:
     build: ../bloom-main
@@ -8,6 +8,14 @@ services:
     depends_on:
       - postgres
       - rabbitmq
+  bloom-webapp:
+    build: ../bloom-webapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - bloom-main
+    environment:
+        - API_BASE_URL=http://bloom-main:8080
   postgres:
     image: postgres:latest
     ports:

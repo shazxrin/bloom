@@ -1,5 +1,5 @@
 # Deployment containing the services for development
-
+name: bloom-dev
 services:
   postgres:
     image: postgres:latest
