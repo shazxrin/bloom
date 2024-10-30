@@ -39,4 +39,4 @@ jobs:
         working-directory: ./bloom-webapp
         run: docker build -t ghcr.io/${{ github.repository }}/bloom-webapp:latest .
       - name: Push Docker image for bloom-webapp
-        run: docker push ghcr.io/${{ github.repository }}/bloom-main:latest
+        run: docker push ghcr.io/${{ github.repository }}/bloom-webapp:latest
