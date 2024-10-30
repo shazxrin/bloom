@@ -1,24 +1,28 @@
-name: Package
 on:
   workflow_dispatch: {}
   push:
     tags:
       - '*'
+name: Package and Publish
 jobs:
   package:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
+
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
           java-version: 22
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -32,11 +36,13 @@ jobs:
       - name: Build Docker image for bloom-main
         working-directory: ./bloom-main
         run: docker build -t ghcr.io/${{ github.repository }}/bloom-main:latest .
+
       - name: Push Docker image for bloom-main
         run: docker push ghcr.io/${{ github.repository }}/bloom-main:latest
 
       - name: Build Docker image for bloom-webapp
         working-directory: ./bloom-webapp
         run: docker build -t ghcr.io/${{ github.repository }}/bloom-webapp:latest .
+
       - name: Push Docker image for bloom-webapp
         run: docker push ghcr.io/${{ github.repository }}/bloom-webapp:latest
