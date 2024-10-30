@@ -1,9 +1,5 @@
-on:
-  workflow_dispatch: {}
-  push:
-    tags:
-      - '*'
 name: Package and Publish
+on: [workflow_dispatch, release]
 jobs:
   package:
     runs-on: ubuntu-latest
