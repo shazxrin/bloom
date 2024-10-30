@@ -18,13 +18,16 @@ tasks.register<PnpmTask>("generateApiBindings") {
 }
 
 tasks.register<PnpmTask>("dev") {
+    dependsOn("pnpmInstall")
     pnpmCommand.set(listOf("run", "dev"))
 }
 
 tasks.register<PnpmTask>("build") {
+    dependsOn("pnpmInstall")
     pnpmCommand.set(listOf("run", "build"))
 }
 
 tasks.register<PnpmTask>("start") {
+    dependsOn("pnpmInstall")
     pnpmCommand.set(listOf("run", "start"))
 }
